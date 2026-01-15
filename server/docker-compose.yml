@@ -1,0 +1,111 @@
+version: '3.8'
+name: talk-tigra
+
+services:
+  # ==============================================
+  # MySQL Database Service
+  # ==============================================
+  mysql:
+    image: mysql:8.0
+    container_name: talk-tigra-mysql
+    restart: unless-stopped
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: talk_tigra_db
+      # Performance tuning
+      MYSQL_INNODB_BUFFER_POOL_SIZE: 256M
+      MYSQL_MAX_CONNECTIONS: 100
+    volumes:
+      # Persist MySQL data
+      - talk-tigra_mysql_data:/var/lib/mysql
+      # Custom MySQL configuration (optional)
+      # - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - talk-tigra-network
+    healthcheck:
+      test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-ppassword' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-authentication-plugin=mysql_native_password
+
+  # ==============================================
+  # Redis Cache Service
+  # ==============================================
+  redis:
+    image: redis:7-alpine
+    container_name: talk-tigra-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      # Persist Redis data
+      - talk-tigra_redis_data:/data
+      # Custom Redis configuration (optional)
+      # - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - talk-tigra-network
+    healthcheck:
+      test: [ 'CMD', 'redis-cli', 'ping' ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy noeviction
+  # ==============================================
+  # phpMyAdmin (Database Management UI)
+  # ==============================================
+  # Access at: http://localhost:8080
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: talk-tigra-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: mysql
+      PMA_ARBITRARY: 1
+      # PMA_USER: root       <-- Removed to allow manual login
+      # PMA_PASSWORD: password <-- Removed to allow manual login
+    networks:
+      - talk-tigra-network
+    depends_on:
+      - mysql
+
+  # ==============================================
+  # Redis Commander (Redis Management UI)
+  # ==============================================
+  # Access at: http://localhost:8081
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: talk-tigra-redis-commander
+    restart: unless-stopped
+    ports:
+      - '8081:8081'
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    networks:
+      - talk-tigra-network
+    depends_on:
+      - redis
+  # ==============================================
+  # Named Volumes for Data Persistence
+  # ==============================================
+volumes:
+  talk-tigra_mysql_data:
+    driver: local
+  talk-tigra_redis_data:
+    driver: local
+
+# ==============================================
+# Network Configuration
+# ==============================================
+networks:
+  talk-tigra-network:
+    driver: bridge

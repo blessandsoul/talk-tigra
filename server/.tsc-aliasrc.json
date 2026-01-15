@@ -1,0 +1,13 @@
+{
+  "verbose": true,
+  "resolveFullPaths": true,
+  "resolveFullExtension": ".js",
+  "replacers": {
+    "before": [],
+    "after": []
+  },
+  "fileExtensions": {
+    "inputGlob": "**/*.js",
+    "outputCheck": ["js"]
+  }
+}

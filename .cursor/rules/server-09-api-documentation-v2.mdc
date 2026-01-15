@@ -1,0 +1,169 @@
+---
+trigger: always_on
+globs: "server/**/*"
+---
+
+> **SCOPE**: These rules apply specifically to the **server** directory.
+
+# API Documentation
+
+## Stack
+
+```json
+{
+  "dependencies": {
+    "@fastify/swagger": "^8.12.0",
+    "@fastify/swagger-ui": "^2.0.0",
+    "zod-to-json-schema": "^3.22.0"
+  }
+}
+```
+
+## Setup
+
+```typescript
+// app.ts
+import swagger from '@fastify/swagger';
+import swaggerUI from '@fastify/swagger-ui';
+
+await app.register(swagger, {
+  openapi: {
+    info: {
+      title: 'API Server',
+      version: '1.0.0',
+    },
+    servers: [
+      { url: 'http://localhost:3000', description: 'Development' },
+    ],
+    tags: [
+      { name: 'auth', description: 'Authentication' },
+      { name: 'resources', description: 'Resource operations' },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      },
+    },
+  },
+});
+
+await app.register(swaggerUI, {
+  routePrefix: '/docs',
+  uiConfig: { docExpansion: 'list', deepLinking: true },
+});
+```
+
+**Access:** `http://localhost:3000/docs`
+
+## Route Documentation Pattern
+
+```typescript
+// modules/resources/resources.schemas.ts
+import { z } from 'zod';
+
+export const CreateResourceSchema = z.object({
+  title: z.string().min(1).max(200),
+  price: z.number().positive(),
+});
+
+export const ResourceResponseSchema = z.object({
+  success: z.literal(true),
+  message: z.string(),
+  data: z.object({
+    id: z.string().uuid(),
+    title: z.string(),
+    price: z.number(),
+  }),
+});
+```
+
+```typescript
+// modules/resources/resources.routes.ts
+import { zodToJsonSchema } from 'zod-to-json-schema';
+import * as schemas from './resources.schemas';
+
+app.post('/resources', {
+  schema: {
+    description: 'Create a new resource',
+    tags: ['resources'],
+    summary: 'Create resource',
+    body: zodToJsonSchema(schemas.CreateResourceSchema, 'CreateResource'),
+    response: {
+      201: zodToJsonSchema(schemas.ResourceResponseSchema, 'ResourceResponse'),
+      400: {
+        description: 'Validation error',
+        type: 'object',
+        properties: {
+          success: { type: 'boolean', enum: [false] },
+          error: {
+            type: 'object',
+            properties: {
+              code: { type: 'string' },
+              message: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+    security: [{ bearerAuth: [] }],
+  },
+  handler: resourceController.createResource,
+});
+```
+
+## Document All Responses
+
+```typescript
+response: {
+  200: successSchema,
+  400: validationErrorSchema,
+  401: unauthorizedSchema,
+  404: notFoundSchema,
+  500: internalErrorSchema,
+}
+```
+
+## Production Config
+
+```typescript
+if (process.env.NODE_ENV === 'production') {
+  // Option 1: Disable docs
+  // Don't register swagger-ui
+  
+  // Option 2: Require auth for docs
+  await app.register(swaggerUI, {
+    routePrefix: '/docs',
+    transformSpecification: (swaggerObject, request, reply) => {
+      if (!request.headers.authorization) {
+        reply.code(401).send({ error: 'Unauthorized' });
+      }
+      return swaggerObject;
+    },
+  });
+}
+```
+
+## Best Practices
+
+### ✅ DO:
+- Use Zod schemas for all routes
+- Document all error responses
+- Add descriptions and summaries
+- Include security requirements
+- Tag routes by domain
+
+### ❌ DON'T:
+- Skip documentation on routes
+- Forget error response schemas
+- Expose docs publicly in production
+- Use generic descriptions
+
+## Checklist
+
+- [ ] Swagger and Swagger UI registered
+- [ ] All routes have schemas
+- [ ] Zod schemas converted to JSON Schema
+- [ ] Error responses documented
+- [ ] Tags used for grouping
+- [ ] Security requirements documented
+- [ ] Production docs secured

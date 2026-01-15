@@ -1,0 +1,44 @@
+# Common
+node_modules/
+dist/
+build/
+*.log
+logs/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Environment
+.env
+.env.test
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Keep .env.example
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Prisma
+# Keep schema.prisma and migrations
+*.sqlite
+*.sqlite-journal
+
+# Secrets and Keys
+*.pem
+*.key
+*.pfx
+*.p12
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+tscommand-*.tmp
+
+# Docker
+docker-compose.override.yml
