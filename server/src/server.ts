@@ -14,6 +14,9 @@ import logger from './libs/logger.js';
 import { prisma } from './libs/db.js';
 import { redis } from './libs/redis.js';
 import { fileQueue } from './libs/queue.js';
+import { startQuoSyncScheduler } from './libs/quo-sync-scheduler.js';
+import { startDriverSyncScheduler } from './libs/driver-sync-scheduler.js';
+import { initCronJobs } from './config/cron.js';
 
 /**
  * Start the Fastify server
@@ -47,6 +50,15 @@ async function startServer() {
         logger.info(`Server started in ${env.NODE_ENV} mode`);
         logger.info(`API is listening at: ${serverUrl}${env.API_PREFIX}`);
         logger.info(`Health check available at: ${serverUrl}/health`);
+
+        // Start Quo sync scheduler (runs every 10 minutes + on startup)
+        startQuoSyncScheduler();
+
+        // Start Driver sync scheduler (sheet sync + driver matching)
+        startDriverSyncScheduler();
+
+        // Initialize cron jobs (unknown driver matching)
+        initCronJobs();
 
         /**
          * Graceful Shutdown Handler

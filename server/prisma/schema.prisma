@@ -91,3 +91,182 @@ model Resource {
   @@index([createdAt])
   @@map("resources")
 }
+
+// ==============================================
+// QUO CONVERSATIONS & MESSAGES
+// ==============================================
+
+model Conversation {
+  id              String    @id // Quo conversation ID (e.g., CN729d9a24...)
+  phoneNumberId   String    @map("phone_number_id") // Quo phone number ID
+  participants    String    @db.Text // JSON array of participant phone numbers
+  name            String?   // Conversation name (if set)
+  assignedTo      String?   @map("assigned_to") // User ID assigned to
+  lastActivityAt  DateTime  @map("last_activity_at") // Last message timestamp
+  lastActivityId  String    @map("last_activity_id") // Last message ID
+  mutedUntil      DateTime? @map("muted_until")
+  snoozedUntil    DateTime? @map("snoozed_until")
+  deletedAt       DateTime? @map("deleted_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  syncedAt        DateTime  @default(now()) @map("synced_at") // Last sync from Quo API
+  lastParsedAt    DateTime? @map("last_parsed_at") // Last n8n parsing timestamp
+
+  // Relations
+  messages Message[]
+
+  // Indexes
+  @@index([phoneNumberId])
+  @@index([lastActivityAt])
+  @@index([syncedAt])
+  @@index([lastParsedAt])
+  @@map("conversations")
+}
+
+model Message {
+  id             String   @id // Quo message ID (e.g., AC85a9190a...)
+  conversationId String   @map("conversation_id") // Link to conversation
+  phoneNumberId  String   @map("phone_number_id") // Quo phone number ID
+  direction      String   // 'incoming' or 'outgoing'
+  from           String   // Sender phone number
+  to             String   @db.Text // JSON array of recipient phone numbers
+  text           String   @db.Text // Message content
+  userId         String?  @map("user_id") // Quo user ID who sent/received
+  status         String   // 'queued', 'delivered', etc.
+  createdAt      DateTime @map("created_at") // Message timestamp from Quo
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  syncedAt       DateTime @default(now()) @map("synced_at") // When synced to our DB
+
+  // Relations
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([conversationId])
+  @@index([phoneNumberId])
+  @@index([direction])
+  @@index([createdAt])
+  @@index([syncedAt])
+  @@map("messages")
+}
+
+// ==============================================
+// DRIVER & LOCATION TRACKING
+// ==============================================
+
+model Driver {
+  id          String   @id @default(uuid())
+  phoneNumber String   @unique @map("phone_number") // The driver's phone number in E.164 format
+  name        String?  // Driver name if known
+  companyName String?  @map("company_name") // Trucking company name if known
+  notes       String?  @db.Text // Any notes about this driver
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  locations   DriverLocation[]
+  loads       Load[]
+
+  // Indexes
+  @@index([phoneNumber])
+  @@map("drivers")
+}
+
+model Location {
+  id        String   @id @default(uuid())
+  name      String   @unique // e.g., "Miami, FL" or "NJ" or "Newark, NJ"
+  state     String?  // State abbreviation (FL, NJ, etc.)
+  city      String?  // City name if known
+  zipCode   String?  @map("zip_code")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  drivers   DriverLocation[]
+  aliases   LocationAlias[]
+
+  // Indexes
+  @@index([name])
+  @@index([state])
+  @@map("locations")
+}
+
+// Location aliases for fuzzy matching
+// Maps variations like "Miami" -> "Miami, FL", "NJ" -> "Newark, NJ"
+model LocationAlias {
+  id         String   @id @default(uuid())
+  alias      String   @unique // The variant name (e.g., "Miami", "NJ", "New Jersey")
+  locationId String   @map("location_id") // The canonical location it maps to
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  // Relations
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([alias])
+  @@index([locationId])
+  @@map("location_aliases")
+}
+
+// Join table: Which drivers work in which locations
+model DriverLocation {
+  driverId    String   @map("driver_id")
+  locationId  String   @map("location_id")
+  lastSeenAt  DateTime @default(now()) @map("last_seen_at") // Last time we verified this link
+  matchCount  Int      @default(1) @map("match_count") // How many times we matched this driver to this location
+  source      String   @default("sheet_match") // How we discovered this: "sheet_match", "manual", etc.
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  driver      Driver   @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  location    Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  // Composite primary key
+  @@id([driverId, locationId])
+  @@index([driverId])
+  @@index([locationId])
+  @@map("driver_locations")
+}
+
+// Loads synced from Google Sheet
+model Load {
+  id              String    @id @default(uuid())
+  vin             String    @unique // Full VIN from sheet
+  loadId          String    @map("load_id") // Last 6 characters of VIN (for matching)
+  pickupLocation  String?   @map("pickup_location") // Pickup location from sheet
+  deliveryLocation String?  @map("delivery_location") // Delivery location from sheet
+  status          String?   // Load status (dispatched, delivered, etc.)
+  driverPhone     String?   @map("driver_phone") // Driver phone if saved in sheet
+  sheetRowNumber  Int?      @map("sheet_row_number") // Row number in Google Sheet for reference
+  syncedAt        DateTime  @default(now()) @map("synced_at") // When synced from sheet
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  driverId    String?   @map("driver_id")
+  driver      Driver?   @relation(fields: [driverId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([loadId]) // Critical for fast Load ID lookups
+  @@index([driverPhone])
+  @@index([syncedAt])
+  @@map("loads")
+}
+
+// Unknown drivers pending location matching
+// These are drivers we've seen in conversations but haven't matched to a location yet
+model UnknownDriver {
+  id          String   @id @default(uuid())
+  phoneNumber String   @map("phone_number") // Driver's phone number from conversation
+  loadIds     String   @db.Text // JSON array of load IDs mentioned in conversation
+  rawLocation String?  @map("raw_location") // Location extracted by AI (might not match our DB yet)
+  matched     Boolean  @default(false) // Whether we've successfully matched this to a location
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Indexes
+  @@index([phoneNumber])
+  @@index([matched])
+  @@index([createdAt])
+  @@map("unknown_drivers")
+}

@@ -1,9 +1,10 @@
-import { vi, beforeAll } from 'vitest';
+import { vi } from 'vitest';
 
 // Pre-fill process.env with required values for tests
 // This ensures zod validation in src/config/env.ts passes
 process.env['DATABASE_URL'] = process.env['DATABASE_URL'] || 'mysql://root:root@localhost:3306/test_db';
 process.env['JWT_SECRET'] = process.env['JWT_SECRET'] || 'test-secret-must-be-at-least-32-chars-long-for-validation';
+process.env['QUO_API'] = process.env['QUO_API'] || 'test-quo-api-key-for-testing';
 process.env['NODE_ENV'] = 'test';
 
 // Global mocks if needed

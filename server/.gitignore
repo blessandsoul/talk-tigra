@@ -10,7 +10,7 @@ Thumbs.db
 .vscode/
 
 # Environment
-.env
+# .env
 .env.test
 .env.local
 .env.development.local

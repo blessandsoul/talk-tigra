@@ -60,6 +60,17 @@ const envSchema = z.object({
         .transform((val) => val === 'true')
         .optional(),
     SLOW_QUERY_THRESHOLD: z.coerce.number().int().positive().default(1000),
+
+    // Quo (OpenPhone) API Configuration
+    QUO_API: z.string().min(1, 'QUO_API key is required'),
+    QUO_PHONE_NUMBER_ID: z.string().optional(), // Phone number ID to sync (defaults to PNqErUjbAJ)
+
+    // Google Sheets Configuration
+    GOOGLE_SHEETS_CREDENTIALS: z.string().optional(), // Base64 encoded credentials JSON
+    GOOGLE_SHEET_ID: z.string().optional(), // The Google Sheet ID to sync loads from
+
+    // n8n Webhook Configuration
+    N8N_WEBHOOK_URL: z.string().url().min(1, 'N8N_WEBHOOK_URL is required'),
 });
 
 /**

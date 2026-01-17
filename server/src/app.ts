@@ -11,8 +11,14 @@
  */
 
 import fastify from 'fastify';
+import fastifyStatic from '@fastify/static';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { env } from './config/env.js';
 import logger from './libs/logger.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Extracted Modules
 import { setupErrorHandler } from './libs/error-handler.js';
@@ -26,6 +32,10 @@ import { healthRoutes } from './routes/health.routes.js';
 import { authRoutes } from './modules/auth/auth.routes.js';
 import { resourceRoutes } from './modules/resources/resources.routes.js';
 import { adminRoutes } from './modules/admin/admin.routes.js';
+import { quoMessagesRoutes } from './modules/quo-messages/quo-messages.routes.js';
+import { driverRoutes } from './modules/drivers/driver.routes.js';
+import { unknownDriverRoutes } from './modules/drivers/unknown-driver.routes.js';
+import n8nRoutes from './modules/n8n/n8n.routes.js';
 import {
     requireRole,
     requireAdmin,
@@ -64,6 +74,16 @@ const buildApp = async () => {
     await app.register(authRoutes, { prefix: `${env.API_PREFIX}/auth` });
     await app.register(resourceRoutes, { prefix: `${env.API_PREFIX}/resources` });
     await app.register(adminRoutes, { prefix: `${env.API_PREFIX}/admin` });
+    await app.register(quoMessagesRoutes, { prefix: env.API_PREFIX });
+    await app.register(driverRoutes, { prefix: env.API_PREFIX });
+    await app.register(unknownDriverRoutes, { prefix: `${env.API_PREFIX}/unknown-drivers` });
+    await app.register(n8nRoutes, { prefix: `${env.API_PREFIX}/n8n` });
+
+    // 6. Serve static files from public directory (after routes to avoid conflicts)
+    await app.register(fastifyStatic, {
+        root: path.join(__dirname, '..', 'public'),
+        prefix: '/', // Serve at root path
+    });
 
     return app;
 };

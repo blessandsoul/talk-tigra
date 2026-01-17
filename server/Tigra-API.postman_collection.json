@@ -711,6 +711,358 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Quo Messages",
+			"item": [
+				{
+					"name": "Get Phone Numbers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/phone-numbers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"phone-numbers"
+							]
+						},
+						"description": "List all OpenPhone numbers to find IDs"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conversations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/conversations?maxResults=30",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"conversations"
+							],
+							"query": [
+								{
+									"key": "phoneNumberId",
+									"value": "PNqErUjbAJ",
+									"description": "Filter by phone number ID (optional)",
+									"disabled": true
+								},
+								{
+									"key": "maxResults",
+									"value": "30",
+									"description": "Max results to return (default: 30, max: 100)"
+								},
+								{
+									"key": "pageToken",
+									"value": "",
+									"description": "Token for pagination",
+									"disabled": true
+								}
+							]
+						},
+						"description": "List all conversations (chats) with participants"
+					},
+					"response": []
+				},
+				{
+					"name": "List Messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/messages?phoneNumberId=PN123abc&participants=%2B15555555555&maxResults=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages"
+							],
+							"query": [
+								{
+									"key": "phoneNumberId",
+									"value": "PN123abc",
+									"description": "The unique identifier of the OpenPhone number (must start with PN)"
+								},
+								{
+									"key": "userId",
+									"value": "",
+									"description": "Filter by user ID",
+									"disabled": true
+								},
+								{
+									"key": "participants",
+									"value": "+15555555555",
+									"description": "Phone number in E.164 format (OPTIONAL - leave disabled to get all conversations)",
+									"disabled": true
+								},
+								{
+									"key": "maxResults",
+									"value": "10",
+									"description": "Max results to return (default: 10, max: 100)"
+								},
+								{
+									"key": "pageToken",
+									"value": "",
+									"description": "Token for pagination",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get messages from Quo (OpenPhone) API"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Drivers",
+			"item": [
+				{
+					"name": "Get All Drivers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/drivers",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "drivers"],
+							"query": [
+								{ "key": "location", "value": "New Jersey", "disabled": true, "description": "Filter by location (fuzzy match)" },
+								{ "key": "state", "value": "NJ", "disabled": true, "description": "Filter by state" },
+								{ "key": "phoneNumber", "value": "", "disabled": true, "description": "Filter by phone number (partial)" }
+							]
+						},
+						"description": "Get all drivers with optional location/state filters"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recent Movements",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/driver-locations",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "driver-locations"],
+							"query": [
+								{ "key": "location", "value": "", "disabled": true },
+								{ "key": "state", "value": "", "disabled": true },
+								{ "key": "recentDays", "value": "7", "description": "Show movements from last N days" }
+							]
+						},
+						"description": "See which drivers were recently matched to locations"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Driver Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/drivers/stats",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "drivers", "stats"]
+						},
+						"description": "Get statistics about drivers and location matches"
+					},
+					"response": []
+				},
+				{
+					"name": "Manual Sync (Trigger)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/drivers/sync",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "drivers", "sync"]
+						},
+						"description": "Manually trigger Google Sheet sync + Driver matching"
+					},
+					"response": []
+				},
+				{
+					"name": "Match specific conversation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/drivers/match/:conversationId",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "drivers", "match", ":conversationId"],
+							"variable": [
+								{ "key": "conversationId", "value": "CONVERSATION_ID_HERE" }
+							]
+						},
+						"description": "Manually run matching logic on a single conversation"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Locations",
+			"item": [
+				{
+					"name": "Get Top Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/locations/top?limit=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "locations", "top"],
+							"query": [
+								{ "key": "limit", "value": "10" }
+							]
+						},
+						"description": "Get locations with the most drivers"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/locations/search?q=Jersey",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "locations", "search"],
+							"query": [
+								{ "key": "q", "value": "Jersey", "description": "Search query" }
+							]
+						},
+						"description": "Search for locations by name"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "n8n Integration",
+			"item": [
+				{
+					"name": "Test n8n Connection (Echo)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response is successful', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test('n8n echoed data back', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.have.property('sent');",
+									"    pm.expect(jsonData.data).to.have.property('received');",
+									"    console.log('✅ n8n connection successful!');",
+									"    console.log('Sent:', JSON.stringify(jsonData.data.sent, null, 2));",
+									"    console.log('Received:', JSON.stringify(jsonData.data.received, null, 2));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Hello n8n! Testing connectivity from Postman 🚀\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/n8n/test",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "n8n", "test"]
+						},
+						"description": "Test n8n webhook connectivity with a simple echo test.\n\nThis endpoint:\n1. Sends test data to n8n\n2. n8n should echo it back\n3. Proves the webhook connection works\n\n✅ What to check:\n- Response shows 'sent' and 'received' objects\n- Both objects contain the same data\n- No connection errors\n\n⚠️ Prerequisites:\n- n8n must be running\n- N8N_WEBHOOK_URL in .env must be correct\n- n8n workflow must have Webhook + Respond nodes"
+					},
+					"response": []
+				},
+				{
+					"name": "Parse Conversation with n8n",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response is successful', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test('Conversation data sent to n8n', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.have.property('conversationId');",
+									"    pm.expect(jsonData.data).to.have.property('phone');",
+									"    pm.expect(jsonData.data).to.have.property('messageCount');",
+									"    pm.expect(jsonData.data).to.have.property('conversationText');",
+									"    pm.expect(jsonData.data).to.have.property('n8nResponse');",
+									"    ",
+									"    console.log('✅ Conversation sent to n8n successfully!');",
+									"    console.log('📱 Phone:', jsonData.data.phone);",
+									"    console.log('💬 Messages:', jsonData.data.messageCount);",
+									"    console.log('\\n📝 Conversation Text:\\n', jsonData.data.conversationText);",
+									"    console.log('\\n🤖 n8n Response:\\n', JSON.stringify(jsonData.data.n8nResponse, null, 2));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"conversationId\": \"PASTE_CONVERSATION_ID_HERE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/n8n/parse-conversation",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "n8n", "parse-conversation"]
+						},
+						"description": "Send a real conversation to n8n for AI parsing.\n\n📋 How to use:\n1. First, get a conversation ID from 'Get Conversations' endpoint\n2. Copy a conversationId (e.g., \"COV5j8b29a0sk9hd2j\")\n3. Paste it in the body above\n4. Send request\n\n✅ What happens:\n- Server fetches the conversation from database\n- Formats all messages into readable text\n- Sends to n8n webhook\n- n8n (with AI) will analyze and extract:\n  - Load ID\n  - Location\n  - VIN (if mentioned)\n  - Confidence score\n\n🔮 Future:\nOnce n8n AI is configured, the n8nResponse will contain:\n{\n  \"loadId\": \"12345\",\n  \"location\": \"Miami, FL\",\n  \"partialVin\": \"123456\",\n  \"confidence\": 0.95\n}\n\n⚠️ Prerequisites:\n- Conversation must exist in database (run sync first)\n- n8n workflow must be active"
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [
