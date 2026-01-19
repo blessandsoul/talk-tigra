@@ -73,6 +73,8 @@ export class UnknownDriverService {
      * A driver can work in MULTIPLE locations, so we:
      * 1. Find ALL loads that match ANY of the driver's load IDs
      * 2. Create driver_location records for EACH unique location
+     * 3. NEVER skip drivers - even if they're already in our database
+     * 4. Only skip creating duplicate driver+location combinations
      */
     async matchUnknownDrivers() {
         const startTime = Date.now();
@@ -133,13 +135,14 @@ export class UnknownDriverService {
                     );
 
                     // Create driver_location record for EACH unique location
+                    // This will NOT create duplicates - createDriverLocation handles that
                     for (const locationName of uniqueLocations) {
-                        await this.createDriverLocation(
+                        const created = await this.createDriverLocation(
                             unknownDriver.phoneNumber,
                             locationName,
                             matchedLoads[0]?.loadId || 'unknown' // Just use first load ID for notes
                         );
-                        locationsCreated++;
+                        if (created) locationsCreated++;
                     }
 
                     // Mark this unknown driver as matched
@@ -178,13 +181,17 @@ export class UnknownDriverService {
     /**
      * Create or update driver and driver_location records
      *
-     * Improvement #5: Smart location matching with normalization
+     * Multi-location rule:
+     * - If driver + location combo exists: update lastSeenAt and increment counter (return false)
+     * - If driver exists but different location: create NEW link (return true)
+     * - If driver doesn't exist: create driver + location link (return true)
      *
      * @param phoneNumber - Driver's phone number
      * @param locationName - Location name (e.g., "Miami, FL")
      * @param matchedLoadId - The load ID that caused this match
+     * @returns true if new link created, false if updated existing
      */
-    private async createDriverLocation(phoneNumber: string, locationName: string, matchedLoadId: string) {
+    private async createDriverLocation(phoneNumber: string, locationName: string, matchedLoadId: string): Promise<boolean> {
         try {
             // Improvement #5: Normalize location name (handles "Miami" -> "Miami, FL", etc.)
             const normalizedLocationName = await locationNormalizer.normalizeLocation(locationName);
@@ -236,7 +243,7 @@ export class UnknownDriverService {
             });
 
             if (existing) {
-                // Update existing record
+                // Update existing record (same driver, same location)
                 await prisma.driverLocation.update({
                     where: {
                         driverId_locationId: {
@@ -251,8 +258,9 @@ export class UnknownDriverService {
                     },
                 });
                 logger.info({ driverId: driver.id, locationId: location.id }, 'Updated driver location');
+                return false; // Not a new creation
             } else {
-                // Create new record
+                // Create new record (driver working in a NEW location)
                 await prisma.driverLocation.create({
                     data: {
                         driverId: driver.id,
@@ -262,6 +270,7 @@ export class UnknownDriverService {
                     },
                 });
                 logger.info({ driverId: driver.id, locationId: location.id }, 'Created driver location');
+                return true; // New creation
             }
         } catch (error: any) {
             logger.error({ error: error.message, phoneNumber, locationName }, 'Failed to create driver location');

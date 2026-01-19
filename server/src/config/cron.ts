@@ -8,6 +8,7 @@
 import cron from 'node-cron';
 import logger from '../libs/logger.js';
 import { unknownDriverService } from '../modules/drivers/unknown-driver.service.js';
+import { messageQueueService } from '../services/message-queue.service.js';
 
 export function initCronJobs() {
     logger.info('[CRON] Initializing scheduled jobs...');
@@ -46,6 +47,22 @@ export function initCronJobs() {
             );
         } catch (error: any) {
             logger.error({ error: error.message }, '[CRON] ERROR: Unknown driver matching cron job failed');
+        }
+    });
+
+    /**
+     * Process Message Queue
+     * Runs every 20 seconds
+     *
+     * This job processes the message queue and sends one message every 20 seconds
+     * to avoid rate limiting and ensure reliable delivery.
+     */
+
+    cron.schedule('*/20 * * * * *', async () => {
+        try {
+            await messageQueueService.processNext();
+        } catch (error: any) {
+            logger.error({ error: error.message }, '[CRON] ERROR: Message queue processing failed');
         }
     });
 

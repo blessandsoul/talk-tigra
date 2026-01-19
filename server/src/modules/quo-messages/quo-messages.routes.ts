@@ -8,6 +8,7 @@ import type { FastifyInstance } from 'fastify';
 import { quoMessagesController } from './quo-messages.controller.js';
 import { quoPhoneNumbersController } from './quo-phone-numbers.controller.js';
 import { quoConversationsController } from './quo-conversations.controller.js';
+import { messageQueueController } from './message-queue.controller.js';
 
 /**
  * Register Quo Messages Routes
@@ -55,5 +56,56 @@ export async function quoMessagesRoutes(fastify: FastifyInstance): Promise<void>
     fastify.get(
         '/messages',
         quoMessagesController.getMessages.bind(quoMessagesController)
+    );
+
+    /**
+     * POST /messages
+     * 
+     * Send a text message to a driver
+     * 
+     * Request Body:
+     * - content (required): The text content of the message
+     * - to (required): Array of recipient phone numbers in E.164 format
+     * - phoneNumberId (optional): The OpenPhone number ID
+     * - userId (optional): The user ID
+     * - setInboxStatus (optional): Set inbox status ('done' or 'pending')
+     */
+    fastify.post(
+        '/messages',
+        quoMessagesController.sendMessage.bind(quoMessagesController)
+    );
+
+    /**
+     * POST /messages/queue
+     * 
+     * Queue bulk messages to be sent at 1 per 20 seconds
+     * 
+     * Request Body:
+     * - phoneNumbers (required): Array of recipient phone numbers in E.164 format
+     * - content (required): Message content to send to all recipients
+     */
+    fastify.post(
+        '/messages/queue',
+        messageQueueController.queueBulkMessages.bind(messageQueueController)
+    );
+
+    /**
+     * GET /messages/queue/stats
+     * 
+     * Get message queue statistics
+     */
+    fastify.get(
+        '/messages/queue/stats',
+        messageQueueController.getQueueStats.bind(messageQueueController)
+    );
+
+    /**
+     * DELETE /messages/queue/completed
+     * 
+     * Clear completed (sent/failed) messages from queue
+     */
+    fastify.delete(
+        '/messages/queue/completed',
+        messageQueueController.clearCompleted.bind(messageQueueController)
     );
 }

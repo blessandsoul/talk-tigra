@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Table, Card, Tag, message, Input } from 'antd';
+import { Table, Card, Tag, message, Input, Button, Space } from 'antd';
 import type { TableProps, PaginationProps } from 'antd';
+import { SendOutlined, SearchOutlined } from '@ant-design/icons';
 import { API_BASE_URL } from '../config';
+import { BulkMessageModal } from './BulkMessageModal';
 
 // Interface matching the server response for DriverLocation
 interface DriverLocation {
@@ -39,10 +41,18 @@ export const KnownDriversTable = () => {
         total: 0,
     });
 
+    const [inputValue, setInputValue] = useState('');
+    const [zipValue, setZipValue] = useState('');
+
+    // Selection state
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     // Get params from URL or use defaults
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
     const searchText = searchParams.get('search') || '';
+    const zipText = searchParams.get('zip') || '';
 
     const fetchDrivers = async () => {
         setLoading(true);
@@ -50,6 +60,14 @@ export const KnownDriversTable = () => {
             const url = new URL(`${API_BASE_URL}/driver-locations`, window.location.origin);
             url.searchParams.set('page', page.toString());
             url.searchParams.set('limit', limit.toString());
+
+            // CRITICAL FIX: Send search query to server for server-side filtering
+            if (searchText) {
+                url.searchParams.set('location', searchText);
+            }
+            if (zipText) {
+                url.searchParams.set('state', zipText); // Use dedicated state filter for precise state matching
+            }
 
             const response = await fetch(url.toString());
             const result: PaginatedApiResponse = await response.json();
@@ -73,35 +91,68 @@ export const KnownDriversTable = () => {
     };
 
     useEffect(() => {
+        // Clear existing data immediately when search params change
+        // This prevents showing stale results from previous searches
+        setData([]);
         fetchDrivers();
-    }, [page, limit]);
+    }, [page, limit, searchText, zipText]);
 
-    // Client-side filtering for search
-    const filteredData = data.filter(item => {
-        const searchLower = searchText.toLowerCase();
-        return (
-            item.number.toLowerCase().includes(searchLower) ||
-            item.location.toLowerCase().includes(searchLower)
-        );
-    });
+    // REMOVED: Client-side filtering - now done on server
+    // const filteredData = data.filter(...);
+
 
     const handleTableChange: PaginationProps['onChange'] = (newPage, newPageSize) => {
         const params = new URLSearchParams(searchParams);
         params.set('page', newPage.toString());
         params.set('limit', newPageSize?.toString() || '20');
         if (searchText) params.set('search', searchText);
+        if (zipText) params.set('zip', zipText);
         setSearchParams(params);
     };
 
-    const handleSearchChange = (value: string) => {
+    useEffect(() => {
+        setInputValue(searchText);
+        setZipValue(zipText);
+    }, [searchText, zipText]);
+
+    const handleSearch = () => {
         const params = new URLSearchParams(searchParams);
-        if (value) {
-            params.set('search', value);
+        if (inputValue) {
+            params.set('search', inputValue);
         } else {
             params.delete('search');
         }
-        params.set('page', '1'); // Reset to page 1 on search
+        params.delete('zip'); // Clear zip when searching generic
+        setZipValue(''); // specific UX choice: clear other input
+        params.set('page', '1');
         setSearchParams(params);
+    };
+
+    const handleZipSearch = () => {
+        const params = new URLSearchParams(searchParams);
+        if (zipValue) {
+            params.set('zip', zipValue);
+        } else {
+            params.delete('zip');
+        }
+        params.delete('search'); // Clear search when searching zip
+        setInputValue(''); // specific UX choice: clear other input
+        params.set('page', '1');
+        setSearchParams(params);
+    };
+
+    const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+    };
+
+    const handleBulkMessageSuccess = () => {
+        setIsModalOpen(false);
+        setSelectedRowKeys([]); // Clear selection after queuing
     };
 
     const columns: TableProps<DriverLocation>['columns'] = [
@@ -133,21 +184,69 @@ export const KnownDriversTable = () => {
             title="Known Drivers (Active Locations)"
             extra={
                 <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                    <Input
-                        placeholder="Search number or location..."
-                        value={searchText}
-                        onChange={(e) => handleSearchChange(e.target.value)}
-                        style={{ width: 300 }}
-                        allowClear
-                    />
-                    <Tag color="success">{pagination.total} Total</Tag>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                        <Input
+                            placeholder="Search location/number..."
+                            value={inputValue}
+                            onChange={(e) => {
+                                const newValue = e.target.value;
+                                setInputValue(newValue);
+                                if (newValue === '') {
+                                    const params = new URLSearchParams(searchParams);
+                                    params.delete('search');
+                                    params.set('page', '1');
+                                    setSearchParams(params);
+                                }
+                            }}
+                            onPressEnter={handleSearch}
+                            style={{ width: 250 }}
+                            allowClear
+                        />
+                        <Button icon={<SearchOutlined />} onClick={handleSearch}>
+                            Search
+                        </Button>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                        <Input
+                            placeholder="Search Zip..."
+                            value={zipValue}
+                            onChange={(e) => {
+                                const newValue = e.target.value;
+                                setZipValue(newValue);
+                                if (newValue === '') {
+                                    const params = new URLSearchParams(searchParams);
+                                    params.delete('zip');
+                                    params.set('page', '1');
+                                    setSearchParams(params);
+                                }
+                            }}
+                            onPressEnter={handleZipSearch}
+                            style={{ width: 150 }}
+                            allowClear
+                        />
+                        <Button icon={<SearchOutlined />} onClick={handleZipSearch}>
+                            Zip
+                        </Button>
+                    </div>
+                    <Space>
+                        <Button
+                            type="primary"
+                            icon={<SendOutlined />}
+                            onClick={() => setIsModalOpen(true)}
+                            disabled={selectedRowKeys.length === 0}
+                        >
+                            Send Message ({selectedRowKeys.length})
+                        </Button>
+                        <Tag color="success">{pagination.total} Total</Tag>
+                    </Space>
                 </div>
             }
         >
             <Table
+                rowSelection={rowSelection}
                 columns={columns}
-                dataSource={filteredData}
-                rowKey={(record) => `${record.number}-${record.location}`}
+                dataSource={data} // Changed from filteredData to data (server-side filtering)
+                rowKey="number" // Use phone number as unique key
                 loading={loading}
                 pagination={{
                     current: pagination.current,
@@ -159,6 +258,13 @@ export const KnownDriversTable = () => {
                     onShowSizeChange: handleTableChange,
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
                 }}
+            />
+
+            <BulkMessageModal
+                open={isModalOpen}
+                onCancel={() => setIsModalOpen(false)}
+                selectedNumbers={selectedRowKeys as string[]}
+                onSuccess={handleBulkMessageSuccess}
             />
         </Card>
     );

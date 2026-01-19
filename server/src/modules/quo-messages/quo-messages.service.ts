@@ -77,6 +77,81 @@ class QuoMessagesService {
             throw error;
         }
     }
+
+    /**
+     * Send a text message
+     * 
+     * @param params - Message parameters (content, to, optional fields)
+     * @returns Response from Quo API
+     */
+    async sendMessage(params: {
+        content: string;
+        to: string[];
+        phoneNumberId?: string;
+        userId?: string;
+        setInboxStatus?: 'done' | 'pending';
+    }): Promise<any> {
+        try {
+            logger.info(
+                {
+                    to: params.to,
+                    contentLength: params.content.length,
+                },
+                'Sending message via Quo API'
+            );
+
+            // Import env to get QUO_NUMBER
+            const { env } = await import('../../config/env.js');
+
+            // Build request body
+            const requestBody: Record<string, any> = {
+                content: params.content,
+                from: env.QUO_NUMBER, // Use QUO_NUMBER from environment
+                to: params.to,
+            };
+
+            // Add optional parameters
+            if (params.phoneNumberId) {
+                requestBody.phoneNumberId = params.phoneNumberId;
+            }
+
+            if (params.userId) {
+                requestBody.userId = params.userId;
+            }
+
+            if (params.setInboxStatus) {
+                requestBody.setInboxStatus = params.setInboxStatus;
+            }
+
+            // Make request to Quo API
+            const response = await quoApiClient.post(
+                '/messages',
+                requestBody
+            );
+
+            logger.info(
+                {
+                    messageId: response.data?.id,
+                    status: response.data?.status,
+                },
+                'Successfully sent message via Quo API'
+            );
+
+            return response.data;
+        } catch (error: any) {
+            logger.error(
+                {
+                    error: error.message,
+                    status: error.response?.status,
+                    data: error.response?.data,
+                },
+                'Failed to send message via Quo API'
+            );
+
+            // Re-throw with more context
+            throw error;
+        }
+    }
 }
 
 /**

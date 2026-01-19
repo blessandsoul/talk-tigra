@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link, useLocation, Navigate } from 'react
 import { Layout, Typography, theme, Menu } from 'antd';
 import { KnownDriversTable } from './components/KnownDriversTable';
 import { UnknownDriversTable } from './components/UnknownDriversTable';
+import { MessageQueueDashboard } from './components/MessageQueueDashboard';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -20,6 +21,10 @@ function AppLayout() {
     {
       key: '/unknown-drivers',
       label: <Link to="/unknown-drivers">Unknown Drivers</Link>,
+    },
+    {
+      key: '/queue-dashboard',
+      label: <Link to="/queue-dashboard">Queue Dashboard</Link>,
     },
   ];
 
@@ -50,6 +55,9 @@ function AppLayout() {
             <Route path="/" element={<Navigate to="/known-drivers" replace />} />
             <Route path="/known-drivers" element={<KnownDriversTable />} />
             <Route path="/unknown-drivers" element={<UnknownDriversTable />} />
+            <Route path="/queue-dashboard" element={<MessageQueueDashboard />} />
+            {/* Redirect old route to new one */}
+            <Route path="/bulk-messages" element={<Navigate to="/queue-dashboard" replace />} />
           </Routes>
         </div>
       </Content>

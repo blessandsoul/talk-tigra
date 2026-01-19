@@ -228,9 +228,24 @@ class DriverService {
         }
 
         if (filters.state) {
-            filtered = filtered.filter(dl =>
-                dl.location.state?.toUpperCase() === filters.state!.toUpperCase()
-            );
+            filtered = filtered.filter(dl => {
+                // Extract the part after the last comma in the location name
+                // Example: "134 Raymond Road Candia, New Hampshire 03034 2111, Candia, NH 03034"
+                // Should extract: "NH 03034"
+                const locationName = dl.location.name;
+                const lastCommaIndex = locationName.lastIndexOf(',');
+
+                if (lastCommaIndex === -1) {
+                    // No comma found, check if entire string contains the state
+                    return locationName.toUpperCase().includes(filters.state!.toUpperCase());
+                }
+
+                // Get everything after the last comma and trim whitespace
+                const afterLastComma = locationName.substring(lastCommaIndex + 1).trim();
+
+                // Check if this part contains the state filter (case-insensitive)
+                return afterLastComma.toUpperCase().includes(filters.state!.toUpperCase());
+            });
         }
 
         // Transform to readable format - only essential fields
@@ -246,6 +261,9 @@ class DriverService {
     /**
      * Get driver-location links with readable data (PAGINATED)
      * Returns phone numbers and location names with pagination metadata
+     * 
+     * IMPORTANT: When location filter is applied, pagination is DISABLED
+     * to show all drivers for that location on one page
      */
     async getDriverLocationsReadablePaginated(filters: {
         location?: string;
@@ -261,7 +279,20 @@ class DriverService {
             recentDays: filters.recentDays,
         });
 
-        // Calculate pagination
+        // CRITICAL FIX: If location filter is applied, show ALL results (no pagination)
+        // This ensures all drivers for a specific location appear together
+        if (filters.location) {
+            const { paginatedResponse } = await import('../../utils/response.js');
+            return paginatedResponse(
+                'Driver locations retrieved successfully',
+                allData, // Return ALL filtered items
+                1, // Always page 1
+                allData.length, // Limit = total items
+                allData.length // Total items
+            );
+        }
+
+        // Normal pagination for non-filtered results
         const totalItems = allData.length;
         const totalPages = Math.ceil(totalItems / filters.limit);
         const offset = (filters.page - 1) * filters.limit;

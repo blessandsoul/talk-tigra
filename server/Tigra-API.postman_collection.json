@@ -1,1085 +1,1457 @@
-{
-	"info": {
-		"name": "Talk Tigra",
-		"description": "API collection for Talk Tigra including Auth and Resources modules.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Auth",
-			"item": [
-				{
-					"name": "Register",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if (jsonData.success && jsonData.data && jsonData.data.tokens) {",
-									"    pm.collectionVariables.set(\"accessToken\", jsonData.data.tokens.accessToken);",
-									"    pm.collectionVariables.set(\"refreshToken\", jsonData.data.tokens.refreshToken);",
-									"    console.log(\"Access and Refresh tokens saved to collection variables\");",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"Password123!\",\n    \"name\": \"Test User\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/auth/register",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"auth",
-								"register"
-							]
-						},
-						"description": "Register a new user account"
-					},
-					"response": []
-				},
-				{
-					"name": "Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if (jsonData.success && jsonData.data && jsonData.data.tokens) {",
-									"    pm.collectionVariables.set(\"accessToken\", jsonData.data.tokens.accessToken);",
-									"    pm.collectionVariables.set(\"refreshToken\", jsonData.data.tokens.refreshToken);",
-									"    console.log(\"Access and Refresh tokens saved to collection variables\");",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"Password123!\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/auth/login",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"auth",
-								"login"
-							]
-						},
-						"description": "Login with email and password"
-					},
-					"response": []
-				},
-				{
-					"name": "Refresh Token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if (jsonData.success && jsonData.data && jsonData.data.accessToken) {",
-									"    pm.collectionVariables.set(\"accessToken\", jsonData.data.tokens.accessToken);",
-									"    if (jsonData.data.refreshToken) {",
-									"        pm.collectionVariables.set(\"refreshToken\", jsonData.data.tokens.refreshToken);",
-									"    }",
-									"    console.log(\"Tokens updated from refresh endpoint\");",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"refreshToken\": \"{{refreshToken}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/auth/refresh",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"auth",
-								"refresh"
-							]
-						},
-						"description": "Refresh access token using refresh token"
-					},
-					"response": []
-				},
-				{
-					"name": "Logout",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.collectionVariables.unset(\"accessToken\");",
-									"pm.collectionVariables.unset(\"refreshToken\");",
-									"console.log(\"Tokens cleared from collection variables\");"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"refreshToken\": \"{{refreshToken}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/auth/logout",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"auth",
-								"logout"
-							]
-						},
-						"description": "Logout user by invalidating refresh token"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Me",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/auth/me",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"auth",
-								"me"
-							]
-						},
-						"description": "Get current authenticated user information"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Resources",
-			"item": [
-				{
-					"name": "List Resources",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/resources?page=1&limit=10",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"resources"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number (default 1)"
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "Items per page (default 10)"
-								},
-								{
-									"key": "search",
-									"value": "",
-									"description": "Search term",
-									"disabled": true
-								},
-								{
-									"key": "status",
-									"value": "active",
-									"description": "Filter by status (active/inactive)",
-									"disabled": true
-								}
-							]
-						},
-						"description": "Get paginated list of resources with optional filters"
-					},
-					"response": []
-				},
-				{
-					"name": "Get My Resources",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/resources/my?page=1&limit=10",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"resources",
-								"my"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "10"
-								}
-							]
-						},
-						"description": "Get current user's resources"
-					},
-					"response": []
-				},
-				{
-					"name": "Create Resource",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"title\": \"New Resource\",\n    \"summary\": \"Description of the resource\",\n    \"price\": 19.99\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/resources",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"resources"
-							]
-						},
-						"description": "Create a new resource"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Resource Details",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/resources/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"resources",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-goes-here",
-									"description": "Resource ID"
-								}
-							]
-						},
-						"description": "Get single resource by ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Resource",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"title\": \"Updated Title\",\n    \"price\": 29.99\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/resources/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"resources",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-goes-here",
-									"description": "Resource ID"
-								}
-							]
-						},
-						"description": "Update resource (owner only)"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Resource",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/resources/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"resources",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-goes-here",
-									"description": "Resource ID"
-								}
-							]
-						},
-						"description": "Delete resource (owner only)"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Admin",
-			"item": [
-				{
-					"name": "List Users",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/admin/users?page=1&limit=10",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"admin",
-								"users"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number"
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "Items per page"
-								}
-							]
-						},
-						"description": "List all users (Admin only)"
-					},
-					"response": []
-				},
-				{
-					"name": "Get User Details",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/admin/users/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"admin",
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-goes-here",
-									"description": "User ID"
-								}
-							]
-						},
-						"description": "Get user details by ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete User",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/admin/users/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"admin",
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-goes-here",
-									"description": "User ID"
-								}
-							]
-						},
-						"description": "Delete user (Admin only)"
-					},
-					"response": []
-				},
-				{
-					"name": "Change User Role",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"role\": \"ADMIN\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/admin/users/:id/change-role",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"admin",
-								"users",
-								":id",
-								"change-role"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-goes-here",
-									"description": "User ID"
-								}
-							]
-						},
-						"description": "Change user role (e.g. to ADMIN)"
-					},
-					"response": []
-				},
-				{
-					"name": "Verify User Email",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/admin/users/:id/verify-email",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"admin",
-								"users",
-								":id",
-								"verify-email"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-goes-here",
-									"description": "User ID"
-								}
-							]
-						},
-						"description": "Manually verify user email"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Stats",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/admin/stats",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"admin",
-								"stats"
-							]
-						},
-						"description": "Get system statistics"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Quo Messages",
-			"item": [
-				{
-					"name": "Get Phone Numbers",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/phone-numbers",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"phone-numbers"
-							]
-						},
-						"description": "List all OpenPhone numbers to find IDs"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Conversations",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/conversations?maxResults=30",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"conversations"
-							],
-							"query": [
-								{
-									"key": "phoneNumberId",
-									"value": "PNqErUjbAJ",
-									"description": "Filter by phone number ID (optional)",
-									"disabled": true
-								},
-								{
-									"key": "maxResults",
-									"value": "30",
-									"description": "Max results to return (default: 30, max: 100)"
-								},
-								{
-									"key": "pageToken",
-									"value": "",
-									"description": "Token for pagination",
-									"disabled": true
-								}
-							]
-						},
-						"description": "List all conversations (chats) with participants"
-					},
-					"response": []
-				},
-				{
-					"name": "List Messages",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/messages?phoneNumberId=PN123abc&participants=%2B15555555555&maxResults=10",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"messages"
-							],
-							"query": [
-								{
-									"key": "phoneNumberId",
-									"value": "PN123abc",
-									"description": "The unique identifier of the OpenPhone number (must start with PN)"
-								},
-								{
-									"key": "userId",
-									"value": "",
-									"description": "Filter by user ID",
-									"disabled": true
-								},
-								{
-									"key": "participants",
-									"value": "+15555555555",
-									"description": "Phone number in E.164 format (OPTIONAL - leave disabled to get all conversations)",
-									"disabled": true
-								},
-								{
-									"key": "maxResults",
-									"value": "10",
-									"description": "Max results to return (default: 10, max: 100)"
-								},
-								{
-									"key": "pageToken",
-									"value": "",
-									"description": "Token for pagination",
-									"disabled": true
-								}
-							]
-						},
-						"description": "Get messages from Quo (OpenPhone) API"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Drivers",
-			"item": [
-				{
-					"name": "Get All Drivers",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/drivers",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "drivers"],
-							"query": [
-								{ "key": "location", "value": "New Jersey", "disabled": true, "description": "Filter by location (fuzzy match)" },
-								{ "key": "state", "value": "NJ", "disabled": true, "description": "Filter by state" },
-								{ "key": "phoneNumber", "value": "", "disabled": true, "description": "Filter by phone number (partial)" }
-							]
-						},
-						"description": "Get all drivers with optional location/state filters"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Recent Movements",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/driver-locations",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "driver-locations"],
-							"query": [
-								{ "key": "location", "value": "", "disabled": true },
-								{ "key": "state", "value": "", "disabled": true },
-								{ "key": "recentDays", "value": "7", "description": "Show movements from last N days" }
-							]
-						},
-						"description": "See which drivers were recently matched to locations"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Driver Stats",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/drivers/stats",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "drivers", "stats"]
-						},
-						"description": "Get statistics about drivers and location matches"
-					},
-					"response": []
-				},
-				{
-					"name": "Manual Sync (Trigger)",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/drivers/sync",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "drivers", "sync"]
-						},
-						"description": "Manually trigger Google Sheet sync + Driver matching"
-					},
-					"response": []
-				},
-				{
-					"name": "Match specific conversation",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/drivers/match/:conversationId",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "drivers", "match", ":conversationId"],
-							"variable": [
-								{ "key": "conversationId", "value": "CONVERSATION_ID_HERE" }
-							]
-						},
-						"description": "Manually run matching logic on a single conversation"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Locations",
-			"item": [
-				{
-					"name": "Get Top Locations",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/locations/top?limit=10",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "locations", "top"],
-							"query": [
-								{ "key": "limit", "value": "10" }
-							]
-						},
-						"description": "Get locations with the most drivers"
-					},
-					"response": []
-				},
-				{
-					"name": "Search Locations",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/locations/search?q=Jersey",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "locations", "search"],
-							"query": [
-								{ "key": "q", "value": "Jersey", "description": "Search query" }
-							]
-						},
-						"description": "Search for locations by name"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "n8n Integration",
-			"item": [
-				{
-					"name": "Test n8n Connection (Echo)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Status code is 200', function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test('Response is successful', function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});",
-									"",
-									"pm.test('n8n echoed data back', function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.data).to.have.property('sent');",
-									"    pm.expect(jsonData.data).to.have.property('received');",
-									"    console.log('✅ n8n connection successful!');",
-									"    console.log('Sent:', JSON.stringify(jsonData.data.sent, null, 2));",
-									"    console.log('Received:', JSON.stringify(jsonData.data.received, null, 2));",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"message\": \"Hello n8n! Testing connectivity from Postman 🚀\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/n8n/test",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "n8n", "test"]
-						},
-						"description": "Test n8n webhook connectivity with a simple echo test.\n\nThis endpoint:\n1. Sends test data to n8n\n2. n8n should echo it back\n3. Proves the webhook connection works\n\n✅ What to check:\n- Response shows 'sent' and 'received' objects\n- Both objects contain the same data\n- No connection errors\n\n⚠️ Prerequisites:\n- n8n must be running\n- N8N_WEBHOOK_URL in .env must be correct\n- n8n workflow must have Webhook + Respond nodes"
-					},
-					"response": []
-				},
-				{
-					"name": "Parse Conversation with n8n",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Status code is 200', function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test('Response is successful', function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});",
-									"",
-									"pm.test('Conversation data sent to n8n', function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.data).to.have.property('conversationId');",
-									"    pm.expect(jsonData.data).to.have.property('phone');",
-									"    pm.expect(jsonData.data).to.have.property('messageCount');",
-									"    pm.expect(jsonData.data).to.have.property('conversationText');",
-									"    pm.expect(jsonData.data).to.have.property('n8nResponse');",
-									"    ",
-									"    console.log('✅ Conversation sent to n8n successfully!');",
-									"    console.log('📱 Phone:', jsonData.data.phone);",
-									"    console.log('💬 Messages:', jsonData.data.messageCount);",
-									"    console.log('\\n📝 Conversation Text:\\n', jsonData.data.conversationText);",
-									"    console.log('\\n🤖 n8n Response:\\n', JSON.stringify(jsonData.data.n8nResponse, null, 2));",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"conversationId\": \"PASTE_CONVERSATION_ID_HERE\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/n8n/parse-conversation",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "n8n", "parse-conversation"]
-						},
-						"description": "Send a real conversation to n8n for AI parsing.\n\n📋 How to use:\n1. First, get a conversation ID from 'Get Conversations' endpoint\n2. Copy a conversationId (e.g., \"COV5j8b29a0sk9hd2j\")\n3. Paste it in the body above\n4. Send request\n\n✅ What happens:\n- Server fetches the conversation from database\n- Formats all messages into readable text\n- Sends to n8n webhook\n- n8n (with AI) will analyze and extract:\n  - Load ID\n  - Location\n  - VIN (if mentioned)\n  - Confidence score\n\n🔮 Future:\nOnce n8n AI is configured, the n8nResponse will contain:\n{\n  \"loadId\": \"12345\",\n  \"location\": \"Miami, FL\",\n  \"partialVin\": \"123456\",\n  \"confidence\": 0.95\n}\n\n⚠️ Prerequisites:\n- Conversation must exist in database (run sync first)\n- n8n workflow must be active"
-					},
-					"response": []
-				}
-			]
-		}
-	],
-	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "http://localhost:3000",
-			"type": "string"
-		},
-		{
-			"key": "accessToken",
-			"value": "",
-			"type": "string"
-		},
-		{
-			"key": "refreshToken",
-			"value": "",
-			"type": "string"
-		}
-	]
+﻿{
+    "info":  {
+                 "name":  "Talk Tigra",
+                 "description":  "API collection for Talk Tigra including Auth and Resources modules.",
+                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+             },
+    "item":  [
+                 {
+                     "name":  "Auth",
+                     "item":  [
+                                  {
+                                      "name":  "Register",
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "exec":  [
+                                                                                    "var jsonData = pm.response.json();",
+                                                                                    "if (jsonData.success \u0026\u0026 jsonData.data \u0026\u0026 jsonData.data.tokens) {",
+                                                                                    "    pm.collectionVariables.set(\"accessToken\", jsonData.data.tokens.accessToken);",
+                                                                                    "    pm.collectionVariables.set(\"refreshToken\", jsonData.data.tokens.refreshToken);",
+                                                                                    "    console.log(\"Access and Refresh tokens saved to collection variables\");",
+                                                                                    "}"
+                                                                                ],
+                                                                       "type":  "text/javascript"
+                                                                   }
+                                                    }
+                                                ],
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"email\": \"user@example.com\",\n    \"password\": \"Password123!\",\n    \"name\": \"Test User\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/auth/register",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "register"
+                                                                           ]
+                                                              },
+                                                      "description":  "Register a new user account"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Login",
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "exec":  [
+                                                                                    "var jsonData = pm.response.json();",
+                                                                                    "if (jsonData.success \u0026\u0026 jsonData.data \u0026\u0026 jsonData.data.tokens) {",
+                                                                                    "    pm.collectionVariables.set(\"accessToken\", jsonData.data.tokens.accessToken);",
+                                                                                    "    pm.collectionVariables.set(\"refreshToken\", jsonData.data.tokens.refreshToken);",
+                                                                                    "    console.log(\"Access and Refresh tokens saved to collection variables\");",
+                                                                                    "}"
+                                                                                ],
+                                                                       "type":  "text/javascript"
+                                                                   }
+                                                    }
+                                                ],
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"email\": \"user@example.com\",\n    \"password\": \"Password123!\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/auth/login",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "login"
+                                                                           ]
+                                                              },
+                                                      "description":  "Login with email and password"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Refresh Token",
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "exec":  [
+                                                                                    "var jsonData = pm.response.json();",
+                                                                                    "if (jsonData.success \u0026\u0026 jsonData.data \u0026\u0026 jsonData.data.accessToken) {",
+                                                                                    "    pm.collectionVariables.set(\"accessToken\", jsonData.data.tokens.accessToken);",
+                                                                                    "    if (jsonData.data.refreshToken) {",
+                                                                                    "        pm.collectionVariables.set(\"refreshToken\", jsonData.data.tokens.refreshToken);",
+                                                                                    "    }",
+                                                                                    "    console.log(\"Tokens updated from refresh endpoint\");",
+                                                                                    "}"
+                                                                                ],
+                                                                       "type":  "text/javascript"
+                                                                   }
+                                                    }
+                                                ],
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"refreshToken\": \"{{refreshToken}}\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/auth/refresh",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "refresh"
+                                                                           ]
+                                                              },
+                                                      "description":  "Refresh access token using refresh token"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Logout",
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "exec":  [
+                                                                                    "pm.collectionVariables.unset(\"accessToken\");",
+                                                                                    "pm.collectionVariables.unset(\"refreshToken\");",
+                                                                                    "console.log(\"Tokens cleared from collection variables\");"
+                                                                                ],
+                                                                       "type":  "text/javascript"
+                                                                   }
+                                                    }
+                                                ],
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"refreshToken\": \"{{refreshToken}}\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/auth/logout",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "logout"
+                                                                           ]
+                                                              },
+                                                      "description":  "Logout user by invalidating refresh token"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Get Me",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/auth/me",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "me"
+                                                                           ]
+                                                              },
+                                                      "description":  "Get current authenticated user information"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "Resources",
+                     "item":  [
+                                  {
+                                      "name":  "List Resources",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/resources?page=1\u0026limit=10",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "resources"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "page",
+                                                                                    "value":  "1",
+                                                                                    "description":  "Page number (default 1)"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "limit",
+                                                                                    "value":  "10",
+                                                                                    "description":  "Items per page (default 10)"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "search",
+                                                                                    "value":  "",
+                                                                                    "description":  "Search term",
+                                                                                    "disabled":  true
+                                                                                },
+                                                                                {
+                                                                                    "key":  "status",
+                                                                                    "value":  "active",
+                                                                                    "description":  "Filter by status (active/inactive)",
+                                                                                    "disabled":  true
+                                                                                }
+                                                                            ]
+                                                              },
+                                                      "description":  "Get paginated list of resources with optional filters"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Get My Resources",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/resources/my?page=1\u0026limit=10",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "resources",
+                                                                               "my"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "page",
+                                                                                    "value":  "1"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "limit",
+                                                                                    "value":  "10"
+                                                                                }
+                                                                            ]
+                                                              },
+                                                      "description":  "Get current user\u0027s resources"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Create Resource",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"title\": \"New Resource\",\n    \"summary\": \"Description of the resource\",\n    \"price\": 19.99\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/resources",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "resources"
+                                                                           ]
+                                                              },
+                                                      "description":  "Create a new resource"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Get Resource Details",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/resources/:id",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "resources",
+                                                                               ":id"
+                                                                           ],
+                                                                  "variable":  [
+                                                                                   {
+                                                                                       "key":  "id",
+                                                                                       "value":  "uuid-goes-here",
+                                                                                       "description":  "Resource ID"
+                                                                                   }
+                                                                               ]
+                                                              },
+                                                      "description":  "Get single resource by ID"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Update Resource",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "PATCH",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"title\": \"Updated Title\",\n    \"price\": 29.99\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/resources/:id",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "resources",
+                                                                               ":id"
+                                                                           ],
+                                                                  "variable":  [
+                                                                                   {
+                                                                                       "key":  "id",
+                                                                                       "value":  "uuid-goes-here",
+                                                                                       "description":  "Resource ID"
+                                                                                   }
+                                                                               ]
+                                                              },
+                                                      "description":  "Update resource (owner only)"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Delete Resource",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "DELETE",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/resources/:id",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "resources",
+                                                                               ":id"
+                                                                           ],
+                                                                  "variable":  [
+                                                                                   {
+                                                                                       "key":  "id",
+                                                                                       "value":  "uuid-goes-here",
+                                                                                       "description":  "Resource ID"
+                                                                                   }
+                                                                               ]
+                                                              },
+                                                      "description":  "Delete resource (owner only)"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "Admin",
+                     "item":  [
+                                  {
+                                      "name":  "List Users",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/admin/users?page=1\u0026limit=10",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "admin",
+                                                                               "users"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "page",
+                                                                                    "value":  "1",
+                                                                                    "description":  "Page number"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "limit",
+                                                                                    "value":  "10",
+                                                                                    "description":  "Items per page"
+                                                                                }
+                                                                            ]
+                                                              },
+                                                      "description":  "List all users (Admin only)"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Get User Details",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/admin/users/:id",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "admin",
+                                                                               "users",
+                                                                               ":id"
+                                                                           ],
+                                                                  "variable":  [
+                                                                                   {
+                                                                                       "key":  "id",
+                                                                                       "value":  "uuid-goes-here",
+                                                                                       "description":  "User ID"
+                                                                                   }
+                                                                               ]
+                                                              },
+                                                      "description":  "Get user details by ID"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Delete User",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "DELETE",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/admin/users/:id",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "admin",
+                                                                               "users",
+                                                                               ":id"
+                                                                           ],
+                                                                  "variable":  [
+                                                                                   {
+                                                                                       "key":  "id",
+                                                                                       "value":  "uuid-goes-here",
+                                                                                       "description":  "User ID"
+                                                                                   }
+                                                                               ]
+                                                              },
+                                                      "description":  "Delete user (Admin only)"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Change User Role",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"role\": \"ADMIN\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/admin/users/:id/change-role",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "admin",
+                                                                               "users",
+                                                                               ":id",
+                                                                               "change-role"
+                                                                           ],
+                                                                  "variable":  [
+                                                                                   {
+                                                                                       "key":  "id",
+                                                                                       "value":  "uuid-goes-here",
+                                                                                       "description":  "User ID"
+                                                                                   }
+                                                                               ]
+                                                              },
+                                                      "description":  "Change user role (e.g. to ADMIN)"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Verify User Email",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/admin/users/:id/verify-email",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "admin",
+                                                                               "users",
+                                                                               ":id",
+                                                                               "verify-email"
+                                                                           ],
+                                                                  "variable":  [
+                                                                                   {
+                                                                                       "key":  "id",
+                                                                                       "value":  "uuid-goes-here",
+                                                                                       "description":  "User ID"
+                                                                                   }
+                                                                               ]
+                                                              },
+                                                      "description":  "Manually verify user email"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Get Stats",
+                                      "request":  {
+                                                      "auth":  {
+                                                                   "type":  "bearer",
+                                                                   "bearer":  [
+                                                                                  {
+                                                                                      "key":  "token",
+                                                                                      "value":  "{{accessToken}}",
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                              ]
+                                                               },
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/admin/stats",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "admin",
+                                                                               "stats"
+                                                                           ]
+                                                              },
+                                                      "description":  "Get system statistics"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "Quo Messages",
+                     "item":  [
+                                  {
+                                      "name":  "Get Phone Numbers",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/phone-numbers",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "phone-numbers"
+                                                                           ]
+                                                              },
+                                                      "description":  "List all OpenPhone numbers to find IDs"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Get Conversations",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/conversations?maxResults=30",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "conversations"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "phoneNumberId",
+                                                                                    "value":  "PNqErUjbAJ",
+                                                                                    "description":  "Filter by phone number ID (optional)",
+                                                                                    "disabled":  true
+                                                                                },
+                                                                                {
+                                                                                    "key":  "maxResults",
+                                                                                    "value":  "30",
+                                                                                    "description":  "Max results to return (default: 30, max: 100)"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "pageToken",
+                                                                                    "value":  "",
+                                                                                    "description":  "Token for pagination",
+                                                                                    "disabled":  true
+                                                                                }
+                                                                            ]
+                                                              },
+                                                      "description":  "List all conversations (chats) with participants"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "List Messages",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/messages?phoneNumberId=PN123abc\u0026participants=%2B15555555555\u0026maxResults=10",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "messages"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "phoneNumberId",
+                                                                                    "value":  "PN123abc",
+                                                                                    "description":  "The unique identifier of the OpenPhone number (must start with PN)"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "userId",
+                                                                                    "value":  "",
+                                                                                    "description":  "Filter by user ID",
+                                                                                    "disabled":  true
+                                                                                },
+                                                                                {
+                                                                                    "key":  "participants",
+                                                                                    "value":  "+15555555555",
+                                                                                    "description":  "Phone number in E.164 format (OPTIONAL - leave disabled to get all conversations)",
+                                                                                    "disabled":  true
+                                                                                },
+                                                                                {
+                                                                                    "key":  "maxResults",
+                                                                                    "value":  "10",
+                                                                                    "description":  "Max results to return (default: 10, max: 100)"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "pageToken",
+                                                                                    "value":  "",
+                                                                                    "description":  "Token for pagination",
+                                                                                    "disabled":  true
+                                                                                }
+                                                                            ]
+                                                              },
+                                                      "description":  "Get messages from Quo (OpenPhone) API"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "request":  {
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "raw":  "{{baseUrl}}/api/v1/messages",
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "messages"
+                                                                           ]
+                                                              },
+                                                      "method":  "POST",
+                                                      "body":  {
+                                                                   "raw":  "{\n    \"content\": \"Hello! This is a test message from Talk Tigra.\",\n    \"to\": [\"+15555555555\"]\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               },
+                                                                   "mode":  "raw"
+                                                               },
+                                                      "description":  "Send a text message to a driver via Quo (OpenPhone) API. The \u0027from\u0027 number is automatically set from QUO_NUMBER environment variable.",
+                                                      "header":  [
+
+                                                                 ]
+                                                  },
+                                      "name":  "Send Message",
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "request":  {
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "raw":  "{{baseUrl}}/api/v1/messages/queue",
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "messages",
+                                                                               "queue"
+                                                                           ]
+                                                              },
+                                                      "method":  "POST",
+                                                      "body":  {
+                                                                   "raw":  "{\n    \"phoneNumbers\": [\"+15555555555\", \"+15555555556\", \"+15555555557\"],\n    \"content\": \"Hello! This is a bulk message from Talk Tigra.\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               },
+                                                                   "mode":  "raw"
+                                                               },
+                                                      "description":  "Queue multiple messages to be sent at a rate of 1 per 20 seconds (3 per minute). Messages will be processed by a cron job.",
+                                                      "header":  [
+
+                                                                 ]
+                                                  },
+                                      "name":  "Queue Bulk Messages",
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "raw":  "{{baseUrl}}/api/v1/messages/queue/stats",
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "messages",
+                                                                               "queue",
+                                                                               "stats"
+                                                                           ]
+                                                              },
+                                                      "description":  "Get current message queue statistics including pending, sent, and failed messages.",
+                                                      "header":  [
+
+                                                                 ]
+                                                  },
+                                      "name":  "Get Queue Stats",
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "raw":  "{{baseUrl}}/api/v1/messages/queue/completed",
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "messages",
+                                                                               "queue",
+                                                                               "completed"
+                                                                           ]
+                                                              },
+                                                      "description":  "Clear all sent and failed messages from the queue, keeping only pending ones.",
+                                                      "header":  [
+
+                                                                 ]
+                                                  },
+                                      "name":  "Clear Completed Messages",
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "Drivers",
+                     "item":  [
+                                  {
+                                      "name":  "Get All Drivers",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/drivers",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "drivers"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "location",
+                                                                                    "value":  "New Jersey",
+                                                                                    "disabled":  true,
+                                                                                    "description":  "Filter by location (fuzzy match)"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "state",
+                                                                                    "value":  "NJ",
+                                                                                    "disabled":  true,
+                                                                                    "description":  "Filter by state"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "phoneNumber",
+                                                                                    "value":  "",
+                                                                                    "disabled":  true,
+                                                                                    "description":  "Filter by phone number (partial)"
+                                                                                }
+                                                                            ]
+                                                              },
+                                                      "description":  "Get all drivers with optional location/state filters"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Get Recent Movements",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/driver-locations",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "driver-locations"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "location",
+                                                                                    "value":  "",
+                                                                                    "disabled":  true
+                                                                                },
+                                                                                {
+                                                                                    "key":  "state",
+                                                                                    "value":  "",
+                                                                                    "disabled":  true
+                                                                                },
+                                                                                {
+                                                                                    "key":  "recentDays",
+                                                                                    "value":  "7",
+                                                                                    "description":  "Show movements from last N days"
+                                                                                }
+                                                                            ]
+                                                              },
+                                                      "description":  "See which drivers were recently matched to locations"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Get Driver Stats",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/drivers/stats",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "drivers",
+                                                                               "stats"
+                                                                           ]
+                                                              },
+                                                      "description":  "Get statistics about drivers and location matches"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Manual Sync (Trigger)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/drivers/sync",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "drivers",
+                                                                               "sync"
+                                                                           ]
+                                                              },
+                                                      "description":  "Manually trigger Google Sheet sync + Driver matching"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Match specific conversation",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/drivers/match/:conversationId",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "drivers",
+                                                                               "match",
+                                                                               ":conversationId"
+                                                                           ],
+                                                                  "variable":  [
+                                                                                   {
+                                                                                       "key":  "conversationId",
+                                                                                       "value":  "CONVERSATION_ID_HERE"
+                                                                                   }
+                                                                               ]
+                                                              },
+                                                      "description":  "Manually run matching logic on a single conversation"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "url":  {
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "state",
+                                                                                    "value":  "NH"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "page",
+                                                                                    "value":  "1"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "limit",
+                                                                                    "value":  "20"
+                                                                                }
+                                                                            ],
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "raw":  "{{baseUrl}}/api/v1/driver-locations?state=NH\u0026page=1\u0026limit=20",
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "driver-locations"
+                                                                           ]
+                                                              },
+                                                      "description":  "Get driver locations filtered by state abbreviation (searches in the last part of location name after final comma)",
+                                                      "header":  [
+
+                                                                 ]
+                                                  },
+                                      "name":  "Get Driver Locations by State",
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "Locations",
+                     "item":  [
+                                  {
+                                      "name":  "Get Top Locations",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/locations/top?limit=10",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "locations",
+                                                                               "top"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "limit",
+                                                                                    "value":  "10"
+                                                                                }
+                                                                            ]
+                                                              },
+                                                      "description":  "Get locations with the most drivers"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Search Locations",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/locations/search?q=Jersey",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "locations",
+                                                                               "search"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "q",
+                                                                                    "value":  "Jersey",
+                                                                                    "description":  "Search query"
+                                                                                }
+                                                                            ]
+                                                              },
+                                                      "description":  "Search for locations by name"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "n8n Integration",
+                     "item":  [
+                                  {
+                                      "name":  "Test n8n Connection (Echo)",
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "exec":  [
+                                                                                    "pm.test(\u0027Status code is 200\u0027, function () {",
+                                                                                    "    pm.response.to.have.status(200);",
+                                                                                    "});",
+                                                                                    "",
+                                                                                    "pm.test(\u0027Response is successful\u0027, function () {",
+                                                                                    "    var jsonData = pm.response.json();",
+                                                                                    "    pm.expect(jsonData.success).to.eql(true);",
+                                                                                    "});",
+                                                                                    "",
+                                                                                    "pm.test(\u0027n8n echoed data back\u0027, function () {",
+                                                                                    "    var jsonData = pm.response.json();",
+                                                                                    "    pm.expect(jsonData.data).to.have.property(\u0027sent\u0027);",
+                                                                                    "    pm.expect(jsonData.data).to.have.property(\u0027received\u0027);",
+                                                                                    "    console.log(\u0027вњ… n8n connection successful!\u0027);",
+                                                                                    "    console.log(\u0027Sent:\u0027, JSON.stringify(jsonData.data.sent, null, 2));",
+                                                                                    "    console.log(\u0027Received:\u0027, JSON.stringify(jsonData.data.received, null, 2));",
+                                                                                    "});"
+                                                                                ],
+                                                                       "type":  "text/javascript"
+                                                                   }
+                                                    }
+                                                ],
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"message\": \"Hello n8n! Testing connectivity from Postman рџљЂ\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/n8n/test",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "n8n",
+                                                                               "test"
+                                                                           ]
+                                                              },
+                                                      "description":  "Test n8n webhook connectivity with a simple echo test.\n\nThis endpoint:\n1. Sends test data to n8n\n2. n8n should echo it back\n3. Proves the webhook connection works\n\nвњ… What to check:\n- Response shows \u0027sent\u0027 and \u0027received\u0027 objects\n- Both objects contain the same data\n- No connection errors\n\nвљ пёЏ Prerequisites:\n- n8n must be running\n- N8N_WEBHOOK_URL in .env must be correct\n- n8n workflow must have Webhook + Respond nodes"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Parse Conversation with n8n",
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "exec":  [
+                                                                                    "pm.test(\u0027Status code is 200\u0027, function () {",
+                                                                                    "    pm.response.to.have.status(200);",
+                                                                                    "});",
+                                                                                    "",
+                                                                                    "pm.test(\u0027Response is successful\u0027, function () {",
+                                                                                    "    var jsonData = pm.response.json();",
+                                                                                    "    pm.expect(jsonData.success).to.eql(true);",
+                                                                                    "});",
+                                                                                    "",
+                                                                                    "pm.test(\u0027Conversation data sent to n8n\u0027, function () {",
+                                                                                    "    var jsonData = pm.response.json();",
+                                                                                    "    pm.expect(jsonData.data).to.have.property(\u0027conversationId\u0027);",
+                                                                                    "    pm.expect(jsonData.data).to.have.property(\u0027phone\u0027);",
+                                                                                    "    pm.expect(jsonData.data).to.have.property(\u0027messageCount\u0027);",
+                                                                                    "    pm.expect(jsonData.data).to.have.property(\u0027conversationText\u0027);",
+                                                                                    "    pm.expect(jsonData.data).to.have.property(\u0027n8nResponse\u0027);",
+                                                                                    "    ",
+                                                                                    "    console.log(\u0027вњ… Conversation sent to n8n successfully!\u0027);",
+                                                                                    "    console.log(\u0027рџ“± Phone:\u0027, jsonData.data.phone);",
+                                                                                    "    console.log(\u0027рџ’¬ Messages:\u0027, jsonData.data.messageCount);",
+                                                                                    "    console.log(\u0027\\nрџ“ќ Conversation Text:\\n\u0027, jsonData.data.conversationText);",
+                                                                                    "    console.log(\u0027\\nрџ¤– n8n Response:\\n\u0027, JSON.stringify(jsonData.data.n8nResponse, null, 2));",
+                                                                                    "});"
+                                                                                ],
+                                                                       "type":  "text/javascript"
+                                                                   }
+                                                    }
+                                                ],
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"conversationId\": \"PASTE_CONVERSATION_ID_HERE\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{baseUrl}}/api/v1/n8n/parse-conversation",
+                                                                  "host":  [
+                                                                               "{{baseUrl}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "n8n",
+                                                                               "parse-conversation"
+                                                                           ]
+                                                              },
+                                                      "description":  "Send a real conversation to n8n for AI parsing.\n\nрџ“‹ How to use:\n1. First, get a conversation ID from \u0027Get Conversations\u0027 endpoint\n2. Copy a conversationId (e.g., \"COV5j8b29a0sk9hd2j\")\n3. Paste it in the body above\n4. Send request\n\nвњ… What happens:\n- Server fetches the conversation from database\n- Formats all messages into readable text\n- Sends to n8n webhook\n- n8n (with AI) will analyze and extract:\n  - Load ID\n  - Location\n  - VIN (if mentioned)\n  - Confidence score\n\nрџ”® Future:\nOnce n8n AI is configured, the n8nResponse will contain:\n{\n  \"loadId\": \"12345\",\n  \"location\": \"Miami, FL\",\n  \"partialVin\": \"123456\",\n  \"confidence\": 0.95\n}\n\nвљ пёЏ Prerequisites:\n- Conversation must exist in database (run sync first)\n- n8n workflow must be active"
+                                                  },
+                                      "response":  [
+
+                                                   ]
+                                  }
+                              ]
+                 }
+             ],
+    "variable":  [
+                     {
+                         "key":  "baseUrl",
+                         "value":  "http://localhost:3000",
+                         "type":  "string"
+                     },
+                     {
+                         "key":  "accessToken",
+                         "value":  "",
+                         "type":  "string"
+                     },
+                     {
+                         "key":  "refreshToken",
+                         "value":  "",
+                         "type":  "string"
+                     }
+                 ]
 }

@@ -91,7 +91,7 @@ export function startDriverSyncScheduler(): void {
  * Useful for testing or manual data refresh
  */
 export async function runDriverSyncManually(): Promise<{
-    sheetSync: { synced: number; errors: number };
+    sheetSync: { synced: number; errors: number; driversCreated: number };
     driverMatching: { processed: number; matched: number; failed: number };
 }> {
     logger.info('Running manual driver sync');

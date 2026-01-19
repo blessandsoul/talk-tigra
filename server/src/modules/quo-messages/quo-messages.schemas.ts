@@ -82,3 +82,40 @@ export const getMessagesResponseSchema = z.object({
     totalItems: z.number(),
     nextPageToken: z.string().optional(),
 });
+
+/**
+ * Send Message Request Schema
+ * 
+ * Validates request body for POST /messages endpoint
+ */
+export const sendMessageSchema = z.object({
+    content: z
+        .string()
+        .min(1, 'Message content is required')
+        .describe('The text content of the message to be sent'),
+
+    to: z
+        .array(z.string())
+        .min(1, 'At least one recipient is required')
+        .describe('Array of recipient phone numbers in E.164 format'),
+
+    phoneNumberId: z
+        .string()
+        .optional()
+        .describe('The unique identifier of the OpenPhone number (optional)'),
+
+    userId: z
+        .string()
+        .optional()
+        .describe('The unique identifier of the user (optional)'),
+
+    setInboxStatus: z
+        .enum(['done', 'pending'])
+        .optional()
+        .describe('Set the inbox status of the conversation'),
+});
+
+/**
+ * Inferred type from send message schema
+ */
+export type SendMessageRequest = z.infer<typeof sendMessageSchema>;

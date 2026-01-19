@@ -63,6 +63,7 @@ const envSchema = z.object({
 
     // Quo (OpenPhone) API Configuration
     QUO_API: z.string().min(1, 'QUO_API key is required'),
+    QUO_NUMBER: z.string().min(1, 'QUO_NUMBER is required for sending messages'),
     QUO_PHONE_NUMBER_ID: z.string().optional(), // Phone number ID to sync (defaults to PNqErUjbAJ)
 
     // Google Sheets Configuration
