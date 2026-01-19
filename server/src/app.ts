@@ -82,7 +82,24 @@ const buildApp = async () => {
     // 6. Serve static files from public directory (after routes to avoid conflicts)
     await app.register(fastifyStatic, {
         root: path.join(__dirname, '..', 'public'),
-        prefix: '/', // Serve at root path
+        prefix: '/',
+    });
+
+    // 7. SPA fallback - serve index.html for all non-API routes
+    app.setNotFoundHandler((request, reply) => {
+        // If the request is for an API route, return 404 JSON
+        if (request.url.startsWith(env.API_PREFIX)) {
+            return reply.status(404).send({
+                success: false,
+                error: {
+                    code: 'NOT_FOUND',
+                    message: `Route ${request.method}:${request.url} not found`,
+                },
+            });
+        }
+
+        // Otherwise, serve index.html for SPA routing
+        reply.sendFile('index.html');
     });
 
     return app;
