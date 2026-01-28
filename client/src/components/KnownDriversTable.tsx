@@ -113,7 +113,14 @@ export const KnownDriversTable = () => {
             url.searchParams.set('limit', limit.toString());
 
             if (searchText) {
-                url.searchParams.set('location', searchText);
+                // Smart search: if input looks like a phone number (digits/plus), search by phone
+                // otherwise search by location
+                const isPhoneSearch = /^[\d+()-]{3,}$/.test(searchText);
+                if (isPhoneSearch) {
+                    url.searchParams.set('phoneNumber', searchText);
+                } else {
+                    url.searchParams.set('location', searchText);
+                }
             }
             if (zipText) {
                 url.searchParams.set('state', zipText);
@@ -303,7 +310,7 @@ export const KnownDriversTable = () => {
                     <div style={{ display: 'flex', gap: '8px' }}>
                         <Input
                             size="large"
-                            placeholder={t('drivers.search_placeholder')}
+                            placeholder={t('drivers.search_placeholder_combined', 'Search by location or phone...')}
                             prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}

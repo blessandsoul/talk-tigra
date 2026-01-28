@@ -158,7 +158,7 @@ class DriverController {
      * Get driver statistics
      */
     async getDriverStats(
-        request: FastifyRequest,
+        _request: FastifyRequest,
         reply: FastifyReply
     ) {
         const stats = await driverService.getDriverStats();
@@ -248,7 +248,7 @@ class DriverController {
      * Get location statistics
      */
     async getLocationStats(
-        request: FastifyRequest,
+        _request: FastifyRequest,
         reply: FastifyReply
     ) {
         const stats = await driverService.getLocationStats();
@@ -313,7 +313,7 @@ class DriverController {
      * Manually trigger sheet sync + driver matching
      */
     async manualSync(
-        request: FastifyRequest,
+        _request: FastifyRequest,
         reply: FastifyReply
     ) {
         const result = await runDriverSyncManually();
@@ -335,18 +335,20 @@ class DriverController {
                 location?: string;
                 state?: string;
                 recentDays?: number;
+                phoneNumber?: string;
                 page?: number;
                 limit?: number;
             };
         }>,
         reply: FastifyReply
     ) {
-        const { location, state, recentDays, page = 1, limit = 20 } = request.query;
+        const { location, state, recentDays, phoneNumber, page = 1, limit = 20 } = request.query;
 
         const result = await driverService.getDriverLocationsReadablePaginated({
             location,
             state,
             recentDays,
+            phoneNumber,
             page: Number(page),
             limit: Number(limit),
         });

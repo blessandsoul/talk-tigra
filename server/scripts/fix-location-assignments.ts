@@ -1,10 +1,11 @@
 /**
- * Backfill Auction Location Names Script
+ * Fix Location Assignments Script
  *
- * This script updates existing locations with their auction name and type
- * by matching against copart.json and iaa.json data files.
+ * This script finds locations where the auctionName shows a different state
+ * than what's in the address, and re-runs the matching with the fixed algorithm.
  *
- * Run: npx tsx scripts/backfill-auction-locations.ts
+ * Run: npx tsx scripts/fix-location-assignments.ts
+ * Dry run: npx tsx scripts/fix-location-assignments.ts --dry-run
  */
 
 import { PrismaClient } from '@prisma/client';
@@ -17,6 +18,9 @@ const prisma = new PrismaClient();
 // Get the directory path for resolving JSON files
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Check for dry-run mode
+const DRY_RUN = process.argv.includes('--dry-run');
 
 // Types
 type AuctionType = 'COPART' | 'IAAI';
@@ -170,7 +174,7 @@ function parseAddress(fullAddress: string): {
     };
 }
 
-// Find matching location in list
+// Find matching location in list - FIXED VERSION with state validation
 function findMatchInList(
     locations: FlattenedLocation[],
     addressUpper: string,
@@ -204,7 +208,7 @@ function findMatchInList(
     }
 
     // Strategy 4: Address contains any known city name
-    // IMPORTANT: If we detected a state, only match locations in that state
+    // FIXED: Only match if state is unknown OR state matches
     for (const loc of locations) {
         if (addressUpper.includes(loc.cityUpper) && loc.cityUpper.length > 3) {
             // If we have a state from the address, it MUST match the location's state
@@ -216,7 +220,7 @@ function findMatchInList(
     }
 
     // Strategy 5: Significant address overlap
-    // IMPORTANT: If we detected a state, only match locations in that state
+    // FIXED: Only match if state is unknown OR state matches
     for (const loc of locations) {
         // If we have a state from the address, it MUST match the location's state
         if (parsed.possibleState && loc.state !== parsed.possibleState) {
@@ -279,59 +283,107 @@ function matchAddress(
     return null;
 }
 
+// Extract state from auctionName like "MO - SPRINGFIELD" or "Springfield (MO)"
+function extractStateFromAuctionName(auctionName: string): string | null {
+    if (!auctionName) return null;
+
+    // Pattern 1: "MO - SPRINGFIELD" (Copart format)
+    const copartMatch = auctionName.match(/^([A-Z]{2})\s*-/);
+    if (copartMatch) return copartMatch[1];
+
+    // Pattern 2: "Springfield (MO)" (IAAI format)
+    const iaaiMatch = auctionName.match(/\(([A-Z]{2})\)$/);
+    if (iaaiMatch) return iaaiMatch[1];
+
+    return null;
+}
+
 async function main() {
-    console.log('=== Backfill Auction Location Names ===\n');
+    console.log('=== Fix Location Assignments ===\n');
+    if (DRY_RUN) {
+        console.log('🔍 DRY RUN MODE - No changes will be made\n');
+    }
 
     // Load auction data
     const { copart, iaai } = loadAuctionData();
 
-    // Get all locations from database
+    // Get all locations with auctionName set
     const locations = await prisma.location.findMany({
+        where: {
+            auctionName: { not: null },
+        },
         orderBy: { createdAt: 'asc' },
     });
 
-    console.log(`\nFound ${locations.length} locations in database\n`);
+    console.log(`\nFound ${locations.length} locations with auction assignments\n`);
 
-    let updated = 0;
-    let alreadyMatched = 0;
-    let noMatch = 0;
+    let fixed = 0;
+    let correct = 0;
+    let cleared = 0;
 
     for (const location of locations) {
-        // Skip if already has auction info
-        if (location.auctionType) {
-            alreadyMatched++;
-            continue;
-        }
+        // Get state from the address/name
+        const addressToCheck = location.address || location.name;
+        const parsed = parseAddress(addressToCheck);
 
-        // Try to match using address or name
-        const addressToMatch = location.address || location.name;
-        const auctionMatch = matchAddress(addressToMatch, copart, iaai);
+        // Get state from the current auctionName
+        const auctionState = extractStateFromAuctionName(location.auctionName!);
 
-        if (auctionMatch) {
-            await prisma.location.update({
-                where: { id: location.id },
-                data: {
-                    auctionName: auctionMatch.auctionName,
-                    auctionType: auctionMatch.auctionType,
-                    state: location.state || auctionMatch.state,
-                    city: location.city || auctionMatch.city,
-                    zipCode: location.zipCode || auctionMatch.zipCode,
-                },
-            });
+        // If we can detect a state from the address and it doesn't match the auction state, it's wrong
+        if (parsed.possibleState && auctionState && parsed.possibleState !== auctionState) {
+            console.log(`\n❌ MISMATCH DETECTED:`);
+            console.log(`   Location: "${location.name}"`);
+            console.log(`   Address: "${location.address || 'N/A'}"`);
+            console.log(`   Parsed state: ${parsed.possibleState}`);
+            console.log(`   Auction assigned: ${location.auctionName} (state: ${auctionState})`);
 
-            console.log(`✓ Updated: "${location.name}" -> ${auctionMatch.auctionType}: ${auctionMatch.auctionName}`);
-            updated++;
+            // Re-run matching with fixed algorithm
+            const newMatch = matchAddress(addressToCheck, copart, iaai);
+
+            if (newMatch) {
+                console.log(`   ✓ New match: ${newMatch.auctionName} (state: ${newMatch.state})`);
+
+                if (!DRY_RUN) {
+                    await prisma.location.update({
+                        where: { id: location.id },
+                        data: {
+                            auctionName: newMatch.auctionName,
+                            auctionType: newMatch.auctionType,
+                            state: newMatch.state,
+                            city: newMatch.city,
+                            zipCode: newMatch.zipCode,
+                        },
+                    });
+                }
+                fixed++;
+            } else {
+                console.log(`   ✓ No matching auction - clearing assignment`);
+
+                if (!DRY_RUN) {
+                    await prisma.location.update({
+                        where: { id: location.id },
+                        data: {
+                            auctionName: null,
+                            auctionType: null,
+                        },
+                    });
+                }
+                cleared++;
+            }
         } else {
-            console.log(`✗ No match: "${location.name}" (address: ${location.address || 'N/A'})`);
-            noMatch++;
+            correct++;
         }
     }
 
     console.log('\n=== Summary ===');
-    console.log(`Already matched: ${alreadyMatched}`);
-    console.log(`Updated: ${updated}`);
-    console.log(`No match found: ${noMatch}`);
-    console.log(`Total: ${locations.length}`);
+    console.log(`Correct assignments: ${correct}`);
+    console.log(`Fixed: ${fixed}`);
+    console.log(`Cleared (no match): ${cleared}`);
+    console.log(`Total checked: ${locations.length}`);
+
+    if (DRY_RUN) {
+        console.log('\n⚠️  This was a DRY RUN. Run without --dry-run to apply changes.');
+    }
 
     await prisma.$disconnect();
 }

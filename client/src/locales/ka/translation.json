@@ -39,8 +39,9 @@
   "drivers": {
     "known_drivers": "ცნობილი მძღოლები",
     "add_new": "ახალი მძღოლის დამატება",
-    "search_placeholder": "ძებნა ლოკაციით (მაგ: GA AUSTELL)",
-    "state_placeholder": "შტატი",
+    "search_placeholder": "Search by location...",
+    "search_placeholder_combined": "Search by location or phone...",
+    "state_placeholder": "State",
     "filter_state": "შტატის ფილტრი",
     "message_selected": "შეტყობინების გაგზავნა მონიშნულებზე",
     "delete_confirm_title": "მძღოლის წაშლა",

@@ -27,7 +27,6 @@ class DriverService {
             return driverRepository.findByLocationName(filters.location);
         }
 
-        // If state filter is provided
         if (filters.state) {
             return driverRepository.findByState(filters.state);
         }
@@ -307,6 +306,7 @@ class DriverService {
         location?: string;
         state?: string;
         recentDays?: number;
+        phoneNumber?: string;
     }) {
         // Build query filters
         const queryFilters: any = {};
@@ -315,6 +315,10 @@ class DriverService {
             const cutoffDate = new Date();
             cutoffDate.setDate(cutoffDate.getDate() - filters.recentDays);
             queryFilters.lastSeenAfter = cutoffDate;
+        }
+
+        if (filters.phoneNumber) {
+            queryFilters.phoneNumber = filters.phoneNumber;
         }
 
         // Get all driver-location links with full relations
@@ -339,9 +343,9 @@ class DriverService {
                     const locationName = dl.location.name?.toLowerCase() || '';
                     const auctionName = dl.location.auctionName?.toLowerCase() || '';
                     const auctionNameUpper = dl.location.auctionName?.toUpperCase() || '';
-                    const city = dl.location.city?.toLowerCase() || '';
+                    // const city = dl.location.city?.toLowerCase() || '';
                     const cityUpper = dl.location.city?.toUpperCase() || '';
-                    const state = dl.location.state?.toLowerCase() || '';
+                    // const state = dl.location.state?.toLowerCase() || '';
                     const stateUpper = dl.location.state?.toUpperCase() || '';
                     const zipCode = dl.location.zipCode || '';
 
@@ -354,11 +358,13 @@ class DriverService {
                     }
 
                     // Extract zip codes from search query
+                    // Extract zip codes from search query
                     const queryZipMatches: string[] = searchQueryUpper.match(/\b(\d{5})\b/g) || [];
 
                     // STRATEGY 1: Zip code match (HIGHEST PRIORITY - most reliable for full addresses)
                     if (queryZipMatches.length > 0 && zipCode) {
-                        if (queryZipMatches.includes(zipCode)) {
+                        // Ensure queryZipMatches returns strings, not undefined elements
+                        if (queryZipMatches.some(zip => zip === zipCode)) {
                             return true;
                         }
                     }
@@ -439,7 +445,7 @@ class DriverService {
                     }
 
                     // STRATEGY 7: Single state code search (e.g., just "GA")
-                    if (queryParts.length === 1 && queryParts[0].length === 2) {
+                    if (queryParts.length === 1 && queryParts[0] && queryParts[0].length === 2) {
                         if (stateUpper === queryParts[0]) {
                             return true;
                         }
@@ -549,6 +555,7 @@ class DriverService {
         location?: string;
         state?: string;
         recentDays?: number;
+        phoneNumber?: string;
         page: number;
         limit: number;
     }) {
@@ -557,10 +564,11 @@ class DriverService {
             location: filters.location,
             state: filters.state,
             recentDays: filters.recentDays,
+            phoneNumber: filters.phoneNumber,
         });
 
-        // If location filter is applied, show ALL results (no pagination)
-        if (filters.location) {
+        // If location or phone filter is applied, show ALL results (no pagination)
+        if (filters.location || filters.phoneNumber) {
             const { paginatedResponse } = await import('../../utils/response.js');
             return paginatedResponse(
                 'Drivers retrieved successfully',

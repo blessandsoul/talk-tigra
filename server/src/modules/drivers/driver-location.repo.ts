@@ -24,6 +24,7 @@ export interface DriverLocationFilters {
     source?: string;
     lastSeenAfter?: Date;
     minMatchCount?: number;
+    phoneNumber?: string;
 }
 
 /**
@@ -80,6 +81,14 @@ class DriverLocationRepository {
         if (filters.minMatchCount) {
             where.matchCount = {
                 gte: filters.minMatchCount,
+            };
+        }
+
+        if (filters.phoneNumber) {
+            where.driver = {
+                phoneNumber: {
+                    contains: filters.phoneNumber,
+                },
             };
         }
 

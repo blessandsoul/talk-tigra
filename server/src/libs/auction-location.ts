@@ -261,8 +261,8 @@ class AuctionLocationService {
             const stateCity = locations.find(loc =>
                 loc.state === parsed.possibleState &&
                 (loc.cityUpper === parsed.possibleCity ||
-                 loc.cityUpper.includes(parsed.possibleCity!) ||
-                 parsed.possibleCity!.includes(loc.cityUpper))
+                    loc.cityUpper.includes(parsed.possibleCity!) ||
+                    parsed.possibleCity!.includes(loc.cityUpper))
             );
             if (stateCity) {
                 return stateCity;
@@ -280,14 +280,25 @@ class AuctionLocationService {
         }
 
         // Strategy 4: Address contains any known city name
+        // IMPORTANT: If we detected a state, only match locations in that state
         for (const loc of locations) {
             if (addressUpper.includes(loc.cityUpper) && loc.cityUpper.length > 3) {
+                // If we have a state from the address, it MUST match the location's state
+                if (parsed.possibleState && loc.state !== parsed.possibleState) {
+                    continue; // State mismatch - skip this location
+                }
                 return loc;
             }
         }
 
         // Strategy 5: Significant address overlap (street name matching)
+        // IMPORTANT: If we detected a state, only match locations in that state
         for (const loc of locations) {
+            // If we have a state from the address, it MUST match the location's state
+            if (parsed.possibleState && loc.state !== parsed.possibleState) {
+                continue; // State mismatch - skip this location
+            }
+
             const addressWords = loc.addressUpper.split(/\s+/);
             const significantWords = addressWords.filter(w =>
                 w.length > 3 &&
