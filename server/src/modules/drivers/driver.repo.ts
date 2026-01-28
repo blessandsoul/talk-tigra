@@ -443,6 +443,103 @@ class DriverRepository {
             return driver;
         });
     }
+
+    /**
+     * Upsert driver with locations (merge instead of replace)
+     * - Updates company and notes (complete replacement)
+     * - Adds new locations without removing existing ones
+     */
+    async upsertWithLocations(
+        id: string,
+        data: {
+            phoneNumber?: string;
+            name?: string;
+            companyName?: string;
+            notes?: string;
+            driverNumber?: string;
+            locations?: Array<{ name: string; address?: string }>;
+        }
+    ): Promise<Driver> {
+        return prisma.$transaction(async (tx) => {
+            // 1. Update Driver fields (company/notes are completely replaced)
+            const driver = await tx.driver.update({
+                where: { id },
+                data: {
+                    phoneNumber: data.phoneNumber,
+                    name: data.name,
+                    companyName: data.companyName,
+                    notes: data.notes,
+                    driverNumber: data.driverNumber,
+                },
+            });
+
+            // 2. Add new locations (merge, don't replace)
+            if (data.locations && data.locations.length > 0) {
+                // Get existing location IDs for this driver
+                const existingLinks = await tx.driverLocation.findMany({
+                    where: { driverId: id },
+                    select: { locationId: true },
+                });
+                const existingLocationIds = new Set(existingLinks.map(l => l.locationId));
+
+                for (const loc of data.locations) {
+                    let location = await tx.location.findUnique({
+                        where: { name: loc.name },
+                    });
+
+                    if (!location) {
+                        // Try to match with auction location
+                        const auctionMatch = await auctionLocationService.matchAddress(loc.address || loc.name);
+
+                        location = await tx.location.create({
+                            data: {
+                                name: loc.name,
+                                address: loc.address,
+                                auctionName: auctionMatch?.auctionName || null,
+                                auctionType: auctionMatch?.auctionType || null,
+                                state: auctionMatch?.state || null,
+                                city: auctionMatch?.city || null,
+                                zipCode: auctionMatch?.zipCode || null,
+                            },
+                        });
+                    } else if (loc.address && location.address !== loc.address) {
+                        // Try to match with auction location if not already matched
+                        const auctionMatch = !location.auctionType
+                            ? await auctionLocationService.matchAddress(loc.address)
+                            : null;
+
+                        location = await tx.location.update({
+                            where: { id: location.id },
+                            data: {
+                                address: loc.address,
+                                ...(auctionMatch && {
+                                    auctionName: auctionMatch.auctionName,
+                                    auctionType: auctionMatch.auctionType,
+                                    state: auctionMatch.state,
+                                    city: auctionMatch.city,
+                                    zipCode: auctionMatch.zipCode,
+                                }),
+                            },
+                        });
+                    }
+
+                    // Only create link if it doesn't already exist
+                    if (!existingLocationIds.has(location.id)) {
+                        await tx.driverLocation.create({
+                            data: {
+                                driverId: driver.id,
+                                locationId: location.id,
+                                source: 'manual',
+                            },
+                        });
+                        existingLocationIds.add(location.id); // Track to avoid duplicates in same batch
+                    }
+                }
+            }
+
+            return driver;
+        });
+    }
 }
 
 export const driverRepository = new DriverRepository();

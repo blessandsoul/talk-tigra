@@ -244,7 +244,6 @@ class SheetSyncService {
                 driver = await prisma.driver.create({
                     data: {
                         phoneNumber,
-                        notes: `Auto-created from sheet (Load ID: ${loadId})`,
                     },
                 });
                 logger.info({ phoneNumber, loadId }, '[SHEET SYNC] Created new driver from sheet');

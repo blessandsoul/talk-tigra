@@ -103,7 +103,9 @@ class DriverService {
     }
 
     /**
-     * Create a new driver
+     * Create a new driver or update existing one (upsert)
+     * - If driver exists: update company/notes and add new locations (merge)
+     * - If driver doesn't exist: create new driver with locations
      */
     async createDriver(data: {
         phoneNumber: string;
@@ -127,12 +129,21 @@ class DriverService {
             address: loc // Use the same string for address since user input is single string
         }));
 
-        // Check if driver already exists with this phone number to prevent dupes (though DB has unique constraint)
+        // Check if driver already exists with this phone number
         const existingDriver = await driverRepository.findByPhoneNumber(normalizedPhone);
+
         if (existingDriver) {
-            throw new ConflictError(`Driver with phone number ${normalizedPhone} already exists`);
+            // Driver exists - update company/notes and merge new locations
+            return driverRepository.upsertWithLocations(existingDriver.id, {
+                ...data,
+                phoneNumber: normalizedPhone,
+                companyName: data.companyName, // Replace completely
+                notes: data.notes, // Replace completely
+                locations: locationObjects // Will be merged with existing
+            });
         }
 
+        // Driver doesn't exist - create new
         return driverRepository.createWithLocations({
             ...data,
             phoneNumber: normalizedPhone,
