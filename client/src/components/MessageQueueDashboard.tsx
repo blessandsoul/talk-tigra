@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Card, Typography, Statistic, Row, Col, Progress, Table, Tag, Button, Alert, message, Space, Popconfirm } from 'antd';
 import { ReloadOutlined, DeleteOutlined, ClockCircleOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from '../config';
 
 const { Title } = Typography;
@@ -21,6 +22,7 @@ interface QueueStats {
 }
 
 export const MessageQueueDashboard = () => {
+    const { t } = useTranslation();
     const [stats, setStats] = useState<QueueStats | null>(null);
     const [loading, setLoading] = useState(false);
     const [clearing, setClearing] = useState(false);
@@ -37,7 +39,7 @@ export const MessageQueueDashboard = () => {
             }
         } catch (error) {
             console.error('Error fetching stats:', error);
-            message.error('Error connecting to server');
+            message.error(t('common.error'));
         } finally {
             setLoading(false);
         }
@@ -58,7 +60,7 @@ export const MessageQueueDashboard = () => {
             }
         } catch (error) {
             console.error('Error clearing messages:', error);
-            message.error('Error connecting to server');
+            message.error(t('common.error'));
         } finally {
             setClearing(false);
         }
@@ -70,12 +72,12 @@ export const MessageQueueDashboard = () => {
 
     const columns = [
         {
-            title: 'Phone Number',
+            title: t('queue.phone_number'),
             dataIndex: 'phoneNumber',
             key: 'phoneNumber',
         },
         {
-            title: 'Status',
+            title: t('common.status'),
             dataIndex: 'status',
             key: 'status',
             render: (status: string) => {
@@ -96,18 +98,18 @@ export const MessageQueueDashboard = () => {
             },
         },
         {
-            title: 'Attempts',
+            title: t('queue.attempts'),
             dataIndex: 'attempts',
             key: 'attempts',
         },
         {
-            title: 'Created At',
+            title: t('common.created_at'),
             dataIndex: 'createdAt',
             key: 'createdAt',
             render: (date: string) => new Date(date).toLocaleString(),
         },
         {
-            title: 'Sent At',
+            title: t('queue.sent_at'),
             dataIndex: 'sentAt',
             key: 'sentAt',
             render: (date?: string) => date ? new Date(date).toLocaleString() : '-',
@@ -117,7 +119,7 @@ export const MessageQueueDashboard = () => {
     if (!stats) {
         return (
             <Card loading={true}>
-                <p>Loading queue statistics...</p>
+                <p>{t('common.loading')}</p>
             </Card>
         );
     }
@@ -128,7 +130,7 @@ export const MessageQueueDashboard = () => {
 
     return (
         <Card
-            title={<Title level={4}>Message Queue Dashboard</Title>}
+            title={<Title level={4}>{t('queue.title')}</Title>}
             extra={
                 <Space>
                     <Button
@@ -136,14 +138,14 @@ export const MessageQueueDashboard = () => {
                         onClick={fetchStats}
                         loading={loading}
                     >
-                        Refresh
+                        {t('common.refresh')}
                     </Button>
                     <Popconfirm
-                        title="Clear Completed Messages"
-                        description="Are you sure you want to clear all sent and failed messages?"
+                        title={t('queue.clear_confirm_title')}
+                        description={t('queue.clear_confirm_desc')}
                         onConfirm={clearCompleted}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t('common.yes')}
+                        cancelText={t('common.no')}
                     >
                         <Button
                             icon={<DeleteOutlined />}
@@ -151,7 +153,7 @@ export const MessageQueueDashboard = () => {
                             disabled={stats.sent === 0 && stats.failed === 0}
                             danger
                         >
-                            Clear Completed
+                            {t('queue.clear_completed')}
                         </Button>
                     </Popconfirm>
                 </Space>
@@ -159,7 +161,7 @@ export const MessageQueueDashboard = () => {
         >
             <Alert
                 message="Message Queue Status"
-                description={`Processing messages at a rate of 1 message every 20 seconds. ${stats.pending} messages pending.`}
+                description={t('queue.status_info', { count: stats.pending })}
                 type="info"
                 showIcon
                 style={{ marginBottom: 24 }}
@@ -168,27 +170,27 @@ export const MessageQueueDashboard = () => {
             <Row gutter={16} style={{ marginBottom: 24 }}>
                 <Col span={6}>
                     <Card>
-                        <Statistic title="Total Messages" value={stats.total} />
+                        <Statistic title={t('queue.total')} value={stats.total} />
                     </Card>
                 </Col>
                 <Col span={6}>
                     <Card>
-                        <Statistic title="Pending" value={stats.pending} valueStyle={{ color: '#1890ff' }} prefix={<ClockCircleOutlined />} />
+                        <Statistic title={t('queue.pending')} value={stats.pending} valueStyle={{ color: '#1890ff' }} prefix={<ClockCircleOutlined />} />
                     </Card>
                 </Col>
                 <Col span={6}>
                     <Card>
-                        <Statistic title="Sent" value={stats.sent} valueStyle={{ color: '#3f8600' }} prefix={<CheckCircleOutlined />} />
+                        <Statistic title={t('queue.sent')} value={stats.sent} valueStyle={{ color: '#3f8600' }} prefix={<CheckCircleOutlined />} />
                     </Card>
                 </Col>
                 <Col span={6}>
                     <Card>
-                        <Statistic title="Failed" value={stats.failed} valueStyle={{ color: '#cf1322' }} prefix={<CloseCircleOutlined />} />
+                        <Statistic title={t('queue.failed')} value={stats.failed} valueStyle={{ color: '#cf1322' }} prefix={<CloseCircleOutlined />} />
                     </Card>
                 </Col>
             </Row>
 
-            <Card title="Progress" style={{ marginBottom: 24 }}>
+            <Card title={t('queue.progress')} style={{ marginBottom: 24 }}>
                 <Progress percent={percentComplete} status={stats.failed > 0 ? 'exception' : 'active'} />
             </Card>
 

@@ -5,6 +5,7 @@
  */
 
 import { prisma } from '../../libs/db.js';
+import { auctionLocationService } from '../../libs/auction-location.js';
 import type { Location, DriverLocation, Driver } from '@prisma/client';
 
 /**
@@ -191,9 +192,20 @@ class LocationRepository {
         city?: string;
         state?: string;
         zipCode?: string;
+        address?: string;
     }): Promise<Location> {
+        // Try to match with auction location
+        const auctionMatch = await auctionLocationService.matchAddress(data.address || data.name);
+
         return prisma.location.create({
-            data,
+            data: {
+                ...data,
+                auctionName: auctionMatch?.auctionName || null,
+                auctionType: auctionMatch?.auctionType || null,
+                state: data.state || auctionMatch?.state || null,
+                city: data.city || auctionMatch?.city || null,
+                zipCode: data.zipCode || auctionMatch?.zipCode || null,
+            },
         });
     }
 
@@ -207,11 +219,29 @@ class LocationRepository {
             city?: string;
             state?: string;
             zipCode?: string;
+            address?: string;
         }
     ): Promise<Location> {
+        // Check if location already has auction info
+        const existing = await prisma.location.findUnique({ where: { id } });
+
+        // Try to match with auction location if not already matched and address is being updated
+        const auctionMatch = (!existing?.auctionType && data.address)
+            ? await auctionLocationService.matchAddress(data.address)
+            : null;
+
         return prisma.location.update({
             where: { id },
-            data,
+            data: {
+                ...data,
+                ...(auctionMatch && {
+                    auctionName: auctionMatch.auctionName,
+                    auctionType: auctionMatch.auctionType,
+                    state: data.state || auctionMatch.state,
+                    city: data.city || auctionMatch.city,
+                    zipCode: data.zipCode || auctionMatch.zipCode,
+                }),
+            },
         });
     }
 

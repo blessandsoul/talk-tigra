@@ -1,39 +1,41 @@
-import { BrowserRouter, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
-import { Layout, Typography, theme, Menu } from 'antd';
+import { useEffect } from 'react';
+import { BrowserRouter, Link, useLocation, Navigate, Route, Routes } from 'react-router-dom';
+import { Layout, theme, Menu } from 'antd';
+import { useTranslation } from 'react-i18next';
 import { KnownDriversTable } from './components/KnownDriversTable';
-import { UnknownDriversTable } from './components/UnknownDriversTable';
 import { MessageQueueDashboard } from './components/MessageQueueDashboard';
+import { LanguageSwitcher } from './components/common/LanguageSwitcher';
+
 
 const { Header, Content } = Layout;
-const { Title } = Typography;
 
 function AppLayout() {
   const location = useLocation();
+  const { t, i18n } = useTranslation();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  useEffect(() => {
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
+
   const menuItems = [
     {
       key: '/known-drivers',
-      label: <Link to="/known-drivers">Known Drivers</Link>,
-    },
-    {
-      key: '/unknown-drivers',
-      label: <Link to="/unknown-drivers">Unknown Drivers</Link>,
+      label: <Link to="/known-drivers">{t('nav.driver')}</Link>,
     },
     {
       key: '/queue-dashboard',
-      label: <Link to="/queue-dashboard">Queue Dashboard</Link>,
+      label: <Link to="/queue-dashboard">{t('nav.dashboard')}</Link>,
     },
+
   ];
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header style={{ display: 'flex', alignItems: 'center', background: '#001529' }}>
-        <Title level={3} style={{ color: 'white', margin: '0 24px 0 0' }}>
-          TIGRA Drivers Dashboard
-        </Title>
+        <img src="/tigra.webp" alt="Tigra Logo" style={{ height: 60, aspectRatio: '1/1', objectFit: 'contain', marginRight: 16 }} />
         <Menu
           theme="dark"
           mode="horizontal"
@@ -41,6 +43,7 @@ function AppLayout() {
           items={menuItems}
           style={{ flex: 1, minWidth: 0 }}
         />
+        <LanguageSwitcher />
       </Header>
       <Content style={{ padding: '0 48px', marginTop: '24px' }}>
         <div
@@ -54,8 +57,8 @@ function AppLayout() {
           <Routes>
             <Route path="/" element={<Navigate to="/known-drivers" replace />} />
             <Route path="/known-drivers" element={<KnownDriversTable />} />
-            <Route path="/unknown-drivers" element={<UnknownDriversTable />} />
             <Route path="/queue-dashboard" element={<MessageQueueDashboard />} />
+
             {/* Redirect old route to new one */}
             <Route path="/bulk-messages" element={<Navigate to="/queue-dashboard" replace />} />
           </Routes>

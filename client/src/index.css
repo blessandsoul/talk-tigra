@@ -4,6 +4,10 @@
     'Noto Color Emoji';
 }
 
+:lang(ka) {
+  font-family: "Noto Sans Georgian", serif !important;
+}
+
 body {
   margin: 0;
   padding: 0;

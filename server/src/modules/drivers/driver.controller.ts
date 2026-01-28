@@ -89,9 +89,11 @@ class DriverController {
         request: FastifyRequest<{
             Body: {
                 phoneNumber: string;
+                driverNumber?: string;
                 name?: string;
                 companyName?: string;
                 notes?: string;
+                locations?: string[];
             };
         }>,
         reply: FastifyReply
@@ -112,9 +114,12 @@ class DriverController {
         request: FastifyRequest<{
             Params: { id: string };
             Body: {
+                phoneNumber?: string;
                 name?: string;
                 companyName?: string;
                 notes?: string;
+                driverNumber?: string;
+                locations?: string[];
             };
         }>,
         reply: FastifyReply

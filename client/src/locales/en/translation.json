@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "tour": "Tours",
+    "company": "Companies",
+    "guide": "Guides",
+    "driver": "Drivers",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Welcome to Talk Tigra",
+    "subtitle": "Connecting you with the best local guides and drivers."
+  },
+  "common": {
+    "language": "Language",
+    "search": "Search",
+    "cancel": "Cancel",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "refresh": "Refresh",
+    "update": "Update",
+    "create": "Create",
+    "phone": "Phone",
+    "company": "Company",
+    "notes": "Notes",
+    "locations": "Locations",
+    "status": "Status",
+    "created_at": "Created At",
+    "error": "Error",
+    "success": "Success"
+  },
+  "drivers": {
+    "known_drivers": "Known Drivers",
+    "add_new": "Add New Driver",
+    "search_placeholder": "Search location (e.g., GA AUSTELL)",
+    "state_placeholder": "State",
+    "filter_state": "Filter State",
+    "message_selected": "Message Selected",
+    "delete_confirm_title": "Delete Driver",
+    "delete_confirm_desc": "Are you sure you want to delete this driver?",
+    "delete_success": "Driver deleted successfully",
+    "fetch_error": "Failed to fetch known drivers",
+    "modal": {
+        "title_edit": "Edit Driver",
+        "title_create": "Add New Driver",
+        "phone_required": "Phone number is required",
+        "phone_tooltip": "Required for identification",
+        "operating_locations": "Operating Locations",
+        "add_location": "Add Another Location",
+        "enter_location": "Enter location or delete",
+        "location_required": "At least one location is required",
+        "update_btn": "Update Driver",
+        "create_btn": "Create Driver"
+    }
+  },
+  "queue": {
+    "title": "Message Queue Dashboard",
+    "clear_completed": "Clear Completed",
+    "clear_confirm_title": "Clear Completed Messages",
+    "clear_confirm_desc": "Are you sure you want to clear all sent and failed messages?",
+    "status_info": "Processing messages at a rate of 1 message every 20 seconds. {{count}} messages pending.",
+    "total": "Total Messages",
+    "pending": "Pending",
+    "sent": "Sent",
+    "failed": "Failed",
+    "progress": "Progress",
+    "phone_number": "Phone Number",
+    "attempts": "Attempts",
+    "sent_at": "Sent At"
+  },
+  "bulk_message": {
+    "title": "Send Bulk Message",
+    "queue_btn": "Queue Messages",
+    "info": "You are about to send a message to {{count}} selected driver(s).",
+    "rate_info": "Messages will be sent at a rate of 1 per 20 seconds.",
+    "content_label": "Message Content",
+    "content_placeholder": "Enter your message here...",
+    "content_required": "Please enter the message content"
+  }
+}

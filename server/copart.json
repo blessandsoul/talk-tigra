@@ -1,0 +1,1880 @@
+[
+    {
+        "_id": "68f7db2f6606a2f5fcf83b0b",
+        "state": "AB",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920b3",
+                "name": "COPART CALGARY",
+                "city": "CALGARY",
+                "address": "234082 84 STREET SE",
+                "zip": "T1X 0K2",
+                "phone": "(403) 290-1045"
+            },
+            {
+                "_id": "6900a049512298cf01a920b4",
+                "name": "COPART EDMONTON",
+                "city": "EDMONTON",
+                "address": "3175 4TH STREET",
+                "zip": "T9E 8L1",
+                "phone": "(780) 955-5596"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b0d",
+        "state": "AL",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920b5",
+                "name": "COPART DOTHAN",
+                "city": "NEWTON",
+                "address": "10428 WEST US 84",
+                "zip": "36352",
+                "phone": "(334) 229-9968"
+            },
+            {
+                "_id": "6900a049512298cf01a920b6",
+                "name": "COPART MOBILE SOUTH",
+                "city": "THEODORE",
+                "address": "9401 OLD PASCAGOULA RD",
+                "zip": "36582",
+                "phone": "(251) 220-1132"
+            },
+            {
+                "_id": "6900a049512298cf01a920b7",
+                "name": "COPART MOBILE",
+                "city": "EIGHT MILE",
+                "address": "4763 LOTT ROAD",
+                "zip": "36613",
+                "phone": "(251) 649-5011"
+            },
+            {
+                "_id": "6900a049512298cf01a920b8",
+                "name": "COPART BIRMINGHAM",
+                "city": "HUEYTOWN",
+                "address": "3101 DAVEY ALLISON BLVD",
+                "zip": "35023",
+                "phone": "(205) 424-0257"
+            },
+            {
+                "_id": "6900a049512298cf01a920b9",
+                "name": "COPART MONTGOMERY",
+                "city": "MONTGOMERY",
+                "address": "6044 TROY HIGHWAY",
+                "zip": "36116",
+                "phone": "(334) 281-7264"
+            },
+            {
+                "_id": "6900a049512298cf01a920ba",
+                "name": "COPART TANNER",
+                "city": "TANNER",
+                "address": "20760 SANDY ROAD",
+                "zip": "35671",
+                "phone": "(256) 306-9041"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b10",
+        "state": "CA",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920bb",
+                "name": "COPART ANTELOPE",
+                "city": "ANTELOPE",
+                "address": "8650 ANTELOPE NORTH ROAD",
+                "zip": "95843",
+                "phone": "(916) 721-7770"
+            },
+            {
+                "_id": "6900a049512298cf01a920bc",
+                "name": "COPART BAKERSFIELD",
+                "city": "BAKERSFIELD",
+                "address": "2216 COY AVENUE",
+                "zip": "93307",
+                "phone": "(661) 834-2556"
+            },
+            {
+                "_id": "6900a049512298cf01a920bd",
+                "name": "COPART SAN BERNARDINO",
+                "city": "COLTON",
+                "address": "1203 S. RANCHO AVENUE",
+                "zip": "92324",
+                "phone": "(909) 825-7600"
+            },
+            {
+                "_id": "6900a049512298cf01a920be",
+                "name": "COPART FRESNO",
+                "city": "FRESNO",
+                "address": "1255 EAST CENTRAL",
+                "zip": "93725",
+                "phone": "(559) 266-6400"
+            },
+            {
+                "_id": "6900a049512298cf01a920bf",
+                "name": "COPART HAYWARD",
+                "city": "HAYWARD",
+                "address": "1964 SABRE STREET",
+                "zip": "94545",
+                "phone": "(510) 783-6511"
+            },
+            {
+                "_id": "6900a049512298cf01a920c0",
+                "name": "COPART LOS ANGELES",
+                "city": "LOS ANGELES",
+                "address": "8423 SOUTH ALAMEDA",
+                "zip": "90001",
+                "phone": "(323) 583-1713"
+            },
+            {
+                "_id": "6900a049512298cf01a920c1",
+                "name": "COPART MARTINEZ",
+                "city": "MARTINEZ",
+                "address": "2701 WATERFRONT ROAD",
+                "zip": "94553",
+                "phone": "(925) 370-3900"
+            },
+            {
+                "_id": "6900a049512298cf01a920c2",
+                "name": "COPART RANCHO CUCAMONGA",
+                "city": "RANCHO CUCAMONGA",
+                "address": "12167 ARROW ROUTE",
+                "zip": "91739",
+                "phone": "(909) 581-3595"
+            },
+            {
+                "_id": "6900a049512298cf01a920c3",
+                "name": "COPART SOUTH SACRAMENTO",
+                "city": "SACRAMENTO",
+                "address": "8687 WEYAND AVE",
+                "zip": "95828",
+                "phone": "(916) 381-5050"
+            },
+            {
+                "_id": "6900a049512298cf01a920c4",
+                "name": "COPART SACRAMENTO",
+                "city": "SACRAMENTO",
+                "address": "8600 MORRISON CREEK DRIVE",
+                "zip": "95828",
+                "phone": "(916) 381-3999"
+            },
+            {
+                "_id": "6900a049512298cf01a920c5",
+                "name": "COPART SAN DIEGO",
+                "city": "SAN DIEGO",
+                "address": "7847 AIRWAY ROAD",
+                "zip": "92154",
+                "phone": "(619) 671-0900"
+            },
+            {
+                "_id": "6900a049512298cf01a920c6",
+                "name": "COPART SAN JOSE",
+                "city": "SAN MARTIN",
+                "address": "13895 LLAGAS AVENUE",
+                "zip": "95046",
+                "phone": "(408) 683-9393"
+            },
+            {
+                "_id": "6900a049512298cf01a920c7",
+                "name": "COPART SUN VALLEY",
+                "city": "SUN VALLEY",
+                "address": "11409 PENROSE STREET",
+                "zip": "91352",
+                "phone": "(818) 771-9389"
+            },
+            {
+                "_id": "6900a049512298cf01a920c8",
+                "name": "COPART REDDING",
+                "city": "REDDING",
+                "address": "4603 LOCUST ROAD",
+                "zip": "96007",
+                "phone": "(530) 365-1253"
+            },
+            {
+                "_id": "6900a049512298cf01a920c9",
+                "name": "COPART VALLEJO",
+                "city": "VALLEJO",
+                "address": "282 FIFTH STREET",
+                "zip": "94590",
+                "phone": "(707) 644-4468"
+            },
+            {
+                "_id": "6900a049512298cf01a920ca",
+                "name": "COPART VAN NUYS",
+                "city": "VAN NUYS",
+                "address": "7519 WOODMAN AVENUE",
+                "zip": "91405",
+                "phone": "(818) 782-5315"
+            },
+            {
+                "_id": "6900a049512298cf01a920cb",
+                "name": "COPART LONG BEACH",
+                "city": "WILMINGTON",
+                "address": "1000E. LOMITA BLVD",
+                "zip": "90744",
+                "phone": "(310) 952-9316"
+            },
+            {
+                "_id": "6900a049512298cf01a920cc",
+                "name": "COPART ADELANTO",
+                "city": "ADELANTO",
+                "address": "10429 PANSY RD",
+                "zip": "92301",
+                "phone": "(442) 219-7140"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b15",
+        "state": "GA",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920cd",
+                "name": "COPART ATLANTA WEST",
+                "city": "AUSTELL",
+                "address": "2568 OLD ALABAMA ROAD",
+                "zip": "30168",
+                "phone": "(770) 941-9775"
+            },
+            {
+                "_id": "6900a049512298cf01a920ce",
+                "name": "COPART CARTERSVILLE",
+                "city": "CARTERSVILLE",
+                "address": "1880 HWY 113",
+                "zip": "30120",
+                "phone": "(678) 721-0730"
+            },
+            {
+                "_id": "6900a049512298cf01a920cf",
+                "name": "COPART ATLANTA SOUTH",
+                "city": "ELLENWOOD",
+                "address": "761 CLARK DRIVE",
+                "zip": "30294",
+                "phone": "(770) 389-1768"
+            },
+            {
+                "_id": "6900a049512298cf01a920d0",
+                "name": "COPART ATLANTA NORTH",
+                "city": "GAINESVILLE",
+                "address": "1602 ATHENS HIGHWAY",
+                "zip": "30507",
+                "phone": "(770) 534-0850"
+            },
+            {
+                "_id": "6900a049512298cf01a920d1",
+                "name": "COPART FAIRBURN",
+                "city": "FAIRBURN",
+                "address": "6737 ROOSEVELT HWY",
+                "zip": "30213",
+                "phone": "(478) 606-0000"
+            },
+            {
+                "_id": "6900a049512298cf01a920d2",
+                "name": "COPART ATLANTA EAST",
+                "city": "LOGANVILLE",
+                "address": "6089 HIGHWAY 20",
+                "zip": "30052",
+                "phone": "(770) 554-8836"
+            },
+            {
+                "_id": "6900a049512298cf01a920d3",
+                "name": "COPART MACON",
+                "city": "BYRON",
+                "address": "304 SMITH ROAD",
+                "zip": "31008",
+                "phone": "(478) 298-4159"
+            },
+            {
+                "_id": "6900a049512298cf01a920d4",
+                "name": "COPART SAVANNAH",
+                "city": "SAVANNAH",
+                "address": "5510 SILK HOPE ROAD",
+                "zip": "31405",
+                "phone": "(912) 233-1936"
+            },
+            {
+                "_id": "6900a049512298cf01a920d5",
+                "name": "COPART TIFTON",
+                "city": "TIFTON",
+                "address": "399 OAKRIDGE CHURCH RD",
+                "zip": "31794",
+                "phone": "(229) 386-4900"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b17",
+        "state": "IA",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920d6",
+                "name": "COPART DES MOINES",
+                "city": "DES MOINES",
+                "address": "3300 VANDALIA ROAD",
+                "zip": "50317",
+                "phone": "(515) 262-1900"
+            },
+            {
+                "_id": "6900a049512298cf01a920d7",
+                "name": "COPART DAVENPORT",
+                "city": "ELDRIDGE",
+                "address": "3601 S 1ST STREET",
+                "zip": "52748",
+                "phone": "(563) 275-3865"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b20",
+        "state": "ME",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920d8",
+                "name": "COPART LYMAN",
+                "city": "ALFRED",
+                "address": "136 KENNEBUNK POND ROAD",
+                "zip": "04002",
+                "phone": "(207) 249-6176"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b23",
+        "state": "MO",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920d9",
+                "name": "COPART ST. LOUIS",
+                "city": "BRIDGETON",
+                "address": "13033 TAUSSIG AVE",
+                "zip": "63044",
+                "phone": "(314) 291-8400"
+            },
+            {
+                "_id": "6900a049512298cf01a920da",
+                "name": "COPART COLUMBIA",
+                "city": "COLUMBIA",
+                "address": "8485 RICHLAND RD",
+                "zip": "65201",
+                "phone": "(573) 814-0070"
+            },
+            {
+                "_id": "6900a049512298cf01a920db",
+                "name": "COPART SPRINGFIELD",
+                "city": "ROGERSVILLE",
+                "address": "2889 E US HIGHWAY 60",
+                "zip": "65742",
+                "phone": "(417) 200-0081"
+            },
+            {
+                "_id": "6900a049512298cf01a920dc",
+                "name": "COPART SIKESTON",
+                "city": "SIKESTON",
+                "address": "687 E OUTER RD",
+                "zip": "63801",
+                "phone": "(573) 471-4550"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b26",
+        "state": "NB",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920dd",
+                "name": "COPART MONCTON",
+                "city": "MONCTON",
+                "address": "1300 BERRY MILLS RD",
+                "zip": "E1E 4R8",
+                "phone": "(506) 268-2812"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b27",
+        "state": "NC",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920de",
+                "name": "COPART CHINA GROVE",
+                "city": "CHINA GROVE",
+                "address": "1081 RECOVERY ROAD",
+                "zip": "28023",
+                "phone": "(704) 857-5177"
+            },
+            {
+                "_id": "6900a049512298cf01a920df",
+                "name": "COPART CONCORD",
+                "city": "CONCORD",
+                "address": "7940 U.S. HIGHWAY 601 S.",
+                "zip": "28025",
+                "phone": "(704) 209-9699"
+            },
+            {
+                "_id": "6900a049512298cf01a920e0",
+                "name": "COPART RALEIGH NORTH",
+                "city": "KINGHTDALE",
+                "address": "1900 OLD CREWS RD",
+                "zip": "27545",
+                "phone": "(984) 246-2400"
+            },
+            {
+                "_id": "6900a049512298cf01a920e1",
+                "name": "COPART RALEIGH",
+                "city": "DUNN",
+                "address": "310 COPART ROAD",
+                "zip": "28334",
+                "phone": "(910) 891-1252"
+            },
+            {
+                "_id": "6900a049512298cf01a920e2",
+                "name": "COPART LUMBERTON",
+                "city": "LUMBERTON",
+                "address": "4019 NC 72 HWY W",
+                "zip": "28360",
+                "phone": "(910) 671-5913"
+            },
+            {
+                "_id": "6900a049512298cf01a920e3",
+                "name": "COPART GASTONIA",
+                "city": "GASTONIA",
+                "address": "1900 OLD CREWS RD",
+                "zip": "27545",
+                "phone": "(984) 246-2400"
+            },
+            {
+                "_id": "6900a049512298cf01a920e4",
+                "name": "COPART MEBANE",
+                "city": "MEBANE",
+                "address": "1870 US 70 HWY",
+                "zip": "27302",
+                "phone": "(336) 578-2934"
+            },
+            {
+                "_id": "6900a049512298cf01a920e5",
+                "name": "COPART MOCKSVILLE",
+                "city": "MOCKSVILLE",
+                "address": "2668 US-601",
+                "zip": "27028",
+                "phone": "(336) 257-1804"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b28",
+        "state": "ND",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920e6",
+                "name": "COPART BISMARCK",
+                "city": "BISMARCK",
+                "address": "3700 APPLE CREEK RD",
+                "zip": "58501",
+                "phone": "(701) 712-6390"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b34",
+        "state": "PA",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920e7",
+                "name": "COPART CHAMBERSBURG",
+                "city": "CHAMBERSBURG",
+                "address": "2962 LINCOLN WAY WEST",
+                "zip": "17201",
+                "phone": "(717) 264-3331"
+            },
+            {
+                "_id": "6900a049512298cf01a920e8",
+                "name": "COPART SCRANTON",
+                "city": "DURYEA",
+                "address": "210 MCALPINE STREET",
+                "zip": "18642",
+                "phone": "(570) 451-1871"
+            },
+            {
+                "_id": "6900a049512298cf01a920e9",
+                "name": "COPART ALTOONA",
+                "city": "EBENSBURG",
+                "address": "4007 ADMIRAL PEARY HWY",
+                "zip": "15931",
+                "phone": "(814) 472-5392"
+            },
+            {
+                "_id": "6900a049512298cf01a920ea",
+                "name": "COPART PITTSBURGH NORTH",
+                "city": "ELLWOOD CITY",
+                "address": "2000 RIVER ROAD",
+                "zip": "16117",
+                "phone": "(724) 758-0480"
+            },
+            {
+                "_id": "6900a049512298cf01a920eb",
+                "name": "COPART HARRISBURG",
+                "city": "GRANTVILLE",
+                "address": "8 PARK DRIVE",
+                "zip": "17028",
+                "phone": "(717) 861-7400"
+            },
+            {
+                "_id": "6900a049512298cf01a920ec",
+                "name": "COPART PHILADELPHIA",
+                "city": "PENNSBURG",
+                "address": "2704 GERYVILLE PIKE",
+                "zip": "18073",
+                "phone": "(215) 679-3164"
+            },
+            {
+                "_id": "6900a049512298cf01a920ed",
+                "name": "COPART PHILADELPHIA EAST",
+                "city": "CHALFONT",
+                "address": "77 BRISTOL ROAD",
+                "zip": "18914",
+                "phone": "(215) 996-0971"
+            },
+            {
+                "_id": "6900a049512298cf01a920ee",
+                "name": "COPART PITTSBURGH WEST",
+                "city": "WEST MIFFLIN",
+                "address": "1451 LEBANON SCHOOL ROAD",
+                "zip": "15122",
+                "phone": "(412) 200-5626"
+            },
+            {
+                "_id": "6900a049512298cf01a920ef",
+                "name": "COPART PITTSBURGH SOUTH",
+                "city": "WEST MIFFLIN",
+                "address": "526 THOMPSON RUN RD",
+                "zip": "15122",
+                "phone": "(412) 464-4340"
+            },
+            {
+                "_id": "6900a049512298cf01a920f0",
+                "name": "COPART YORK HAVEN",
+                "city": "YORK HAVEN",
+                "address": "795 SIPE RD",
+                "zip": "17370",
+                "phone": "(717) 938-1879"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b35",
+        "state": "QC",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920f1",
+                "name": "COPART MONTREAL",
+                "city": "MONTREAL",
+                "address": "6900 MARIEN AVENUE",
+                "zip": "H1B 4W3",
+                "phone": "(514) 643-3000"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b37",
+        "state": "SC",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920f2",
+                "name": "COPART COLUMBIA",
+                "city": "GASTON",
+                "address": "4324 HIGHWAY 321 SOUTH",
+                "zip": "29053",
+                "phone": "(803) 794-3252"
+            },
+            {
+                "_id": "6900a049512298cf01a920f3",
+                "name": "COPART SPARTANBURG",
+                "city": "SPARTANBURG",
+                "address": "1922 NAZARETH CHURCH ROAD",
+                "zip": "29301",
+                "phone": "(864) 877-9113"
+            },
+            {
+                "_id": "6900a049512298cf01a920f4",
+                "name": "COPART NORTH CHARLESTON",
+                "city": "HARLEYVILLE",
+                "address": "120 COMMERCE AVE",
+                "zip": "29448",
+                "phone": "(843) 900-6769"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b38",
+        "state": "TN",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920f5",
+                "name": "COPART NASHVILLE",
+                "city": "LEBANON",
+                "address": "865 STUMPY LANE",
+                "zip": "37090",
+                "phone": "(615) 449-6195"
+            },
+            {
+                "_id": "6900a049512298cf01a920f6",
+                "name": "COPART KNOXVILLE",
+                "city": "MADISONVILLE",
+                "address": "6355 B HIGHWAY 411",
+                "zip": "37354",
+                "phone": "(423) 442-5866"
+            },
+            {
+                "_id": "6900a049512298cf01a920f7",
+                "name": "COPART MEMPHIS",
+                "city": "MEMPHIS",
+                "address": "5545 SWINNEA RD",
+                "zip": "38118",
+                "phone": "(901) 398-8989"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b3a",
+        "state": "UT",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920f8",
+                "name": "COPART OGDEN",
+                "city": "FARR WEST",
+                "address": "3586 NORTH 2000 WEST",
+                "zip": "84404",
+                "phone": "(801) 731-0216"
+            },
+            {
+                "_id": "6900a049512298cf01a920f9",
+                "name": "COPART SALT LAKE CITY",
+                "city": "MAGNA",
+                "address": "7320 WEST 2100 SOUTH",
+                "zip": "84044",
+                "phone": "(801) 770-0703"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b3f",
+        "state": "WY",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920fa",
+                "name": "COPART CASPER",
+                "city": "CASPER",
+                "address": "1998 OIL FIELD CENTER RD",
+                "zip": "82604",
+                "phone": "(307) 234-6363"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b0c",
+        "state": "AK",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920fb",
+                "name": "COPART ANCHORAGE",
+                "city": "ANCHORAGE",
+                "address": "401 W CHIPPERFIELD DR",
+                "zip": "99501",
+                "phone": "(907) 278-2221"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b0e",
+        "state": "AR",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920fc",
+                "name": "COPART LITTLE ROCK",
+                "city": "CONWAY",
+                "address": "703 MAIN ST",
+                "zip": "72032",
+                "phone": "(501) 796-2812"
+            },
+            {
+                "_id": "6900a049512298cf01a920fd",
+                "name": "COPART FAYETTEVILLE",
+                "city": "PRAIRIE GROVE",
+                "address": "15976 BILL CAMPBELL ROAD",
+                "zip": "72753",
+                "phone": "(479) 846-1244"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b11",
+        "state": "CO",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a920fe",
+                "name": "COPART DENVER",
+                "city": "BRIGHTON",
+                "address": "1281 COUNTY ROAD 27",
+                "zip": "80603",
+                "phone": "(303) 659-0066"
+            },
+            {
+                "_id": "6900a049512298cf01a920ff",
+                "name": "COPART COLORADO SPRINGS",
+                "city": "COLORADO SPRINGS",
+                "address": "3701 N. NEVADA AVE",
+                "zip": "80907",
+                "phone": "(719) 227-6256"
+            },
+            {
+                "_id": "6900a049512298cf01a92100",
+                "name": "COPART DENVER CENTRAL",
+                "city": "DENVER",
+                "address": "6464 DOWNING STREET",
+                "zip": "80229",
+                "phone": "(303) 289-5242"
+            },
+            {
+                "_id": "6900a049512298cf01a92101",
+                "name": "COPART DENVER SOUTH",
+                "city": "LITTLETON",
+                "address": "8300 BLAKELAND DRIVE",
+                "zip": "80125",
+                "phone": "(303) 346-3265"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b14",
+        "state": "FL",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92102",
+                "name": "COPART ORLANDO NORTH",
+                "city": "APOPKA",
+                "address": "3352 W ORANGE BLOSSOM TRAIL",
+                "zip": "32712",
+                "phone": "(407) 884-0993"
+            },
+            {
+                "_id": "6900a049512298cf01a92103",
+                "name": "COPART FT. PIERCE",
+                "city": "FT PIERCE",
+                "address": "2601 CENTER ROAD",
+                "zip": "34946",
+                "phone": "(772) 461-6110"
+            },
+            {
+                "_id": "6900a049512298cf01a92104",
+                "name": "COPART MIAMI SOUTH",
+                "city": "HOMESTEAD",
+                "address": "24301 SW 137TH AVE",
+                "zip": "33032",
+                "phone": "(305) 257-1422"
+            },
+            {
+                "_id": "6900a049512298cf01a92105",
+                "name": "COPART JACKSONVILLE NORTH",
+                "city": "JACKSONVILLE",
+                "address": "10200 ALTON BOX RD",
+                "zip": "32218",
+                "phone": "(904) 800-4631"
+            },
+            {
+                "_id": "6900a049512298cf01a92106",
+                "name": "COPART MIAMI CENTRAL",
+                "city": "MIAMI",
+                "address": "11858 NW 36TH AVE",
+                "zip": "33167",
+                "phone": "(305) 685-6608"
+            },
+            {
+                "_id": "6900a049512298cf01a92107",
+                "name": "COPART MIAMI NORTH",
+                "city": "MIAMI",
+                "address": "12850 NW 27TH AVE",
+                "zip": "33054",
+                "phone": "(305) 688-6400"
+            },
+            {
+                "_id": "6900a049512298cf01a92108",
+                "name": "COPART TALLAHASSEE",
+                "city": "MIDWAY",
+                "address": "1825 COMMERCE BLVD",
+                "zip": "32343",
+                "phone": "(850) 575-2075"
+            },
+            {
+                "_id": "6900a049512298cf01a92109",
+                "name": "COPART OCALA",
+                "city": "OCALA",
+                "address": "7100 NW 44 AVE",
+                "zip": "34482",
+                "phone": "(352) 732-5823"
+            },
+            {
+                "_id": "6900a049512298cf01a9210a",
+                "name": "COPART ORLANDO SOUTH",
+                "city": "ORLANDO",
+                "address": "307 EAST LANDSTREET ROAD",
+                "zip": "32824",
+                "phone": "(407) 251-9832"
+            },
+            {
+                "_id": "6900a049512298cf01a9210b",
+                "name": "COPART PUNTA GORDA",
+                "city": "PUNTA GORDA",
+                "address": "5017 DUNCAN ROAD",
+                "zip": "33982",
+                "phone": "(941) 505-9700"
+            },
+            {
+                "_id": "6900a049512298cf01a9210c",
+                "name": "COPART TAMPA SOUTH",
+                "city": "RIVERVIEW",
+                "address": "12020 US HIGHWAY 301 SOUTH",
+                "zip": "33578",
+                "phone": "(813) 671-5550"
+            },
+            {
+                "_id": "6900a049512298cf01a9210d",
+                "name": "COPART WEST PALM BEACH",
+                "city": "WEST PALM BEACH",
+                "address": "7876 W BELVEDERE ROAD",
+                "zip": "33411",
+                "phone": "(561) 798-5158"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b16",
+        "state": "HI",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9210e",
+                "name": "COPART HONOLULU",
+                "city": "KAPOLEI",
+                "address": "91-542 AWAKUMOKO ST",
+                "zip": "96707",
+                "phone": "(808) 682-8770"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b1a",
+        "state": "IN",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9210f",
+                "name": "COPART DYER",
+                "city": "DYER",
+                "address": "641 JOLIET ST",
+                "zip": "46311",
+                "phone": "(219) 209-6992"
+            },
+            {
+                "_id": "6900a049512298cf01a92110",
+                "name": "COPART CICERO",
+                "city": "CICERO",
+                "address": "1461 E 226TH STREET",
+                "zip": "46034",
+                "phone": "(317) 758-0280"
+            },
+            {
+                "_id": "6900a049512298cf01a92111",
+                "name": "COPART FORT WAYNE",
+                "city": "FORT WAYNE",
+                "address": "3600 E. WASHINGTON BLVD.",
+                "zip": "46803",
+                "phone": "(260) 333-1153"
+            },
+            {
+                "_id": "6900a049512298cf01a92112",
+                "name": "COPART HAMMOND",
+                "city": "HAMMOND",
+                "address": "1849 SUMMER ST",
+                "zip": "46320",
+                "phone": "(219) 932-0355"
+            },
+            {
+                "_id": "6900a049512298cf01a92113",
+                "name": "COPART HARTFORD CITY",
+                "city": "HARTFORD CITY",
+                "address": "696 EAST STATE ROAD 26",
+                "zip": "47348",
+                "phone": "(765) 348-4600"
+            },
+            {
+                "_id": "6900a049512298cf01a92114",
+                "name": "COPART INDIANAPOLIS",
+                "city": "INDIANAPOLIS",
+                "address": "4040 OFFICE PLAZA BLVD",
+                "zip": "46254",
+                "phone": "(317) 216-2186"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b1b",
+        "state": "KS",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92115",
+                "name": "COPART KANSAS CITY",
+                "city": "KANSAS CITY",
+                "address": "6211 KANSAS AVE",
+                "zip": "66111",
+                "phone": "(913) 287-6200"
+            },
+            {
+                "_id": "6900a049512298cf01a92116",
+                "name": "COPART WICHITA",
+                "city": "WICHITA",
+                "address": "4510 S MADISON",
+                "zip": "67216",
+                "phone": "(316) 554-0123"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b1c",
+        "state": "KY",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92117",
+                "name": "COPART LEXINGTON WEST",
+                "city": "LAWRENCEBURG",
+                "address": "1051 INDUSTRY ROAD",
+                "zip": "40342",
+                "phone": "(502) 859-0051"
+            },
+            {
+                "_id": "6900a049512298cf01a92118",
+                "name": "COPART LEXINGTON EAST",
+                "city": "LEXINGTON",
+                "address": "5801 KASP COURT",
+                "zip": "40509",
+                "phone": "(859) 264-7401"
+            },
+            {
+                "_id": "6900a049512298cf01a92119",
+                "name": "COPART EARLINGTON",
+                "city": "EARLINGTON",
+                "address": "700 N SANDCUT RD",
+                "zip": "42410",
+                "phone": "(859) 687-8699"
+            },
+            {
+                "_id": "6900a049512298cf01a9211a",
+                "name": "COPART LOUISVILLE",
+                "city": "LOUISVILLE",
+                "address": "3100 POND STATION RD",
+                "zip": "40272",
+                "phone": "(502) 361-1881"
+            },
+            {
+                "_id": "6900a049512298cf01a9211b",
+                "name": "COPART WALTON",
+                "city": "WALTON",
+                "address": "13273 DIXIE HIGHWAY",
+                "zip": "41094",
+                "phone": "(859) 356-4900"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b1d",
+        "state": "LA",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9211c",
+                "name": "COPART BATON ROUGE",
+                "city": "GREENWELL SPRINGS",
+                "address": "21595 GREENWELL SPRINGS RD",
+                "zip": "70739",
+                "phone": "(225) 261-0102"
+            },
+            {
+                "_id": "6900a049512298cf01a9211d",
+                "name": "COPART NEW ORLEANS",
+                "city": "NEW ORLEANS",
+                "address": "14600 OLD GENTILLY RD",
+                "zip": "70129",
+                "phone": "(504) 254-3944"
+            },
+            {
+                "_id": "6900a049512298cf01a9211e",
+                "name": "COPART SHREVEPORT",
+                "city": "SHREVEPORT",
+                "address": "5235 GREENWOOD RD",
+                "zip": "71109",
+                "phone": "(318) 636-4242"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b22",
+        "state": "MN",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9211f",
+                "name": "COPART ST. CLOUD",
+                "city": "AVON",
+                "address": "200 COUNTY ROAD 159",
+                "zip": "56310",
+                "phone": "(320) 356-2299"
+            },
+            {
+                "_id": "6900a049512298cf01a92120",
+                "name": "COPART MINNEAPOLIS",
+                "city": "BLAINE",
+                "address": "10588 CENTRAL AVE NE",
+                "zip": "55434",
+                "phone": "(763) 781-1025"
+            },
+            {
+                "_id": "6900a049512298cf01a92121",
+                "name": "COPART MINNEAPOLIS NORTH",
+                "city": "HAM LAKE",
+                "address": "1526 BUNKER LAKE BLVD",
+                "zip": "55304",
+                "phone": "(763) 772-0700"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b24",
+        "state": "MS",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92122",
+                "name": "COPART JACKSON",
+                "city": "FLORENCE",
+                "address": "205 S RANKIN INDUSTRIAL DRIVE",
+                "zip": "39073",
+                "phone": "(601) 939-7941"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b25",
+        "state": "MT",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92123",
+                "name": "COPART BILLINGS",
+                "city": "BILLINGS",
+                "address": "1090 ISLAND PARK RD",
+                "zip": "59101",
+                "phone": "(406) 254-7516"
+            },
+            {
+                "_id": "6900a049512298cf01a92124",
+                "name": "COPART HELENA",
+                "city": "HELENA",
+                "address": "3333 BOZEMAN AVENUE",
+                "zip": "59601",
+                "phone": "(406) 443-5060"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b29",
+        "state": "NE",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92125",
+                "name": "COPART LINCOLN",
+                "city": "GREENWOOD",
+                "address": "13603 238TH ST",
+                "zip": "68366",
+                "phone": "(402) 325-1283"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b2b",
+        "state": "NJ",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92126",
+                "name": "COPART GLASSBORO EAST",
+                "city": "GLASSBORO",
+                "address": "200 GROVE ST",
+                "zip": "08028",
+                "phone": "(856) 881-6700"
+            },
+            {
+                "_id": "6900a049512298cf01a92127",
+                "name": "COPART GLASSBORO WEST",
+                "city": "GLASSBORO",
+                "address": "781 JACOB HARRIS AVENUE",
+                "zip": "08028",
+                "phone": "(609) 888-6808"
+            },
+            {
+                "_id": "6900a049512298cf01a92128",
+                "name": "COPART SOMERVILLE",
+                "city": "HILLSBOROUGH",
+                "address": "2124 WEST CAMPLAIN ROAD",
+                "zip": "08844",
+                "phone": "(908) 541-2200"
+            },
+            {
+                "_id": "6900a049512298cf01a92129",
+                "name": "COPART TRENTON",
+                "city": "WINDSOR",
+                "address": "108 N MAIN STREET",
+                "zip": "08561",
+                "phone": "(609) 918-1720"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b31",
+        "state": "OK",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9212a",
+                "name": "COPART OKLAHOMA CITY",
+                "city": "OKLAHOMA CITY",
+                "address": "2829 SE 15TH STREET",
+                "zip": "73129",
+                "phone": "(405) 672-5674"
+            },
+            {
+                "_id": "6900a049512298cf01a9212b",
+                "name": "COPART TULSA",
+                "city": "TULSA",
+                "address": "2408 W 21ST STREET",
+                "zip": "74107",
+                "phone": "(918) 582-3828"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b18",
+        "state": "ID",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9212c",
+                "name": "COPART BOISE",
+                "city": "NAMPA",
+                "address": "3716 NORTH MIDDLETON ROAD",
+                "zip": "83651",
+                "phone": "(208) 463-4040"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b19",
+        "state": "IL",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9212d",
+                "name": "COPART SOUTHERN ILLINOIS",
+                "city": "ALORTON",
+                "address": "99 RACEHORSE DRIVE",
+                "zip": "62205",
+                "phone": "(618) 332-3115"
+            },
+            {
+                "_id": "6900a049512298cf01a9212e",
+                "name": "COPART CHICAGO SOUTH",
+                "city": "CHICAGO HEIGHTS",
+                "address": "89 E SAUK TRAIL",
+                "zip": "60411",
+                "phone": "(708) 755-0506"
+            },
+            {
+                "_id": "6900a049512298cf01a9212f",
+                "name": "COPART CHICAGO NORTH",
+                "city": "ELGIN",
+                "address": "1475 BLUFF CITY BLVD",
+                "zip": "60120",
+                "phone": "(630) 497-8343"
+            },
+            {
+                "_id": "6900a049512298cf01a92130",
+                "name": "COPART PEORIA",
+                "city": "PEKIN",
+                "address": "350 VETERANS DRIVE",
+                "zip": "61554",
+                "phone": "(309) 272-3733"
+            },
+            {
+                "_id": "6900a049512298cf01a92131",
+                "name": "COPART WHEELING",
+                "city": "WHEELING",
+                "address": "110 EAST PALATINE ROAD",
+                "zip": "60090",
+                "phone": "(847) 229-6150"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b2a",
+        "state": "NH",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92132",
+                "name": "COPART CANDIA",
+                "city": "CANDIA",
+                "address": "134 RAYMOND RD",
+                "zip": "03034",
+                "phone": "(603) 483-0371"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b30",
+        "state": "OH",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92133",
+                "name": "COPART CLEVELAND WEST",
+                "city": "COLUMBIA STATION",
+                "address": "34417 E ROYALTON ROAD",
+                "zip": "44028",
+                "phone": "(440) 748-8100"
+            },
+            {
+                "_id": "6900a049512298cf01a92134",
+                "name": "COPART COLOMBUS",
+                "city": "COLOMBUS",
+                "address": "1680 WILLIAMS ROAD",
+                "zip": "43207",
+                "phone": "(614) 497-1590"
+            },
+            {
+                "_id": "6900a049512298cf01a92135",
+                "name": "COPART DAYTON",
+                "city": "MORAINE",
+                "address": "4691 SPRINGBORO PIKE",
+                "zip": "45439",
+                "phone": "(937) 296-5371"
+            },
+            {
+                "_id": "6900a049512298cf01a92136",
+                "name": "COPART CLEVELAND EAST",
+                "city": "NORTHFIELD",
+                "address": "286 EAST TWINSBURG ROAD",
+                "zip": "44067",
+                "phone": "(330) 423-1080"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b33",
+        "state": "OR",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92137",
+                "name": "COPART EUGENE",
+                "city": "EUGENE",
+                "address": "29815 END ROAD EAST",
+                "zip": "97402",
+                "phone": "(541) 689-3533"
+            },
+            {
+                "_id": "6900a049512298cf01a92138",
+                "name": "COPART PORTLAND NORTH",
+                "city": "PORTLAND",
+                "address": "6900 NE CORNFOOT DRIVE",
+                "zip": "97218",
+                "phone": "(503) 281-0848"
+            },
+            {
+                "_id": "6900a049512298cf01a92139",
+                "name": "COPART PORTLAND SOUTH",
+                "city": "WOODBURN",
+                "address": "2885 NATIONAL WAY",
+                "zip": "97071",
+                "phone": "(503) 981-0038"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b36",
+        "state": "RI",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9213a",
+                "name": "COPART EXETER",
+                "city": "EXETER",
+                "address": "10 INDUSTRIAL DRIVE",
+                "zip": "02822",
+                "phone": "(401) 397-5711"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b39",
+        "state": "TX",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9213b",
+                "name": "COPART ABILENE",
+                "city": "ABILENE",
+                "address": "2630 FM ROAD #3034",
+                "zip": "79601",
+                "phone": "(325) 676-2996"
+            },
+            {
+                "_id": "6900a049512298cf01a9213c",
+                "name": "COPART AMARILLO",
+                "city": "AMARILLO",
+                "address": "3999 S LOOP 335 E",
+                "zip": "79118",
+                "phone": "(806) 335-3701"
+            },
+            {
+                "_id": "6900a049512298cf01a9213d",
+                "name": "COPART ANDREWS",
+                "city": "ANDREWS",
+                "address": "1975 SOUTH WEST 860",
+                "zip": "79714",
+                "phone": "(432) 524-6353"
+            },
+            {
+                "_id": "6900a049512298cf01a9213e",
+                "name": "COPART EL PASO",
+                "city": "ANTHONY",
+                "address": "501 VALLEY CHILI RD",
+                "zip": "79821",
+                "phone": "(915) 600-7145"
+            },
+            {
+                "_id": "6900a049512298cf01a9213f",
+                "name": "COPART CORPUS CHRISTI",
+                "city": "CORPUS CHRISTI",
+                "address": "3200 AGNES STREET",
+                "zip": "78405",
+                "phone": "(361) 884-9260"
+            },
+            {
+                "_id": "6900a049512298cf01a92140",
+                "name": "CRASHEDTOYS DALLAS",
+                "city": "DALLAS",
+                "address": "7777 JOHN W CARPENTER FREEWAY",
+                "zip": "75247",
+                "phone": "(214) 920-9664"
+            },
+            {
+                "_id": "6900a049512298cf01a92141",
+                "name": "COPART DALLAS",
+                "city": "GRAND PRAIRIE",
+                "address": "505 IDLEWILD ROAD",
+                "zip": "75051",
+                "phone": "(972) 263-2711"
+            },
+            {
+                "_id": "6900a049512298cf01a92142",
+                "name": "COPART HOUSTON EAST",
+                "city": "HOUSTON",
+                "address": "15706 BEAUMONT HWY",
+                "zip": "77049",
+                "phone": "(281) 407-2658"
+            },
+            {
+                "_id": "6900a049512298cf01a92143",
+                "name": "COPART FT. WORTH",
+                "city": "HASLET",
+                "address": "950 BLUE MOUND ROAD WEST",
+                "zip": "76052",
+                "phone": "(817) 231-4500"
+            },
+            {
+                "_id": "6900a049512298cf01a92144",
+                "name": "COPART HOUSTON",
+                "city": "HOUSTON",
+                "address": "1655 RANKIN ROAD",
+                "zip": "77073",
+                "phone": "(281) 214-7800"
+            },
+            {
+                "_id": "6900a049512298cf01a92145",
+                "name": "COPART LONGVIEW",
+                "city": "LONGVIEW",
+                "address": "3046 HIGHWAY 322 SOUTH",
+                "zip": "75603",
+                "phone": "(903) 643-9705"
+            },
+            {
+                "_id": "6900a049512298cf01a92146",
+                "name": "COPART LUFKIN",
+                "city": "LUFKIN",
+                "address": "3700 OLD UNION ROAD",
+                "zip": "75904",
+                "phone": "(936) 639-3558"
+            },
+            {
+                "_id": "6900a049512298cf01a92147",
+                "name": "COPART MCALLEN",
+                "city": "MERCEDES",
+                "address": "301 MILE 1 EAST",
+                "zip": "78570",
+                "phone": "(956) 514-4840"
+            },
+            {
+                "_id": "6900a049512298cf01a92148",
+                "name": "COPART AUSTIN",
+                "city": "NEW BRAUNFELS",
+                "address": "8725 N INTERSTATE 35",
+                "zip": "78130",
+                "phone": "(830) 625-2030"
+            },
+            {
+                "_id": "6900a049512298cf01a92149",
+                "name": "COPART SAN ANTONIO",
+                "city": "SAN ANTONIO",
+                "address": "11130 APPLEWHITE RD",
+                "zip": "78224",
+                "phone": "(210) 628-1690"
+            },
+            {
+                "_id": "6900a049512298cf01a9214a",
+                "name": "COPART WACO",
+                "city": "TEMPLE",
+                "address": "7201 N GENERAL BRUCE DR",
+                "zip": "76501",
+                "phone": "(254) 773-8924"
+            },
+            {
+                "_id": "6900a049512298cf01a9214b",
+                "name": "COPART DALLAS SOUTH",
+                "city": "WILMER",
+                "address": "1701 EAST BELTLINE RD",
+                "zip": "75172",
+                "phone": "(972) 525-6015"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b3c",
+        "state": "WA",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9214c",
+                "name": "COPART SPOKANE",
+                "city": "AIRWAY HEIGHTS",
+                "address": "11019 WEST MCFARLANE ROAD",
+                "zip": "99001",
+                "phone": "(509) 244-8585"
+            },
+            {
+                "_id": "6900a049512298cf01a9214d",
+                "name": "COPART NORTH SEATTLE",
+                "city": "ARLINGTON",
+                "address": "16701 51ST AVE NE",
+                "zip": "98223",
+                "phone": "(360) 651-6299"
+            },
+            {
+                "_id": "6900a049512298cf01a9214e",
+                "name": "COPART GRAHAM",
+                "city": "GRAHAM",
+                "address": "21421 MERIDIAN E",
+                "zip": "98338",
+                "phone": "(253) 847-8300"
+            },
+            {
+                "_id": "6900a049512298cf01a9214f",
+                "name": "COPART PASCO",
+                "city": "PASCO",
+                "address": "3333 N RAILROAD AVENUE",
+                "zip": "99301",
+                "phone": "(509) 547-1701"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b3d",
+        "state": "WI",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92150",
+                "name": "COPART APPLETON",
+                "city": "APPLETON",
+                "address": "2500 AMERICAN DRIVE",
+                "zip": "54914",
+                "phone": "(920) 830-2892"
+            },
+            {
+                "_id": "6900a049512298cf01a92151",
+                "name": "COPART MILWAUKEE NORTH",
+                "city": "MILWAUKEE",
+                "address": "9201 N 107TH ST",
+                "zip": "54914",
+                "phone": "(414) 219-0986"
+            },
+            {
+                "_id": "6900a049512298cf01a92152",
+                "name": "COPART MILWAUKEE",
+                "city": "CUDAHY",
+                "address": "4825 S WHITNALL AVE",
+                "zip": "53110",
+                "phone": "(414) 769-7665"
+            },
+            {
+                "_id": "6900a049512298cf01a92153",
+                "name": "COPART MADISON",
+                "city": "MADISON",
+                "address": "5448 LIEN ROAD",
+                "zip": "53718",
+                "phone": "(608) 249-3577"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b3e",
+        "state": "WV",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92154",
+                "name": "COPART CHARLESTON",
+                "city": "HURRICANE",
+                "address": "1746 US ROUTE 60",
+                "zip": "25526",
+                "phone": "(304) 562-2088"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b0f",
+        "state": "AZ",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92155",
+                "name": "COPART PHOENIX",
+                "city": "PHOENIX",
+                "address": "615 SO. 51ST AVENUE",
+                "zip": "85043",
+                "phone": "(602) 484-7075"
+            },
+            {
+                "_id": "6900a049512298cf01a92156",
+                "name": "COPART TUCSON",
+                "city": "TUCSON",
+                "address": "5600 S. ARCADIA AVENUE",
+                "zip": "85706",
+                "phone": "(520) 663-1900"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b12",
+        "state": "CT",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92157",
+                "name": "COPART HARTFORD",
+                "city": "NEW BRITAIN",
+                "address": "138 CHRISTIAN LANE",
+                "zip": "06051",
+                "phone": "(860) 666-1183"
+            },
+            {
+                "_id": "6900a049512298cf01a92158",
+                "name": "COPART HARTFORD SPRINGFIELD",
+                "city": "EAST GRANBY",
+                "address": "49 RUSSELL ROAD",
+                "zip": "06026",
+                "phone": "(860) 392-7700"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b13",
+        "state": "DE",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92159",
+                "name": "COPART SEAFORD",
+                "city": "SEAFORD",
+                "address": "26029 BETHEL CONCORD ROAD",
+                "zip": "19973",
+                "phone": "(302) 628-5412"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b1e",
+        "state": "MA",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9215a",
+                "name": "COPART SOUTH BOSTON",
+                "city": "MENDON",
+                "address": "82 CAPE ROAD",
+                "zip": "01756",
+                "phone": "(508) 473-4572"
+            },
+            {
+                "_id": "6900a049512298cf01a9215b",
+                "name": "COPART NORTH BOSTON",
+                "city": "NORTH BILLERICA",
+                "address": "55R HIGH ST",
+                "zip": "01682",
+                "phone": "(978) 667-6787"
+            },
+            {
+                "_id": "6900a049512298cf01a9215c",
+                "name": "COPART WEST WARREN",
+                "city": "WEST WARREN",
+                "address": "600 OLD WEST WARREN RD",
+                "zip": "01092",
+                "phone": "(413) 436-5013"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b1f",
+        "state": "MD",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9215d",
+                "name": "COPART BALTIMORE",
+                "city": "FINKSBURG",
+                "address": "2251 OLD WESTMINSTER PIKE",
+                "zip": "21048",
+                "phone": "(410) 871-9080"
+            },
+            {
+                "_id": "6900a049512298cf01a9215e",
+                "name": "COPART WASHINGTON DC",
+                "city": "WALDORF",
+                "address": "11055 BILLINGSLEY ROAD",
+                "zip": "20602",
+                "phone": "(301) 870-7844"
+            },
+            {
+                "_id": "6900a049512298cf01a9215f",
+                "name": "COPART BALTIMORE EAST",
+                "city": "BALTIMORE",
+                "address": "601 W PATAPSCO AVE",
+                "zip": "21225",
+                "phone": "(443) 589-5566"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b21",
+        "state": "MI",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92160",
+                "name": "COPART FLINT",
+                "city": "DAVISON",
+                "address": "5000 N STATE ROAD",
+                "zip": "48243",
+                "phone": "(810) 653-4161"
+            },
+            {
+                "_id": "6900a049512298cf01a92161",
+                "name": "COPART KINCHELOE",
+                "city": "KINCHELOE",
+                "address": "5030 W KINCHELOE ROAD",
+                "zip": "49788",
+                "phone": "(906) 542-4240"
+            },
+            {
+                "_id": "6900a049512298cf01a92162",
+                "name": "COPART LANSING",
+                "city": "LANSING",
+                "address": "3902 SOUTH CANAL RD",
+                "zip": "48917",
+                "phone": "(517) 322-2455"
+            },
+            {
+                "_id": "6900a049512298cf01a92163",
+                "name": "COPART IONIA",
+                "city": "PORTLAND",
+                "address": "8460 S STATE ROAD",
+                "zip": "48875",
+                "phone": "(616) 374-8818"
+            },
+            {
+                "_id": "6900a049512298cf01a92164",
+                "name": "COPART DETROIT",
+                "city": "WOODHAVEN",
+                "address": "21000 HAYDEN DRIVE",
+                "zip": "48183",
+                "phone": "(734) 365-0070"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b2c",
+        "state": "NM",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92165",
+                "name": "COPART ALBUQUERQUE",
+                "city": "ALBUQUERQUE",
+                "address": "7705 BROADWAY SE",
+                "zip": "87105",
+                "phone": "(505) 877-2424"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b2d",
+        "state": "NS",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92166",
+                "name": "COPART HALIFAX",
+                "city": "HALIFAX",
+                "address": "128 PARK ROAD",
+                "zip": "B2S 2L3",
+                "phone": "(902) 461-0238"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b2e",
+        "state": "NV",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92167",
+                "name": "COPART LAS VEGAS",
+                "city": "LAS VEGAS",
+                "address": "4810 N LAMB BLVD",
+                "zip": "89115",
+                "phone": "(702) 638-9300"
+            },
+            {
+                "_id": "6900a049512298cf01a92168",
+                "name": "COPART RENO",
+                "city": "RENO",
+                "address": "9915 N VIRGINIA STREET",
+                "zip": "89506",
+                "phone": "(775) 322-4377"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b2f",
+        "state": "NY",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92169",
+                "name": "COPART ALBANY",
+                "city": "ALBANY",
+                "address": "1916 CENTRAL AVE",
+                "zip": "12205",
+                "phone": "(518) 452-9313"
+            },
+            {
+                "_id": "6900a049512298cf01a9216a",
+                "name": "COPART BUFFALO",
+                "city": "ANGOLA",
+                "address": "8418 SOUTHWESTERN BLVD.",
+                "zip": "14006",
+                "phone": "(716) 800-3145"
+            },
+            {
+                "_id": "6900a049512298cf01a9216b",
+                "name": "COPART LONG ISLAND",
+                "city": "BROOKHAVEN",
+                "address": "1983 MONTAUK HIGHWAY",
+                "zip": "11719",
+                "phone": "(631) 776-0994"
+            },
+            {
+                "_id": "6900a049512298cf01a9216c",
+                "name": "COPART SYRACUSE",
+                "city": "CENTRAL SQUARE",
+                "address": "46 ZUK-PIERCE RD",
+                "zip": "13036",
+                "phone": "(315) 676-7153"
+            },
+            {
+                "_id": "6900a049512298cf01a9216d",
+                "name": "COPART ROCHESTER",
+                "city": "LEROY",
+                "address": "4 WEST AVE",
+                "zip": "14482",
+                "phone": "(585) 768-8160"
+            },
+            {
+                "_id": "6900a049512298cf01a9216e",
+                "name": "COPART NEWBURGH",
+                "city": "MARLBORO",
+                "address": "91 RIVERVIEW DRIVE",
+                "zip": "12542",
+                "phone": "(845) 236-3371"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b32",
+        "state": "ON",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a9216f",
+                "name": "COPART LONDON",
+                "city": "LONDON",
+                "address": "1809 GORE ROAD",
+                "zip": "N5W 6C8",
+                "phone": "(519) 451-0992"
+            },
+            {
+                "_id": "6900a049512298cf01a92170",
+                "name": "COPART TORONTO",
+                "city": "COURTICE",
+                "address": "175 OSBORNE ROAD",
+                "zip": "L1E 2R3",
+                "phone": "(905) 436-2045"
+            }
+        ]
+    },
+    {
+        "_id": "68f7db2f6606a2f5fcf83b3b",
+        "state": "VA",
+        "locations": [
+            {
+                "_id": "6900a049512298cf01a92171",
+                "name": "COPART RICHMOND EAST",
+                "city": "CHARLES CITY",
+                "address": "6300 CHAMBERS ROAD",
+                "zip": "23030",
+                "phone": "(804) 829-9160"
+            },
+            {
+                "_id": "6900a049512298cf01a92172",
+                "name": "COPART DANVILLE",
+                "city": "CHATHAM",
+                "address": "12360 US HWY 29",
+                "zip": "24531",
+                "phone": "(434) 473-6372"
+            },
+            {
+                "_id": "6900a049512298cf01a92173",
+                "name": "COPART FREDERICKSBURG",
+                "city": "FREDERICKSBURG",
+                "address": "4717 MASSAPONAX CHURCH ROAD",
+                "zip": "22408",
+                "phone": "(540) 595-3660"
+            },
+            {
+                "_id": "6900a049512298cf01a92174",
+                "name": "COPART HAMPTON",
+                "city": "HAMPTON",
+                "address": "16 NETTLES LANE",
+                "zip": "23666",
+                "phone": "(757) 766-2750"
+            },
+            {
+                "_id": "6900a049512298cf01a92175",
+                "name": "COPART RICHMOND",
+                "city": "SANDSTON",
+                "address": "5701 WHITESIDE RD",
+                "zip": "23150",
+                "phone": "(804) 328-1023"
+            }
+        ]
+    }
+]

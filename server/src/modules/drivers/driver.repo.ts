@@ -5,6 +5,7 @@
  */
 
 import { prisma } from '../../libs/db.js';
+import { auctionLocationService } from '../../libs/auction-location.js';
 import type { Driver, Location, DriverLocation } from '@prisma/client';
 
 /**
@@ -198,6 +199,7 @@ class DriverRepository {
      */
     async create(data: {
         phoneNumber: string;
+        driverNumber?: string;
         name?: string;
         companyName?: string;
         notes?: string;
@@ -213,9 +215,11 @@ class DriverRepository {
     async update(
         id: string,
         data: {
+            phoneNumber?: string;
             name?: string;
             companyName?: string;
             notes?: string;
+            driverNumber?: string;
         }
     ): Promise<Driver> {
         return prisma.driver.update({
@@ -270,6 +274,174 @@ class DriverRepository {
             withLocations,
             recentlyActive,
         };
+    }
+    /**
+     * Create a new driver with locations
+     */
+    async createWithLocations(data: {
+        phoneNumber: string;
+        driverNumber?: string;
+        name?: string;
+        companyName?: string;
+        notes?: string;
+        locations?: Array<{ name: string; address?: string }>;
+    }): Promise<Driver> {
+        return prisma.$transaction(async (tx) => {
+            // 1. Create Driver
+            const driver = await tx.driver.create({
+                data: {
+                    phoneNumber: data.phoneNumber,
+                    driverNumber: data.driverNumber,
+                    name: data.name,
+                    companyName: data.companyName,
+                    notes: data.notes,
+                },
+            });
+
+            // 2. Process Locations
+            if (data.locations && data.locations.length > 0) {
+                for (const loc of data.locations) {
+                    let location = await tx.location.findUnique({
+                        where: { name: loc.name },
+                    });
+
+                    if (!location) {
+                        // Try to match with auction location
+                        const auctionMatch = await auctionLocationService.matchAddress(loc.address || loc.name);
+
+                        location = await tx.location.create({
+                            data: {
+                                name: loc.name,
+                                address: loc.address,
+                                auctionName: auctionMatch?.auctionName || null,
+                                auctionType: auctionMatch?.auctionType || null,
+                                state: auctionMatch?.state || null,
+                                city: auctionMatch?.city || null,
+                                zipCode: auctionMatch?.zipCode || null,
+                            },
+                        });
+                    } else if (loc.address && location.address !== loc.address) {
+                        // Try to match with auction location if not already matched
+                        const auctionMatch = !location.auctionType
+                            ? await auctionLocationService.matchAddress(loc.address)
+                            : null;
+
+                        location = await tx.location.update({
+                            where: { id: location.id },
+                            data: {
+                                address: loc.address,
+                                ...(auctionMatch && {
+                                    auctionName: auctionMatch.auctionName,
+                                    auctionType: auctionMatch.auctionType,
+                                    state: auctionMatch.state,
+                                    city: auctionMatch.city,
+                                    zipCode: auctionMatch.zipCode,
+                                }),
+                            },
+                        });
+                    }
+
+                    await tx.driverLocation.create({
+                        data: {
+                            driverId: driver.id,
+                            locationId: location.id,
+                            source: 'manual',
+                        },
+                    });
+                }
+            }
+
+            return driver;
+        });
+    }
+
+    /**
+     * Update driver with locations
+     */
+    async updateWithLocations(
+        id: string,
+        data: {
+            phoneNumber?: string;
+            name?: string;
+            companyName?: string;
+            notes?: string;
+            driverNumber?: string;
+            locations?: Array<{ name: string; address?: string }>;
+        }
+    ): Promise<Driver> {
+        return prisma.$transaction(async (tx) => {
+            // 1. Update Driver
+            const driver = await tx.driver.update({
+                where: { id },
+                data: {
+                    phoneNumber: data.phoneNumber,
+                    name: data.name,
+                    companyName: data.companyName,
+                    notes: data.notes,
+                    driverNumber: data.driverNumber,
+                },
+            });
+
+            // 2. Update Locations if provided
+            if (data.locations) {
+                // Remove all existing links for this driver to sync with new list
+                await tx.driverLocation.deleteMany({
+                    where: { driverId: id },
+                });
+
+                for (const loc of data.locations) {
+                    let location = await tx.location.findUnique({
+                        where: { name: loc.name },
+                    });
+
+                    if (!location) {
+                        // Try to match with auction location
+                        const auctionMatch = await auctionLocationService.matchAddress(loc.address || loc.name);
+
+                        location = await tx.location.create({
+                            data: {
+                                name: loc.name,
+                                address: loc.address,
+                                auctionName: auctionMatch?.auctionName || null,
+                                auctionType: auctionMatch?.auctionType || null,
+                                state: auctionMatch?.state || null,
+                                city: auctionMatch?.city || null,
+                                zipCode: auctionMatch?.zipCode || null,
+                            },
+                        });
+                    } else if (loc.address && location.address !== loc.address) {
+                        // Try to match with auction location if not already matched
+                        const auctionMatch = !location.auctionType
+                            ? await auctionLocationService.matchAddress(loc.address)
+                            : null;
+
+                        location = await tx.location.update({
+                            where: { id: location.id },
+                            data: {
+                                address: loc.address,
+                                ...(auctionMatch && {
+                                    auctionName: auctionMatch.auctionName,
+                                    auctionType: auctionMatch.auctionType,
+                                    state: auctionMatch.state,
+                                    city: auctionMatch.city,
+                                    zipCode: auctionMatch.zipCode,
+                                }),
+                            },
+                        });
+                    }
+
+                    await tx.driverLocation.create({
+                        data: {
+                            driverId: driver.id,
+                            locationId: location.id,
+                            source: 'manual',
+                        },
+                    });
+                }
+            }
+
+            return driver;
+        });
     }
 }
 

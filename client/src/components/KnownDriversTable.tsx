@@ -1,15 +1,30 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Table, Card, Tag, message, Input, Button, Space } from 'antd';
+import { Table, Card, Tag, message, Input, Button, Space, Popconfirm } from 'antd';
 import type { TableProps, PaginationProps } from 'antd';
-import { SendOutlined, SearchOutlined } from '@ant-design/icons';
+import { SendOutlined, SearchOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from '../config';
 import { BulkMessageModal } from './BulkMessageModal';
+import { DriverFormModal } from './DriverFormModal';
+import { useDebounce } from '../hooks/useDebounce';
 
-// Interface matching the server response for DriverLocation
+// Interface matching the server response for Driver with grouped locations
 interface DriverLocation {
+    name: string;
+    auctionName: string | null;
+    auctionType: 'COPART' | 'IAAI' | null;
+    lastSeenAt: string;
+}
+
+interface Driver {
+    id: string;
     number: string;
-    location: string;
+    name: string | null;
+    driverNumber: string | null;
+    companyName: string | null;
+    notes: string | null;
+    locations: DriverLocation[];
     lastSeenAt: string;
     createdAt: string;
     updatedAt: string;
@@ -19,7 +34,7 @@ interface PaginatedApiResponse {
     success: true;
     message: string;
     data: {
-        items: DriverLocation[];
+        items: Driver[];
         pagination: {
             page: number;
             limit: number;
@@ -32,8 +47,9 @@ interface PaginatedApiResponse {
 }
 
 export const KnownDriversTable = () => {
+    const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
-    const [data, setData] = useState<DriverLocation[]>([]);
+    const [data, setData] = useState<Driver[]>([]);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
         current: 1,
@@ -41,14 +57,49 @@ export const KnownDriversTable = () => {
         total: 0,
     });
 
-    const [inputValue, setInputValue] = useState('');
-    const [zipValue, setZipValue] = useState('');
+    const [inputValue, setInputValue] = useState(searchParams.get('search') || '');
+    const [zipValue, setZipValue] = useState(searchParams.get('zip') || '');
+
+    const debouncedSearch = useDebounce(inputValue, 500);
+    const debouncedZip = useDebounce(zipValue, 500);
 
     // Selection state
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [editingDriver, setEditingDriver] = useState<Driver | null>(null);
 
-    // Get params from URL or use defaults
+    const handleDelete = async (id: string) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/drivers/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                message.success(t('drivers.delete_success'));
+                fetchDrivers();
+            } else {
+                message.error(t('common.error'));
+            }
+        } catch (error) {
+            message.error(t('common.error'));
+        }
+    };
+
+    const handleEdit = (driver: Driver) => {
+        const formData = {
+            id: driver.id,
+            phoneNumber: driver.number,
+            name: driver.name,
+            driverNumber: driver.driverNumber,
+            companyName: driver.companyName,
+            notes: driver.notes,
+            locations: driver.locations.map(loc => loc.auctionName || loc.name),
+        };
+        setEditingDriver(formData as unknown as Driver);
+        setIsCreateModalOpen(true);
+    };
+
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
     const searchText = searchParams.get('search') || '';
@@ -61,12 +112,11 @@ export const KnownDriversTable = () => {
             url.searchParams.set('page', page.toString());
             url.searchParams.set('limit', limit.toString());
 
-            // CRITICAL FIX: Send search query to server for server-side filtering
             if (searchText) {
                 url.searchParams.set('location', searchText);
             }
             if (zipText) {
-                url.searchParams.set('state', zipText); // Use dedicated state filter for precise state matching
+                url.searchParams.set('state', zipText);
             }
 
             const response = await fetch(url.toString());
@@ -80,26 +130,20 @@ export const KnownDriversTable = () => {
                     total: result.data.pagination.totalItems,
                 });
             } else {
-                message.error('Failed to fetch known drivers');
+                message.error(t('drivers.fetch_error'));
             }
         } catch (error) {
             console.error('Error fetching drivers:', error);
-            message.error('Error connecting to server');
+            message.error(t('common.error'));
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        // Clear existing data immediately when search params change
-        // This prevents showing stale results from previous searches
         setData([]);
         fetchDrivers();
     }, [page, limit, searchText, zipText]);
-
-    // REMOVED: Client-side filtering - now done on server
-    // const filteredData = data.filter(...);
-
 
     const handleTableChange: PaginationProps['onChange'] = (newPage, newPageSize) => {
         const params = new URLSearchParams(searchParams);
@@ -115,30 +159,38 @@ export const KnownDriversTable = () => {
         setZipValue(zipText);
     }, [searchText, zipText]);
 
-    const handleSearch = () => {
+    useEffect(() => {
+        applyFilters(debouncedSearch, debouncedZip);
+    }, [debouncedSearch, debouncedZip]);
+
+    const applyFilters = (newSearch?: string, newZip?: string) => {
         const params = new URLSearchParams(searchParams);
-        if (inputValue) {
-            params.set('search', inputValue);
+
+        // Use provided values or fall back to current state if undefined
+        // We need to be careful: if the argument is null/empty string, we should use that
+        // If the argument is undefined, we use the current state value
+
+        const finalSearch = newSearch !== undefined ? newSearch : inputValue;
+        const finalZip = newZip !== undefined ? newZip : zipValue;
+
+        if (finalSearch) {
+            params.set('search', finalSearch);
         } else {
             params.delete('search');
         }
-        params.delete('zip'); // Clear zip when searching generic
-        setZipValue(''); // specific UX choice: clear other input
+
+        if (finalZip) {
+            params.set('zip', finalZip);
+        } else {
+            params.delete('zip');
+        }
+
         params.set('page', '1');
         setSearchParams(params);
     };
 
-    const handleZipSearch = () => {
-        const params = new URLSearchParams(searchParams);
-        if (zipValue) {
-            params.set('zip', zipValue);
-        } else {
-            params.delete('zip');
-        }
-        params.delete('search'); // Clear search when searching zip
-        setInputValue(''); // specific UX choice: clear other input
-        params.set('page', '1');
-        setSearchParams(params);
+    const handleSearch = () => {
+        applyFilters(inputValue, zipValue);
     };
 
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -152,102 +204,169 @@ export const KnownDriversTable = () => {
 
     const handleBulkMessageSuccess = () => {
         setIsModalOpen(false);
-        setSelectedRowKeys([]); // Clear selection after queuing
+        setSelectedRowKeys([]);
     };
 
-    const columns: TableProps<DriverLocation>['columns'] = [
+    const handleCreateDriverSuccess = () => {
+        setIsCreateModalOpen(false);
+        fetchDrivers();
+    };
+
+    const columns: TableProps<Driver>['columns'] = [
         {
-            title: 'Number',
+            title: t('common.phone'),
             dataIndex: 'number',
             key: 'number',
+            width: 150,
+            render: (text) => <span style={{ fontWeight: 500 }}>{text}</span>,
             sorter: (a, b) => a.number.localeCompare(b.number),
         },
         {
-            title: 'Location',
-            dataIndex: 'location',
-            key: 'location',
-            render: (text) => <Tag color="blue">{text}</Tag>,
-            sorter: (a, b) => a.location.localeCompare(b.location),
+            title: t('common.company'),
+            dataIndex: 'companyName',
+            key: 'companyName',
+            width: 180,
+            render: (text) => text ? <span style={{ fontWeight: 500, color: '#1677ff' }}>{text}</span> : <span style={{ color: '#ccc' }}>-</span>,
+            sorter: (a, b) => (a.companyName || '').localeCompare(b.companyName || ''),
         },
         {
-            title: 'Last Seen',
-            dataIndex: 'lastSeenAt',
-            key: 'lastSeenAt',
-            render: (date) => new Date(date).toLocaleString(),
-            sorter: (a, b) => new Date(a.lastSeenAt).getTime() - new Date(b.lastSeenAt).getTime(),
-            defaultSortOrder: 'descend',
+            title: t('common.locations'),
+            dataIndex: 'locations',
+            key: 'locations',
+            width: '30%',
+            render: (locations: Driver['locations']) => (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                    {locations.map((loc, index) => {
+                        const displayName = loc.auctionName || loc.name;
+                        let color = 'default';
+                        if (loc.auctionType === 'COPART') color = 'blue';
+                        if (loc.auctionType === 'IAAI') color = 'red';
+
+                        return (
+                            <Tag
+                                key={index}
+                                color={color}
+                                style={{ borderRadius: '4px', border: 'none', padding: '0 6px', fontSize: '12px', lineHeight: '20px' }}
+                            >
+                                {displayName}
+                            </Tag>
+                        );
+                    })}
+                    {locations.length === 0 && <span style={{ color: '#ccc' }}>-</span>}
+                </div>
+            ),
+        },
+        {
+            title: t('common.notes'),
+            dataIndex: 'notes',
+            key: 'notes',
+            width: '30%',
+            ellipsis: true,
+            render: (text) => text || <span style={{ color: '#ccc' }}>-</span>,
+        },
+        {
+            title: t('common.actions'),
+            key: 'actions',
+            width: 110,
+            fixed: 'right',
+            align: 'center',
+            render: (_, record) => (
+                <Space size="small">
+                    <Button
+                        type="text"
+                        icon={<EditOutlined />}
+                        onClick={() => handleEdit(record)}
+                        style={{ color: '#1677ff' }}
+                    />
+                    <Popconfirm
+                        title={t('drivers.delete_confirm_title')}
+                        description={t('drivers.delete_confirm_desc')}
+                        onConfirm={() => handleDelete(record.id)}
+                        okText={t('common.yes')}
+                        cancelText={t('common.no')}
+                    >
+                        <Button type="text" danger icon={<DeleteOutlined />} />
+                    </Popconfirm>
+                </Space>
+            ),
         },
     ];
 
     return (
         <Card
-            title="Known Drivers (Active Locations)"
-            extra={
-                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            bordered={false}
+            style={{ borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}
+            bodyStyle={{ padding: '24px' }}
+        >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+                <div style={{ display: 'flex', gap: '16px', flex: 1, flexWrap: 'wrap' }}>
                     <div style={{ display: 'flex', gap: '8px' }}>
                         <Input
-                            placeholder="Search location/number..."
+                            size="large"
+                            placeholder={t('drivers.search_placeholder')}
+                            prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
                             value={inputValue}
-                            onChange={(e) => {
-                                const newValue = e.target.value;
-                                setInputValue(newValue);
-                                if (newValue === '') {
-                                    const params = new URLSearchParams(searchParams);
-                                    params.delete('search');
-                                    params.set('page', '1');
-                                    setSearchParams(params);
-                                }
-                            }}
+                            onChange={(e) => setInputValue(e.target.value)}
                             onPressEnter={handleSearch}
-                            style={{ width: 250 }}
+                            style={{ width: 320 }}
                             allowClear
                         />
-                        <Button icon={<SearchOutlined />} onClick={handleSearch}>
-                            Search
+                        <Button size="large" onClick={handleSearch} icon={<SearchOutlined />}>
+                            {t('common.search')}
                         </Button>
                     </div>
                     <div style={{ display: 'flex', gap: '8px' }}>
                         <Input
-                            placeholder="Search Zip..."
+                            size="large"
+                            placeholder={t('drivers.state_placeholder')}
                             value={zipValue}
-                            onChange={(e) => {
-                                const newValue = e.target.value;
-                                setZipValue(newValue);
-                                if (newValue === '') {
-                                    const params = new URLSearchParams(searchParams);
-                                    params.delete('zip');
-                                    params.set('page', '1');
-                                    setSearchParams(params);
-                                }
-                            }}
-                            onPressEnter={handleZipSearch}
-                            style={{ width: 150 }}
+                            onChange={(e) => setZipValue(e.target.value)}
+                            onPressEnter={handleSearch}
+                            style={{ width: 100 }}
                             allowClear
                         />
-                        <Button icon={<SearchOutlined />} onClick={handleZipSearch}>
-                            Zip
+                        <Button size="large" onClick={handleSearch}>
+                            {t('drivers.filter_state')}
                         </Button>
                     </div>
-                    <Space>
+                </div>
+
+                <Space size="middle">
+                    {selectedRowKeys.length > 0 && (
                         <Button
-                            type="primary"
+                            size="large"
                             icon={<SendOutlined />}
                             onClick={() => setIsModalOpen(true)}
-                            disabled={selectedRowKeys.length === 0}
                         >
-                            Send Message ({selectedRowKeys.length})
+                            {t('drivers.message_selected')} ({selectedRowKeys.length})
                         </Button>
-                        <Tag color="success">{pagination.total} Total</Tag>
-                    </Space>
-                </div>
-            }
-        >
+                    )}
+                    <Button
+                        type="primary"
+                        size="large"
+                        icon={<PlusOutlined />}
+                        onClick={() => {
+                            setEditingDriver(null);
+                            setIsCreateModalOpen(true);
+                        }}
+                        style={{ padding: '0 24px', fontWeight: 500 }}
+                    >
+                        {t('drivers.add_new')}
+                    </Button>
+                </Space>
+            </div>
+
             <Table
+                onRow={(record) => ({
+                    onDoubleClick: () => handleEdit(record),
+                    style: { cursor: 'pointer' }
+                })}
                 rowSelection={rowSelection}
                 columns={columns}
-                dataSource={data} // Changed from filteredData to data (server-side filtering)
-                rowKey="number" // Use phone number as unique key
+                dataSource={data}
+                rowKey="number"
                 loading={loading}
+                scroll={{ x: 1000 }}
                 pagination={{
                     current: pagination.current,
                     pageSize: pagination.pageSize,
@@ -256,7 +375,8 @@ export const KnownDriversTable = () => {
                     pageSizeOptions: ['10', '20', '50', '100'],
                     onChange: handleTableChange,
                     onShowSizeChange: handleTableChange,
-                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} drivers`,
+                    style: { marginTop: '24px', marginBottom: 0 }
                 }}
             />
 
@@ -265,6 +385,16 @@ export const KnownDriversTable = () => {
                 onCancel={() => setIsModalOpen(false)}
                 selectedNumbers={selectedRowKeys as string[]}
                 onSuccess={handleBulkMessageSuccess}
+            />
+
+            <DriverFormModal
+                open={isCreateModalOpen}
+                onCancel={() => {
+                    setIsCreateModalOpen(false);
+                    setEditingDriver(null);
+                }}
+                onSuccess={handleCreateDriverSuccess}
+                initialValues={editingDriver}
             />
         </Card>
     );

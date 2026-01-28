@@ -156,6 +156,7 @@ model Message {
 model Driver {
   id          String   @id @default(uuid())
   phoneNumber String   @unique @map("phone_number") // The driver's phone number in E.164 format
+  driverNumber String? @map("driver_number") // Manual driver number/ID
   name        String?  // Driver name if known
   companyName String?  @map("company_name") // Trucking company name if known
   notes       String?  @db.Text // Any notes about this driver
@@ -172,13 +173,16 @@ model Driver {
 }
 
 model Location {
-  id        String   @id @default(uuid())
-  name      String   @unique // e.g., "Miami, FL" or "NJ" or "Newark, NJ"
-  state     String?  // State abbreviation (FL, NJ, etc.)
-  city      String?  // City name if known
-  zipCode   String?  @map("zip_code")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id          String   @id @default(uuid())
+  name        String   @unique // e.g., "Miami, FL" or "NJ" or "Newark, NJ"
+  state       String?  // State abbreviation (FL, NJ, etc.)
+  city        String?  // City name if known
+  zipCode     String?  @map("zip_code")
+  address     String?  @db.Text // Full street address
+  auctionName String?  @map("auction_name") // Formatted display name from auction (e.g., "VA - HAMPTON" for Copart, "Shady Spring (WV)" for IAAI)
+  auctionType String?  @map("auction_type") // Auction house: "COPART", "IAAI", or null if not matched
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Relations
   drivers   DriverLocation[]
@@ -187,6 +191,7 @@ model Location {
   // Indexes
   @@index([name])
   @@index([state])
+  @@index([auctionType])
   @@map("locations")
 }
 

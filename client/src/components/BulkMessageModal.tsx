@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Modal, Form, Input, Button, message, Alert } from 'antd';
+import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from '../config';
 
 const { TextArea } = Input;
@@ -12,6 +13,7 @@ interface BulkMessageModalProps {
 }
 
 export const BulkMessageModal = ({ open, onCancel, selectedNumbers, onSuccess }: BulkMessageModalProps) => {
+    const { t } = useTranslation();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -39,12 +41,12 @@ export const BulkMessageModal = ({ open, onCancel, selectedNumbers, onSuccess }:
                 throw new Error(data.error?.message || 'Failed to queue messages');
             }
 
-            message.success(`${data.data.addedCount} messages queued successfully`);
+            message.success(t('common.success')); // Simplified
             form.resetFields();
             onSuccess();
         } catch (err: any) {
             console.error('Queue error:', err);
-            setError(err.message || 'An error occurred while queuing messages');
+            setError(err.message || t('common.error'));
         } finally {
             setLoading(false);
         }
@@ -52,12 +54,12 @@ export const BulkMessageModal = ({ open, onCancel, selectedNumbers, onSuccess }:
 
     return (
         <Modal
-            title="Send Bulk Message"
+            title={t('bulk_message.title')}
             open={open}
             onCancel={onCancel}
             footer={[
                 <Button key="cancel" onClick={onCancel}>
-                    Cancel
+                    {t('common.cancel')}
                 </Button>,
                 <Button
                     key="submit"
@@ -66,13 +68,13 @@ export const BulkMessageModal = ({ open, onCancel, selectedNumbers, onSuccess }:
                     onClick={handleOk}
                     disabled={selectedNumbers.length === 0}
                 >
-                    Queue Messages
+                    {t('bulk_message.queue_btn')}
                 </Button>,
             ]}
         >
             <Alert
-                message={`You are about to send a message to ${selectedNumbers.length} selected driver(s).`}
-                description="Messages will be sent at a rate of 1 per 20 seconds."
+                message={t('bulk_message.info', { count: selectedNumbers.length })}
+                description={t('bulk_message.rate_info')}
                 type="info"
                 showIcon
                 style={{ marginBottom: 16 }}
@@ -80,7 +82,7 @@ export const BulkMessageModal = ({ open, onCancel, selectedNumbers, onSuccess }:
 
             {error && (
                 <Alert
-                    message="Error"
+                    message={t('common.error')}
                     description={error}
                     type="error"
                     showIcon
@@ -91,12 +93,12 @@ export const BulkMessageModal = ({ open, onCancel, selectedNumbers, onSuccess }:
             <Form form={form} layout="vertical">
                 <Form.Item
                     name="content"
-                    label="Message Content"
-                    rules={[{ required: true, message: 'Please enter the message content' }]}
+                    label={t('bulk_message.content_label')}
+                    rules={[{ required: true, message: t('bulk_message.content_required') }]}
                 >
                     <TextArea
                         rows={4}
-                        placeholder="Enter your message here..."
+                        placeholder={t('bulk_message.content_placeholder')}
                         showCount
                         maxLength={1600}
                     />

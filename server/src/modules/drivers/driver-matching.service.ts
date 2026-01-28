@@ -328,7 +328,8 @@ class DriverMatchingService {
             where: { phoneNumber },
             create: {
                 phoneNumber,
-                // Name and company can be added later manually or via enrichment
+                companyName: '', // Initialize as empty string for manual entry later
+                notes: '', // Initialize as empty string for manual entry later
             },
             update: {
                 updatedAt: new Date(),

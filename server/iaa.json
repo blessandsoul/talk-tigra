@@ -1,0 +1,1870 @@
+[
+    {
+        "_id": "68fb7fa389ead26bcc637916",
+        "state": "TX",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92177",
+                "name": "Abilene (TX)",
+                "city": "Abilene",
+                "address": "7700 U.S. Hwy. 277 S.",
+                "zip": "79601",
+                "phone": "325-675-0699"
+            },
+            {
+                "_id": "6900a079512298cf01a92178",
+                "name": "Amarillo (TX)",
+                "city": "Amarillo",
+                "address": "11150 S. FM 1541",
+                "zip": "79118",
+                "phone": "806-622-1322"
+            },
+            {
+                "_id": "6900a079512298cf01a92179",
+                "name": "Austin (TX)",
+                "city": "Dale",
+                "address": "2191 Highway 21 West",
+                "zip": "78616",
+                "phone": "512-321-8075"
+            },
+            {
+                "_id": "6900a079512298cf01a9217a",
+                "name": "Austin North (TX)",
+                "city": "Florence",
+                "address": "23010 Firefly Rd",
+                "zip": "76527",
+                "phone": "254-970-0575"
+            },
+            {
+                "_id": "6900a079512298cf01a9217b",
+                "name": "Corpus Christi (TX)",
+                "city": "Corpus Christi",
+                "address": "4701 Agnes St.",
+                "zip": "78405",
+                "phone": "361-881-9555"
+            },
+            {
+                "_id": "6900a079512298cf01a9217c",
+                "name": "Dallas (TX)",
+                "city": "Wilmer",
+                "address": "204 Mars Rd.",
+                "zip": "75172",
+                "phone": "972-525-6401"
+            },
+            {
+                "_id": "6900a079512298cf01a9217d",
+                "name": "Dallas/Ft Worth (TX)",
+                "city": "Grand Prairie",
+                "address": "4226 E Main St.",
+                "zip": "75050",
+                "phone": "972-522-5000"
+            },
+            {
+                "_id": "6900a079512298cf01a9217e",
+                "name": "El Paso (TX)",
+                "city": "El Paso",
+                "address": "14751 Marina Ave",
+                "zip": "79938",
+                "phone": "915-852-2469"
+            },
+            {
+                "_id": "6900a079512298cf01a9217f",
+                "name": "Fort Worth North (TX)",
+                "city": "Justin",
+                "address": "3748 McPherson Dr.",
+                "zip": "76247",
+                "phone": "940-648-5541"
+            },
+            {
+                "_id": "6900a079512298cf01a92180",
+                "name": "Houston (TX)",
+                "city": "Houston",
+                "address": "2535 W. Mount Houston Rd.",
+                "zip": "77038",
+                "phone": "281-847-4700"
+            },
+            {
+                "_id": "6900a079512298cf01a92181",
+                "name": "Houston South (TX)",
+                "city": "Rosharon",
+                "address": "2839 E. FM 1462 Rd.",
+                "zip": "77583",
+                "phone": "281-369-1010"
+            },
+            {
+                "_id": "6900a079512298cf01a92182",
+                "name": "Houston-North (TX)",
+                "city": "Houston",
+                "address": "16602 E Hardy Rd.",
+                "zip": "77032",
+                "phone": "281-443-1300"
+            },
+            {
+                "_id": "6900a079512298cf01a92183",
+                "name": "Longview (TX)",
+                "city": "Longview",
+                "address": "5577 E. U.S. Highway 80",
+                "zip": "75605",
+                "phone": "903-553-9248"
+            },
+            {
+                "_id": "6900a079512298cf01a92184",
+                "name": "Lubbock (TX)",
+                "city": "Lubbock",
+                "address": "5311 N. County Road 2000",
+                "zip": "79415",
+                "phone": "806-747-5458"
+            },
+            {
+                "_id": "6900a079512298cf01a92185",
+                "name": "McAllen (TX)",
+                "city": "Donna",
+                "address": "900 N. Hutto Rd.",
+                "zip": "78537",
+                "phone": "956-464-8393"
+            },
+            {
+                "_id": "6900a079512298cf01a92186",
+                "name": "Permian Basin (TX)",
+                "city": "Odessa",
+                "address": "701 W. 81st St.",
+                "zip": "79764",
+                "phone": "432-550-7277"
+            },
+            {
+                "_id": "6900a079512298cf01a92187",
+                "name": "San Antonio-South (TX)",
+                "city": "San Antonio",
+                "address": "11275 S. Zarzamora St.",
+                "zip": "78224",
+                "phone": "210-628-6770"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637917",
+        "state": "CA",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92188",
+                "name": "ACE - Carson (CA)",
+                "city": "Gardena",
+                "address": "16920 S. Figueroa St.",
+                "zip": "90248",
+                "phone": "310-217-5200"
+            },
+            {
+                "_id": "6900a079512298cf01a92189",
+                "name": "ACE - Perris (CA)",
+                "city": "Perris",
+                "address": "495 Harley Knox Blvd.",
+                "zip": "92571",
+                "phone": "951-657-4027"
+            },
+            {
+                "_id": "6900a079512298cf01a9218a",
+                "name": "ACE - Perris 2 (CA)",
+                "city": "Perris",
+                "address": "775 Harley Knox Blvd.",
+                "zip": "92571",
+                "phone": "951-657-4027"
+            },
+            {
+                "_id": "6900a079512298cf01a9218b",
+                "name": "Anaheim (CA)",
+                "city": "Anaheim",
+                "address": "2961 E La Jolla St.",
+                "zip": "92806",
+                "phone": "714-630-5602"
+            },
+            {
+                "_id": "6900a079512298cf01a9218c",
+                "name": "Anaheim Consolidated (CA)",
+                "city": "Anaheim",
+                "address": "2961 E. La Jolla St.",
+                "zip": "92806",
+                "phone": "714-630-5602"
+            },
+            {
+                "_id": "6900a079512298cf01a9218d",
+                "name": "East Bay (CA)",
+                "city": "Bay Point",
+                "address": "2780 Willow Pass Rd.",
+                "zip": "94565",
+                "phone": "925-458-7610"
+            },
+            {
+                "_id": "6900a079512298cf01a9218e",
+                "name": "Fontana (CA)",
+                "city": "Fontana",
+                "address": "9951 Banana Ave.",
+                "zip": "92335",
+                "phone": "909-355-9400"
+            },
+            {
+                "_id": "6900a079512298cf01a9218f",
+                "name": "Fremont (CA)",
+                "city": "Fremont",
+                "address": "6700 Stevenson Blvd.",
+                "zip": "94538",
+                "phone": "510-658-1665"
+            },
+            {
+                "_id": "6900a079512298cf01a92190",
+                "name": "Fresno (CA)",
+                "city": "Fresno",
+                "address": "1805 N. Lafayette Ave.",
+                "zip": "93705",
+                "phone": "559-264-5033"
+            },
+            {
+                "_id": "6900a079512298cf01a92191",
+                "name": "High Desert (CA)",
+                "city": "Hesperia",
+                "address": "11385 G Ave.",
+                "zip": "92345",
+                "phone": "760-949-8404"
+            },
+            {
+                "_id": "6900a079512298cf01a92192",
+                "name": "Los Angeles (CA)",
+                "city": "Gardena",
+                "address": "18300 S. Vermont Ave.",
+                "zip": "90248",
+                "phone": "310-965-0499"
+            },
+            {
+                "_id": "6900a079512298cf01a92193",
+                "name": "Los Angeles South (CA)",
+                "city": "Wilmington",
+                "address": "1903 Blinn Ave.",
+                "zip": "90744",
+                "phone": "562-378-0330"
+            },
+            {
+                "_id": "6900a079512298cf01a92194",
+                "name": "North Hollywood (CA)",
+                "city": "North Hollywood",
+                "address": "7245 Laurel Canyon Blvd.",
+                "zip": "91605",
+                "phone": "818-487-2222"
+            },
+            {
+                "_id": "6900a079512298cf01a92195",
+                "name": "Riverside (CA)",
+                "city": "Riverside",
+                "address": "3600 Pyrite St",
+                "zip": "92509-1103",
+                "phone": "909-697-5784"
+            },
+            {
+                "_id": "6900a079512298cf01a92196",
+                "name": "Sacramento (CA)",
+                "city": "Rancho Cordova",
+                "address": "11499 Douglas Rd.",
+                "zip": "95742",
+                "phone": "916-635-4271"
+            },
+            {
+                "_id": "6900a079512298cf01a92197",
+                "name": "Sacramento West (CA)",
+                "city": "Dixon",
+                "address": "6734 Midway Rd",
+                "zip": "95620",
+                "phone": "707-640-1240"
+            },
+            {
+                "_id": "6900a079512298cf01a92198",
+                "name": "San Diego (CA)",
+                "city": "San Diego",
+                "address": "2380 Britannia Blvd.",
+                "zip": "92154",
+                "phone": "619-710-2866"
+            },
+            {
+                "_id": "6900a079512298cf01a92199",
+                "name": "Santa Clarita (CA)",
+                "city": "Santa Clarita",
+                "address": "14320 Soledad Canyon Rd",
+                "zip": "91387",
+                "phone": "818-655-0279"
+            },
+            {
+                "_id": "6900a079512298cf01a9219a",
+                "name": "Stockton (CA)",
+                "city": "Stockton",
+                "address": "3235 Newton Road",
+                "zip": "95205",
+                "phone": "209-251-2047"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637918",
+        "state": "OH",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9219b",
+                "name": "Akron-Canton (OH)",
+                "city": "New Philadelphia",
+                "address": "2932 State Route 259 S.E.",
+                "zip": "44663",
+                "phone": "330-339-1995"
+            },
+            {
+                "_id": "6900a079512298cf01a9219c",
+                "name": "Cincinnati (OH)",
+                "city": "West Chester",
+                "address": "10100 Windisch Rd.",
+                "zip": "45069",
+                "phone": "513-779-0075"
+            },
+            {
+                "_id": "6900a079512298cf01a9219d",
+                "name": "Cincinnati-South (OH)",
+                "city": "Amelia",
+                "address": "1736 Lindale Mount Holly Rd.",
+                "zip": "45102",
+                "phone": "513-779-0075"
+            },
+            {
+                "_id": "6900a079512298cf01a9219e",
+                "name": "Cleveland (OH)",
+                "city": "Lorain",
+                "address": "7437 Deer Trail Ln.",
+                "zip": "44053",
+                "phone": "440-960-1050"
+            },
+            {
+                "_id": "6900a079512298cf01a9219f",
+                "name": "Columbus (OH)",
+                "city": "Grove City",
+                "address": "1601 Thrailkill Road",
+                "zip": "43123",
+                "phone": "614-875-7484"
+            },
+            {
+                "_id": "6900a079512298cf01a921a0",
+                "name": "Dayton (OH)",
+                "city": "Dayton",
+                "address": "400 Cherokee Dr.",
+                "zip": "45417",
+                "phone": "937-268-6666"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637919",
+        "state": "NY",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921a1",
+                "name": "Albany (NY)",
+                "city": "Schenectady",
+                "address": "1210 Kings Rd.",
+                "zip": "12303",
+                "phone": "518-347-3810"
+            },
+            {
+                "_id": "6900a079512298cf01a921a2",
+                "name": "Buffalo (NY)",
+                "city": "Buffalo",
+                "address": "366 Vulcan St.",
+                "zip": "14207",
+                "phone": "716-874-9890"
+            },
+            {
+                "_id": "6900a079512298cf01a921a3",
+                "name": "Long Island (NY)",
+                "city": "Medford",
+                "address": "66 Peconic Ave.",
+                "zip": "11763",
+                "phone": "631-207-3477"
+            },
+            {
+                "_id": "6900a079512298cf01a921a4",
+                "name": "Monticello (NY)",
+                "city": "Monticello",
+                "address": "65 Kaufman Rd",
+                "zip": "12701",
+                "phone": "845-513-3416"
+            },
+            {
+                "_id": "6900a079512298cf01a921a5",
+                "name": "Newburgh (NY)",
+                "city": "Rock Tavern",
+                "address": "39 Stone Castle Rd",
+                "zip": "12575",
+                "phone": "845-567-6360"
+            },
+            {
+                "_id": "6900a079512298cf01a921a6",
+                "name": "Rochester (NY)",
+                "city": "Bergen",
+                "address": "7149 Appletree Ave.",
+                "zip": "14416",
+                "phone": "585-494-2185"
+            },
+            {
+                "_id": "6900a079512298cf01a921a7",
+                "name": "Staten Island (NY)",
+                "city": "Staten Island",
+                "address": "1900 South Avenue",
+                "zip": "10314",
+                "phone": "718-304-7671"
+            },
+            {
+                "_id": "6900a079512298cf01a921a8",
+                "name": "Syracuse (NY)",
+                "city": "Cicero",
+                "address": "8459 Brewerton Rd.",
+                "zip": "13099",
+                "phone": "315-699-2622"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63791a",
+        "state": "NM",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921a9",
+                "name": "Albuquerque (NM)",
+                "city": "Albuquerque",
+                "address": "4400 Broadway Blvd. S.E.",
+                "zip": "87105",
+                "phone": "505-873-2081"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63791b",
+        "state": "PA",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921aa",
+                "name": "Altoona (PA)",
+                "city": "East Freedom",
+                "address": "15369 Dunnings Hwy.",
+                "zip": "16637",
+                "phone": "814-695-4776"
+            },
+            {
+                "_id": "6900a079512298cf01a921ab",
+                "name": "Bridgeport (PA)",
+                "city": "Bridgeport",
+                "address": "396 E. Schuylkill River Rd.",
+                "zip": "19405",
+                "phone": "610-279-7123"
+            },
+            {
+                "_id": "6900a079512298cf01a921ac",
+                "name": "Erie (PA)",
+                "city": "Garland",
+                "address": "261 Hamilton Road",
+                "zip": "16416",
+                "phone": "814-563-3113"
+            },
+            {
+                "_id": "6900a079512298cf01a921ad",
+                "name": "Philadelphia (PA)",
+                "city": "Conshohocken",
+                "address": "100 Industrial Way",
+                "zip": "19428",
+                "phone": "610-277-0894"
+            },
+            {
+                "_id": "6900a079512298cf01a921ae",
+                "name": "Pittsburgh (PA)",
+                "city": "Aliquippa",
+                "address": "57 Woodlawn Rd.",
+                "zip": "15001",
+                "phone": "724-375-6130"
+            },
+            {
+                "_id": "6900a079512298cf01a921af",
+                "name": "Pittsburgh-North (PA)",
+                "city": "Gibsonia",
+                "address": "49 Bairdford Rd.",
+                "zip": "15044",
+                "phone": "724-443-7881"
+            },
+            {
+                "_id": "6900a079512298cf01a921b0",
+                "name": "Scranton (PA)",
+                "city": "Pittston",
+                "address": "103 Thompson St.",
+                "zip": "18640",
+                "phone": "570-654-1709"
+            },
+            {
+                "_id": "6900a079512298cf01a921b1",
+                "name": "York Springs (PA)",
+                "city": "York Springs",
+                "address": "10 Auction Dr.",
+                "zip": "17372",
+                "phone": "717-528-4336"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63791c",
+        "state": "AK",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921b2",
+                "name": "Anchorage (AK)",
+                "city": "Wasilla",
+                "address": "1446 W. Mystery Ave",
+                "zip": "99654",
+                "phone": "907-312-5580"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63791d",
+        "state": "WI",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921b3",
+                "name": "Appleton (WI)",
+                "city": "Appleton",
+                "address": "2591 S. Casaloma Dr.",
+                "zip": "54914",
+                "phone": "920-734-1446"
+            },
+            {
+                "_id": "6900a079512298cf01a921b4",
+                "name": "Milwaukee (WI)",
+                "city": "Sussex",
+                "address": "N70W25277 Indian Grass Ln.",
+                "zip": "53089",
+                "phone": "262-246-8822"
+            },
+            {
+                "_id": "6900a079512298cf01a921b5",
+                "name": "Portage (WI)",
+                "city": "Portage",
+                "address": "W10321 State Road 16",
+                "zip": "53901",
+                "phone": "608-742-1515"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63791e",
+        "state": "NC",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921b6",
+                "name": "Asheville (NC)",
+                "city": "Fletcher",
+                "address": "4900 Hendersonville Rd.",
+                "zip": "28732",
+                "phone": "828-684-1564"
+            },
+            {
+                "_id": "6900a079512298cf01a921b7",
+                "name": "Charlotte (NC)",
+                "city": "Charlotte",
+                "address": "1710 Starita Rd.",
+                "zip": "28206",
+                "phone": "704-596-5854"
+            },
+            {
+                "_id": "6900a079512298cf01a921b8",
+                "name": "Concord (NC)",
+                "city": "Concord",
+                "address": "5100 Merle Rd.",
+                "zip": "28025",
+                "phone": "704-788-4421"
+            },
+            {
+                "_id": "6900a079512298cf01a921b9",
+                "name": "Greensboro (NC)",
+                "city": "Graham",
+                "address": "171 Carden Rd.",
+                "zip": "27253",
+                "phone": "336-226-4224"
+            },
+            {
+                "_id": "6900a079512298cf01a921ba",
+                "name": "High Point (NC)",
+                "city": "High Point",
+                "address": "6695 Auction Road",
+                "zip": "27263",
+                "phone": "336-421-2013"
+            },
+            {
+                "_id": "6900a079512298cf01a921bb",
+                "name": "Raleigh (NC)",
+                "city": "Clayton",
+                "address": "60 Sadisco Rd.",
+                "zip": "27520",
+                "phone": "919-553-6148"
+            },
+            {
+                "_id": "6900a079512298cf01a921bc",
+                "name": "Wilmington (NC)",
+                "city": "Castle Hayne",
+                "address": "415 Madeline Trask Dr.",
+                "zip": "28429",
+                "phone": "910-675-2311"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63791f",
+        "state": "KY",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921bd",
+                "name": "Ashland (KY)",
+                "city": "Ashland",
+                "address": "123 Four Wheel Dr.",
+                "zip": "41102",
+                "phone": "606-928-1234"
+            },
+            {
+                "_id": "6900a079512298cf01a921be",
+                "name": "Bowling Green (KY)",
+                "city": "Bowling Green",
+                "address": "710 Woodford Ave.",
+                "zip": "42101",
+                "phone": "270-843-3555"
+            },
+            {
+                "_id": "6900a079512298cf01a921bf",
+                "name": "Louisville North (KY)",
+                "city": "Eminence",
+                "address": "891 Ballerdsville Rd.",
+                "zip": "40019",
+                "phone": "502-215-4804"
+            },
+            {
+                "_id": "6900a079512298cf01a921c0",
+                "name": "Paducah (KY)",
+                "city": "Paducah",
+                "address": "1701 Lane Rd.",
+                "zip": "42003",
+                "phone": "270-443-8565"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637920",
+        "state": "GA",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921c1",
+                "name": "Atlanta (GA)",
+                "city": "Loganville",
+                "address": "125 Old Highway 138",
+                "zip": "30052",
+                "phone": "770-784-5767"
+            },
+            {
+                "_id": "6900a079512298cf01a921c2",
+                "name": "Atlanta East (GA)",
+                "city": "Winder",
+                "address": "1045 Atlanta Hwy. SE",
+                "zip": "30680",
+                "phone": "770-868-4544"
+            },
+            {
+                "_id": "6900a079512298cf01a921c3",
+                "name": "Atlanta North (GA)",
+                "city": "Acworth",
+                "address": "6242 BlackAcre Trl. N.W.",
+                "zip": "30101",
+                "phone": "770-975-1107"
+            },
+            {
+                "_id": "6900a079512298cf01a921c4",
+                "name": "Atlanta South (GA)",
+                "city": "Lake City",
+                "address": "1930 Rex Rd.",
+                "zip": "30260",
+                "phone": "404-366-2298"
+            },
+            {
+                "_id": "6900a079512298cf01a921c5",
+                "name": "Atlanta West (GA)",
+                "city": "Rockmart",
+                "address": "1871 Rome Hwy",
+                "zip": "30153",
+                "phone": "470-598-3740"
+            },
+            {
+                "_id": "6900a079512298cf01a921c6",
+                "name": "Lake City (GA)",
+                "city": "Lake City",
+                "address": "5670 N Pkway",
+                "zip": "30260",
+                "phone": "404-777-1587"
+            },
+            {
+                "_id": "6900a079512298cf01a921c7",
+                "name": "Macon (GA)",
+                "city": "Macon",
+                "address": "2200 Trade Dr.",
+                "zip": "31217",
+                "phone": "478-314-0031"
+            },
+            {
+                "_id": "6900a079512298cf01a921c8",
+                "name": "Savannah (GA)",
+                "city": "Rincon",
+                "address": "348 Commerce Dr.",
+                "zip": "31326",
+                "phone": "912-826-1219"
+            },
+            {
+                "_id": "6900a079512298cf01a921c9",
+                "name": "Tifton (GA)",
+                "city": "Tifton",
+                "address": "368 Oakridge Church Rd.",
+                "zip": "31794",
+                "phone": "229-386-2640"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637921",
+        "state": "NJ",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921ca",
+                "name": "Avenel New Jersey (NJ)",
+                "city": "Avenel",
+                "address": "87 Randolph Ave.",
+                "zip": "07001",
+                "phone": "732-499-6802"
+            },
+            {
+                "_id": "6900a079512298cf01a921cb",
+                "name": "Central New Jersey (NJ)",
+                "city": "Morganville",
+                "address": "426 Texas Rd.",
+                "zip": "07751",
+                "phone": "732-591-8173"
+            },
+            {
+                "_id": "6900a079512298cf01a921cc",
+                "name": "Englishtown (NJ)",
+                "city": "Manalapan",
+                "address": "230 Pension Rd.",
+                "zip": "07726",
+                "phone": "732-634-5601"
+            },
+            {
+                "_id": "6900a079512298cf01a921cd",
+                "name": "Port Murray (NJ)",
+                "city": "Port Murray",
+                "address": "985 Rt 57",
+                "zip": "07865",
+                "phone": "908-857-4720"
+            },
+            {
+                "_id": "6900a079512298cf01a921ce",
+                "name": "Sayreville (NJ)",
+                "city": "Sayreville",
+                "address": "580 Jernee Mill Rd.",
+                "zip": "08872",
+                "phone": "732-238-4006"
+            },
+            {
+                "_id": "6900a079512298cf01a921cf",
+                "name": "Southern New Jersey (NJ)",
+                "city": "Turnersville",
+                "address": "250 Blackwood Bamsboro Rd.",
+                "zip": "08012",
+                "phone": "856-227-8760"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637922",
+        "state": "MD",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921d0",
+                "name": "Baltimore (MD)",
+                "city": "Baltimore",
+                "address": "3131 Hawkins Point Rd.",
+                "zip": "21226",
+                "phone": "410-354-3344"
+            },
+            {
+                "_id": "6900a079512298cf01a921d1",
+                "name": "Dundalk (MD)",
+                "city": "Dundalk",
+                "address": "8143 Beachwood Rd.",
+                "zip": "21222",
+                "phone": "410-919-9763"
+            },
+            {
+                "_id": "6900a079512298cf01a921d2",
+                "name": "Elkton (MD)",
+                "city": "Elkton",
+                "address": "183 Zeitler Rd",
+                "zip": "21921",
+                "phone": "410-695-4477"
+            },
+            {
+                "_id": "6900a079512298cf01a921d3",
+                "name": "Metro DC (MD)",
+                "city": "Brandywine",
+                "address": "14149 Brandywine Rd.",
+                "zip": "20613",
+                "phone": "301-372-8876"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637923",
+        "state": "LA",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921d4",
+                "name": "Baton Rouge (LA)",
+                "city": "Carville",
+                "address": "5978 Highway 75",
+                "zip": "70721",
+                "phone": "225-686-9197"
+            },
+            {
+                "_id": "6900a079512298cf01a921d5",
+                "name": "Lafayette (LA)",
+                "city": "Scott",
+                "address": "425 Highway 93 N",
+                "zip": "70583",
+                "phone": "337-896-3829"
+            },
+            {
+                "_id": "6900a079512298cf01a921d6",
+                "name": "New Orleans East (LA)",
+                "city": "New Orleans",
+                "address": "6600 Almonaster Ave.",
+                "zip": "70126",
+                "phone": "504-240-2298"
+            },
+            {
+                "_id": "6900a079512298cf01a921d7",
+                "name": "Shreveport (LA)",
+                "city": "Greenwood",
+                "address": "4836 McGee Rd.",
+                "zip": "71033",
+                "phone": "318-938-5108"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637924",
+        "state": "MT",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921d8",
+                "name": "Billings (MT)",
+                "city": "Billings",
+                "address": "75 Cerise Rd.",
+                "zip": "59101",
+                "phone": "406-259-2377"
+            },
+            {
+                "_id": "6900a079512298cf01a921d9",
+                "name": "Missoula (MT)",
+                "city": "Missoula",
+                "address": "10131 Garrymore Ln.",
+                "zip": "59808",
+                "phone": "406-542-3442"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637925",
+        "state": "AL",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921da",
+                "name": "Birmingham (AL)",
+                "city": "Bessemer",
+                "address": "1600 Highway 150",
+                "zip": "35022",
+                "phone": "205-426-2300"
+            },
+            {
+                "_id": "6900a079512298cf01a921db",
+                "name": "Dothan (AL)",
+                "city": "Headland",
+                "address": "15994 U S. Highway 431 N.",
+                "zip": "36345",
+                "phone": "334-693-4910"
+            },
+            {
+                "_id": "6900a079512298cf01a921dc",
+                "name": "Huntsville (AL)",
+                "city": "Athens",
+                "address": "16326 Ennis Rd.",
+                "zip": "35613",
+                "phone": "256-233-5899"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637926",
+        "state": "ID",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921dd",
+                "name": "Boise (ID)",
+                "city": "Meridian",
+                "address": "1881 W. Marcon Ln.",
+                "zip": "83642",
+                "phone": "208-887-3783"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637927",
+        "state": "MA",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921de",
+                "name": "Boston Shirley (MA)",
+                "city": "Shirley",
+                "address": "2 Going Rd.",
+                "zip": "01464",
+                "phone": "978-425-0990"
+            },
+            {
+                "_id": "6900a079512298cf01a921df",
+                "name": "Taunton (MA)",
+                "city": "East Taunton",
+                "address": "580 Myricks St",
+                "zip": "02718",
+                "phone": "508-823-7440"
+            },
+            {
+                "_id": "6900a079512298cf01a921e0",
+                "name": "Templeton (MA)",
+                "city": "Templeton",
+                "address": "223 Baldwinville Rd.",
+                "zip": "01468",
+                "phone": "978-652-4119"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637928",
+        "state": "WV",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921e1",
+                "name": "Buckhannon (WV)",
+                "city": "Buckhannon",
+                "address": "200 Auction Ln.",
+                "zip": "26201",
+                "phone": "304-472-3900"
+            },
+            {
+                "_id": "6900a079512298cf01a921e2",
+                "name": "Shady Spring (WV)",
+                "city": "Shady Spring",
+                "address": "4163 Pluto Rd",
+                "zip": "25918",
+                "phone": "304-253-4970"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637929",
+        "state": "VT",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921e3",
+                "name": "Burlington (VT)",
+                "city": "Essex Junction",
+                "address": "304 Colchester Rd.",
+                "zip": "05452",
+                "phone": "802-872-7838"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63792a",
+        "state": "WY",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921e4",
+                "name": "Casper (WY)",
+                "city": "Casper",
+                "address": "2305 Salt Creek Hwy.",
+                "zip": "82601",
+                "phone": "307-265-4628"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63792b",
+        "state": "SC",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921e5",
+                "name": "Charleston (SC)",
+                "city": "Ravenel",
+                "address": "430 Tannenbaum Rd.",
+                "zip": "29470",
+                "phone": "843-556-7620"
+            },
+            {
+                "_id": "6900a079512298cf01a921e6",
+                "name": "Greenville (SC)",
+                "city": "Simpsonville",
+                "address": "422 Scuffletown Rd.",
+                "zip": "29681",
+                "phone": "864-242-3093"
+            },
+            {
+                "_id": "6900a079512298cf01a921e7",
+                "name": "Lexington (SC)",
+                "city": "Lexington",
+                "address": "424 Two Notch Rd.",
+                "zip": "29073",
+                "phone": "803-520-2672"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63792c",
+        "state": "TN",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921e8",
+                "name": "Chattanooga (TN)",
+                "city": "Chattanooga",
+                "address": "2801 Asbury Park St.",
+                "zip": "37404",
+                "phone": "423-624-2102"
+            },
+            {
+                "_id": "6900a079512298cf01a921e9",
+                "name": "Knoxville (TN)",
+                "city": "Knoxville",
+                "address": "3634 E. Governor John Sevier Hwy",
+                "zip": "37914",
+                "phone": "865-525-7349"
+            },
+            {
+                "_id": "6900a079512298cf01a921ea",
+                "name": "Memphis (TN)",
+                "city": "Millington",
+                "address": "3033 Fite Rd",
+                "zip": "38053",
+                "phone": "901-794-9901"
+            },
+            {
+                "_id": "6900a079512298cf01a921eb",
+                "name": "Nashville (TN)",
+                "city": "Nashville",
+                "address": "3896 Stewarts Ln.",
+                "zip": "37218",
+                "phone": "615-742-0006"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63792d",
+        "state": "IL",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921ec",
+                "name": "Chicago-North (IL)",
+                "city": "East Dundee",
+                "address": "605 Healy Rd.",
+                "zip": "60118",
+                "phone": "847-426-5913"
+            },
+            {
+                "_id": "6900a079512298cf01a921ed",
+                "name": "Chicago-South (IL)",
+                "city": "Markham",
+                "address": "16425 Crawford Ave.",
+                "zip": "60428",
+                "phone": "708-333-5700"
+            },
+            {
+                "_id": "6900a079512298cf01a921ee",
+                "name": "Chicago-West (IL)",
+                "city": "Aurora",
+                "address": "280 E. Sullivan Rd",
+                "zip": "60505",
+                "phone": "630-896-5300"
+            },
+            {
+                "_id": "6900a079512298cf01a921ef",
+                "name": "Dream Rides (IL)",
+                "city": "Westchester",
+                "address": "Two Westbrook Corporate Center",
+                "zip": "60154",
+                "phone": "866-489-0364"
+            },
+            {
+                "_id": "6900a079512298cf01a921f0",
+                "name": "Electric Vehicle Auctions (IL)",
+                "city": "Westchester",
+                "address": "Two Westbrook Corporate Center 10th Floo",
+                "zip": "60154",
+                "phone": "866-489-0384"
+            },
+            {
+                "_id": "6900a079512298cf01a921f1",
+                "name": "Lincoln (IL)",
+                "city": "Lincoln",
+                "address": "301 Madigan Dr.",
+                "zip": "62656",
+                "phone": "217-732-8555"
+            },
+            {
+                "_id": "6900a079512298cf01a921f2",
+                "name": "REC RIDES Online-Exclusive (IL)",
+                "city": "Westchester",
+                "address": "Two Westbrook Corporate Center, Tenth Fl",
+                "zip": "60154",
+                "phone": "866-489-0384"
+            },
+            {
+                "_id": "6900a079512298cf01a921f3",
+                "name": "Specialty Division (IL)",
+                "city": "Schaumburg",
+                "address": "2040 E Algonquin Rd.",
+                "zip": "60173",
+                "phone": "800-323-0698"
+            },
+            {
+                "_id": "6900a079512298cf01a921f4",
+                "name": "St. Louis (IL)",
+                "city": "Caseyville",
+                "address": "2436 Old Country Inn Dr.",
+                "zip": "62232",
+                "phone": "618-797-0200"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63792e",
+        "state": "FL",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a921f5",
+                "name": "Clearwater (FL)",
+                "city": "Clearwater",
+                "address": "5152 126 Ave. N.",
+                "zip": "33760",
+                "phone": "727-572-4050"
+            },
+            {
+                "_id": "6900a079512298cf01a921f6",
+                "name": "Fort Myers (FL)",
+                "city": "Fort Myers",
+                "address": "11950 State Road 82",
+                "zip": "33913",
+                "phone": "239-997-8673"
+            },
+            {
+                "_id": "6900a079512298cf01a921f7",
+                "name": "Fort Pierce (FL)",
+                "city": "Fort Pierce",
+                "address": "3798 Selvitz Rd",
+                "zip": "34981",
+                "phone": "772-489-7851"
+            },
+            {
+                "_id": "6900a079512298cf01a921f8",
+                "name": "Jacksonville (FL)",
+                "city": "Jacksonville",
+                "address": "186 Pecan Park Rd.",
+                "zip": "32218",
+                "phone": "904-768-6500"
+            },
+            {
+                "_id": "6900a079512298cf01a921f9",
+                "name": "Miami-North (FL)",
+                "city": "Southwest Ranches",
+                "address": "20499 Stirling Rd",
+                "zip": "33332",
+                "phone": "954-680-4370"
+            },
+            {
+                "_id": "6900a079512298cf01a921fa",
+                "name": "Orlando (FL)",
+                "city": "Orlando",
+                "address": "151 W. Taft Vineland Rd.",
+                "zip": "32824",
+                "phone": "407-438-7191"
+            },
+            {
+                "_id": "6900a079512298cf01a921fb",
+                "name": "Orlando-North (FL)",
+                "city": "Sanford",
+                "address": "2500 Adesa Dr.",
+                "zip": "32779",
+                "phone": "407-323-4090"
+            },
+            {
+                "_id": "6900a079512298cf01a921fc",
+                "name": "Pensacola (FL)",
+                "city": "Milton",
+                "address": "11221 Highway 90",
+                "zip": "32583",
+                "phone": "850-623-2993"
+            },
+            {
+                "_id": "6900a079512298cf01a921fd",
+                "name": "Tampa (FL)",
+                "city": "Palmetto",
+                "address": "1208 17th St. East",
+                "zip": "34221",
+                "phone": "941-729-9393"
+            },
+            {
+                "_id": "6900a079512298cf01a921fe",
+                "name": "Tampa North (FL)",
+                "city": "Hudson",
+                "address": "8838 Bolton Ave.",
+                "zip": "34667",
+                "phone": "727-697-2686"
+            },
+            {
+                "_id": "6900a079512298cf01a921ff",
+                "name": "West Palm Beach (FL)",
+                "city": "Jupiter",
+                "address": "14344 Corporate Rd S.",
+                "zip": "33478",
+                "phone": "305-685-6363"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63792f",
+        "state": "CO",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92200",
+                "name": "Colorado Springs (CO)",
+                "city": "Colorado Springs",
+                "address": "8500 Import Ct",
+                "zip": "80925",
+                "phone": "719-755-0862"
+            },
+            {
+                "_id": "6900a079512298cf01a92201",
+                "name": "Denver East (CO)",
+                "city": "Commerce City",
+                "address": "8510 Brighton Rd.",
+                "zip": "80022",
+                "phone": "303-287-9737"
+            },
+            {
+                "_id": "6900a079512298cf01a92202",
+                "name": "Western Colorado (CO)",
+                "city": "Delta",
+                "address": "1280 Highway 50",
+                "zip": "81416",
+                "phone": "970-874-7326"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637930",
+        "state": "VA",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92203",
+                "name": "Culpeper (VA)",
+                "city": "Culpeper",
+                "address": "15201 Review Rd.",
+                "zip": "22701",
+                "phone": "540-825-2229"
+            },
+            {
+                "_id": "6900a079512298cf01a92204",
+                "name": "Northern Virginia (VA)",
+                "city": "Fredericksburg",
+                "address": "15 Le Way Dr.",
+                "zip": "22406",
+                "phone": "540-373-7800"
+            },
+            {
+                "_id": "6900a079512298cf01a92205",
+                "name": "Pulaski (VA)",
+                "city": "Pulaski",
+                "address": "1250 E. Main St.",
+                "zip": "24301",
+                "phone": "540-994-6490"
+            },
+            {
+                "_id": "6900a079512298cf01a92206",
+                "name": "Richmond (VA)",
+                "city": "Ashland",
+                "address": "10390 Sadisco Dr.",
+                "zip": "23005",
+                "phone": "804-798-6091"
+            },
+            {
+                "_id": "6900a079512298cf01a92207",
+                "name": "Roanoke (VA)",
+                "city": "Montvale",
+                "address": "1576 Quarterwood Rd.",
+                "zip": "24122",
+                "phone": "540-802-3001"
+            },
+            {
+                "_id": "6900a079512298cf01a92208",
+                "name": "Suffolk (VA)",
+                "city": "Suffolk",
+                "address": "1389 Portsmouth Blvd.",
+                "zip": "23434",
+                "phone": "757-539-0571"
+            },
+            {
+                "_id": "6900a079512298cf01a92209",
+                "name": "Tidewater (VA)",
+                "city": "Yorktown",
+                "address": "211 Production Dr.",
+                "zip": "23693",
+                "phone": "757-595-8493"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637931",
+        "state": "IA",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9220a",
+                "name": "Davenport (IA)",
+                "city": "Davenport",
+                "address": "5403 Rockingham Rd.",
+                "zip": "52802",
+                "phone": "563-322-8562"
+            },
+            {
+                "_id": "6900a079512298cf01a9220b",
+                "name": "Des Moines (IA)",
+                "city": "De Soto",
+                "address": "1000 Armstrong Dr.",
+                "zip": "50069",
+                "phone": "515-823-0600"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637932",
+        "state": "MI",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9220c",
+                "name": "Detroit (MI)",
+                "city": "Belleville",
+                "address": "8251 Rawsonville Rd.",
+                "zip": "48111",
+                "phone": "734-461-9441"
+            },
+            {
+                "_id": "6900a079512298cf01a9220d",
+                "name": "Flint (MI)",
+                "city": "Flint",
+                "address": "3088 S. Dye Rd.",
+                "zip": "48507",
+                "phone": "810-720-0981"
+            },
+            {
+                "_id": "6900a079512298cf01a9220e",
+                "name": "Grand Rapids (MI)",
+                "city": "Byron Center",
+                "address": "700 100th St. S.W",
+                "zip": "49315",
+                "phone": "616-729-1010"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637933",
+        "state": "OR",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9220f",
+                "name": "Eugene (OR)",
+                "city": "Eugene",
+                "address": "1000 Bethel Dr.",
+                "zip": "97402",
+                "phone": "541-689-4000"
+            },
+            {
+                "_id": "6900a079512298cf01a92210",
+                "name": "Portland (OR)",
+                "city": "Portland",
+                "address": "4415 NE 158th Ave.",
+                "zip": "97230",
+                "phone": "503-253-1500"
+            },
+            {
+                "_id": "6900a079512298cf01a92211",
+                "name": "Portland South (OR)",
+                "city": "Woodburn",
+                "address": "605 S. Pacific Hwy",
+                "zip": "97071",
+                "phone": "971-327-7152"
+            },
+            {
+                "_id": "6900a079512298cf01a92212",
+                "name": "Portland West (OR)",
+                "city": "Portland",
+                "address": "10498 N. Vancouver Way",
+                "zip": "97217",
+                "phone": "503-289-0345"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637934",
+        "state": "ND",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92213",
+                "name": "Fargo (ND)",
+                "city": "Fargo",
+                "address": "4401 37th St. N.",
+                "zip": "58102",
+                "phone": "701-552-9731"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637935",
+        "state": "AR",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92214",
+                "name": "Fayetteville (AR)",
+                "city": "Lincoln",
+                "address": "2801 E. Pridemore Dr.",
+                "zip": "72744",
+                "phone": "479-824-6200"
+            },
+            {
+                "_id": "6900a079512298cf01a92215",
+                "name": "Little Rock (AR)",
+                "city": "Scott",
+                "address": "4900 S. Kerr Rd.",
+                "zip": "72142",
+                "phone": "501-961-2886"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637936",
+        "state": "IN",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92216",
+                "name": "Fort Wayne (IN)",
+                "city": "Fort Wayne",
+                "address": "4300 Oxford St.",
+                "zip": "46806",
+                "phone": "260-261-0126"
+            },
+            {
+                "_id": "6900a079512298cf01a92217",
+                "name": "Indianapolis (IN)",
+                "city": "Indianapolis",
+                "address": "3302 S. Harding St.",
+                "zip": "46217",
+                "phone": "317-787-3202"
+            },
+            {
+                "_id": "6900a079512298cf01a92218",
+                "name": "Indianapolis South (IN)",
+                "city": "Crothersville",
+                "address": "1947 S County Road SCR 1240E",
+                "zip": "47229",
+                "phone": "317-536-8231"
+            },
+            {
+                "_id": "6900a079512298cf01a92219",
+                "name": "South Bend (IN)",
+                "city": "South Bend",
+                "address": "25631 State Road 2",
+                "zip": "46619",
+                "phone": "574-287-6212"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637937",
+        "state": "MS",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9221a",
+                "name": "Grenada (MS)",
+                "city": "Grenada",
+                "address": "101 Highway 404",
+                "zip": "38901",
+                "phone": "662-237-0455"
+            },
+            {
+                "_id": "6900a079512298cf01a9221b",
+                "name": "Gulf Coast (MS)",
+                "city": "Moss Point",
+                "address": "8209 Old Stage Rd.",
+                "zip": "39562",
+                "phone": "228-474-5559"
+            },
+            {
+                "_id": "6900a079512298cf01a9221c",
+                "name": "Jackson (MS)",
+                "city": "Byram",
+                "address": "100 Auction Way",
+                "zip": "39272",
+                "phone": "601-502-1311"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637938",
+        "state": "CT",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9221d",
+                "name": "Hartford (CT)",
+                "city": "East Windsor",
+                "address": "47 Newberry Rd",
+                "zip": "06088",
+                "phone": "860-623-9760"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637939",
+        "state": "HI",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9221e",
+                "name": "Honolulu (HI)",
+                "city": "Kapolei",
+                "address": "91-401 Malakole St",
+                "zip": "96707",
+                "phone": "808-682-2858"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63793a",
+        "state": "KS",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9221f",
+                "name": "Kansas City (KS)",
+                "city": "Kansas City",
+                "address": "2663 S. 88th St.",
+                "zip": "66111",
+                "phone": "913-422-9303"
+            },
+            {
+                "_id": "6900a079512298cf01a92220",
+                "name": "Wichita (KS)",
+                "city": "Park City",
+                "address": "6335 N. Broadway Ave.",
+                "zip": "67219",
+                "phone": "316-744-0496"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63793b",
+        "state": "MO",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92221",
+                "name": "Kansas City East (MO)",
+                "city": "Odessa",
+                "address": "1700 W. Old Highway 40",
+                "zip": "64076",
+                "phone": "816-565-4635"
+            },
+            {
+                "_id": "6900a079512298cf01a92222",
+                "name": "Springfield (MO)",
+                "city": "Springfield",
+                "address": "1155 N Eldon Ave.",
+                "zip": "65803",
+                "phone": "417-863-8976"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63793c",
+        "state": "NV",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92223",
+                "name": "Las Vegas (NV)",
+                "city": "Las Vegas",
+                "address": "3225 South Hollywood Blvd",
+                "zip": "89122",
+                "phone": "702-565-8795"
+            },
+            {
+                "_id": "6900a079512298cf01a92224",
+                "name": "Reno (NV)",
+                "city": "Sparks",
+                "address": "4086 Peru Dr.",
+                "zip": "89437",
+                "phone": "775-636-8829"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63793d",
+        "state": "NH",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92225",
+                "name": "Manchester (NH)",
+                "city": "Salem",
+                "address": "75 Lowell Rd.",
+                "zip": "03079",
+                "phone": "603-893-2300"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63793e",
+        "state": "MN",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92226",
+                "name": "Minneapolis South (MN)",
+                "city": "Randolph",
+                "address": "28261 Dressler Ct",
+                "zip": "55065",
+                "phone": "507-396-4474"
+            },
+            {
+                "_id": "6900a079512298cf01a92227",
+                "name": "Minneapolis/St. Paul (MN)",
+                "city": "Saint Paul",
+                "address": "1280 Jackson St.",
+                "zip": "55117",
+                "phone": "651-488-0581"
+            },
+            {
+                "_id": "6900a079512298cf01a92228",
+                "name": "St. Cloud (MN)",
+                "city": "Rice",
+                "address": "13289 25th Ave NW",
+                "zip": "56367",
+                "phone": "320-413-7823"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc63793f",
+        "state": "DE",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92229",
+                "name": "New Castle (DE)",
+                "city": "New Castle",
+                "address": "417 Old Airport Rd.",
+                "zip": "19720",
+                "phone": "302-322-1808"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637940",
+        "state": "OK",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9222a",
+                "name": "Oklahoma City (OK)",
+                "city": "Oklahoma City",
+                "address": "7300 N. 135 Service Rd.",
+                "zip": "73121",
+                "phone": "405-475-0230"
+            },
+            {
+                "_id": "6900a079512298cf01a9222b",
+                "name": "Tulsa (OK)",
+                "city": "Tulsa",
+                "address": "5311 W. 46th St.",
+                "zip": "74107",
+                "phone": "918-445-4691"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637941",
+        "state": "NE",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9222c",
+                "name": "Omaha (NE)",
+                "city": "Springfield",
+                "address": "14749 Meredythe Plz.",
+                "zip": "68059",
+                "phone": "402-733-2424"
+            },
+            {
+                "_id": "6900a079512298cf01a9222d",
+                "name": "Omaha South (NE)",
+                "city": "Greenwood",
+                "address": "13909 238th St",
+                "zip": "68366",
+                "phone": "402-901-4210"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637942",
+        "state": "ME",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a9222e",
+                "name": "Online Exclusive (ME)",
+                "city": "Clinton",
+                "address": "69 Hinckley Road",
+                "zip": "04927",
+                "phone": "888-839-4220"
+            },
+            {
+                "_id": "6900a079512298cf01a9222f",
+                "name": "Portland Gorham (ME)",
+                "city": "Gorham",
+                "address": "9 Moody Dr.",
+                "zip": "04038",
+                "phone": "207-839-2045"
+            },
+            {
+                "_id": "6900a079512298cf01a92230",
+                "name": "Virtual Lane A (ME)",
+                "city": "Clinton",
+                "address": "69 Hinckley Rd",
+                "zip": "04927",
+                "phone": "888-839-4220"
+            },
+            {
+                "_id": "6900a079512298cf01a92231",
+                "name": "Virtual Lane B (ME)",
+                "city": "Clinton",
+                "address": "69 Hinckley Rd",
+                "zip": "04927",
+                "phone": "888-839-4220"
+            },
+            {
+                "_id": "6900a079512298cf01a92232",
+                "name": "Virtual Lane C (ME)",
+                "city": "Clinton",
+                "address": "69 Hinckley Rd",
+                "zip": "04927",
+                "phone": "888-839-4220"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637943",
+        "state": "AZ",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92233",
+                "name": "Phoenix (AZ)",
+                "city": "Phoenix",
+                "address": "2299 W. Broadway Rd.",
+                "zip": "85041",
+                "phone": "602-305-5300"
+            },
+            {
+                "_id": "6900a079512298cf01a92234",
+                "name": "Tucson (AZ)",
+                "city": "Tucson",
+                "address": "4650 E. Irvington Rd.",
+                "zip": "85714",
+                "phone": "520-319-9393"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637944",
+        "state": "RI",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92235",
+                "name": "Providence (RI)",
+                "city": "Riverside",
+                "address": "160 Amaral St.",
+                "zip": "02915",
+                "phone": "401-438-5254"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637945",
+        "state": "UT",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92236",
+                "name": "Provo (UT)",
+                "city": "Nephi",
+                "address": "1768 West 6300 South",
+                "zip": "84648",
+                "phone": "801-983-6088"
+            },
+            {
+                "_id": "6900a079512298cf01a92237",
+                "name": "Salt Lake City (UT)",
+                "city": "Ogden",
+                "address": "1800 S. 1100 W.",
+                "zip": "84401",
+                "phone": "801-399-2818"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637946",
+        "state": "SD",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92238",
+                "name": "Sioux Falls (SD)",
+                "city": "Lennox",
+                "address": "47028 276th St.",
+                "zip": "57039",
+                "phone": "605-271-8855"
+            }
+        ]
+    },
+    {
+        "_id": "68fb7fa389ead26bcc637947",
+        "state": "WA",
+        "locations": [
+            {
+                "_id": "6900a079512298cf01a92239",
+                "name": "Seattle (WA)",
+                "city": "Puyallup",
+                "address": "15801 110th Ave. E",
+                "zip": "98374",
+                "phone": "253-604-2300"
+            },
+            {
+                "_id": "6900a079512298cf01a9223a",
+                "name": "Spokane (WA)",
+                "city": "Spokane Valley",
+                "address": "3520 N. Tschirley Rd.",
+                "zip": "99216",
+                "phone": "509-891-2388"
+            }
+        ]
+    }
+]
