@@ -35,7 +35,7 @@ function AppLayout() {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header style={{ display: 'flex', alignItems: 'center', background: '#001529' }}>
-        <img src="/tigra.webp" alt="Tigra Logo" style={{ height: 60, aspectRatio: '1/1', objectFit: 'contain', marginRight: 16 }} />
+
         <Menu
           theme="dark"
           mode="horizontal"
