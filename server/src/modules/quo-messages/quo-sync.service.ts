@@ -8,6 +8,7 @@ import { quoApiClient } from '../../libs/quo-api.js';
 import { prisma } from '../../libs/db.js';
 import logger from '../../libs/logger.js';
 import { n8nQueue } from '../../libs/async-queue.js';
+import { extractLoadIdsFromText } from '../../libs/load-id-extractor.js';
 import type { GetConversationsResponse, GetMessagesResponse } from '../../types/quo-api.types.js';
 
 export class QuoSyncService {
@@ -276,8 +277,10 @@ export class QuoSyncService {
                 n8nService.parseConversation(conversationText, phone)
             );
 
-            // Save unknown driver if we got load IDs
-            if (n8nResponse && n8nResponse.loadIds && n8nResponse.loadIds.length > 0) {
+            // Save unknown driver if we got load IDs from AI
+            const aiFoundLoadIds = n8nResponse && n8nResponse.loadIds && n8nResponse.loadIds.length > 0;
+
+            if (aiFoundLoadIds) {
                 await unknownDriverService.saveUnknownDriver(
                     phone,
                     n8nResponse.loadIds,
@@ -289,7 +292,25 @@ export class QuoSyncService {
                     '[N8N] SUCCESS: Found load IDs -> Saved unknown driver'
                 );
             } else {
-                logger.info({ phone }, '[N8N] No load IDs found in conversation');
+                // AI failed or found nothing -> use regex fallback
+                logger.info({ phone }, '[N8N] No load IDs from AI, trying regex fallback...');
+
+                const rawText = conversationData.messages.map((m: { text?: string }) => m.text || '').join(' ');
+                const regexLoadIds = extractLoadIdsFromText(rawText);
+
+                if (regexLoadIds.length > 0) {
+                    await unknownDriverService.saveUnknownDriver(
+                        phone,
+                        regexLoadIds
+                    );
+
+                    logger.info(
+                        { phone, loadIds: regexLoadIds },
+                        '[REGEX FALLBACK] SUCCESS: Found load IDs via regex -> Saved unknown driver'
+                    );
+                } else {
+                    logger.info({ phone }, '[REGEX FALLBACK] No load IDs found in conversation');
+                }
             }
         } catch (error: any) {
             // Don't fail the entire sync if n8n parsing fails

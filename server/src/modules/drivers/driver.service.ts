@@ -388,6 +388,7 @@ class DriverService {
 
                     // Get parts for comparison
                     const queryParts = normalizedQuery.split(' ').filter(p => p.length > 0);
+                    const significantQueryParts = queryParts.filter(qp => qp.length >= 2);
                     const auctionParts = normalizedAuctionName ? normalizedAuctionName.split(' ').filter(p => p.length > 0) : [];
                     const locationParts = normalizedLocationName ? normalizedLocationName.split(' ').filter(p => p.length > 0) : [];
 
@@ -400,31 +401,31 @@ class DriverService {
                         return true;
                     }
 
-                    // STRATEGY 3: All query parts found in auction/location name
+                    // STRATEGY 3: All query parts found in auction/location name (exact word match)
                     // "ma west warren" -> ["MA", "WEST", "WARREN"] all in "MA - WEST WARREN"
-                    if (auctionParts.length > 0 && queryParts.length > 0) {
-                        const allQueryPartsInAuction = queryParts.every(qp =>
-                            auctionParts.some(ap => ap === qp || ap.includes(qp) || qp.includes(ap))
+                    if (auctionParts.length > 0 && significantQueryParts.length > 0) {
+                        const allQueryPartsInAuction = significantQueryParts.every(qp =>
+                            auctionParts.some(ap => ap === qp)
                         );
                         if (allQueryPartsInAuction) {
                             return true;
                         }
                     }
 
-                    // Also check location name
-                    if (locationParts.length > 0 && queryParts.length > 0) {
-                        const allQueryPartsInLocation = queryParts.every(qp =>
-                            locationParts.some(lp => lp === qp || lp.includes(qp) || qp.includes(lp))
+                    // Also check location name (exact word match)
+                    if (locationParts.length > 0 && significantQueryParts.length > 0) {
+                        const allQueryPartsInLocation = significantQueryParts.every(qp =>
+                            locationParts.some(lp => lp === qp)
                         );
                         if (allQueryPartsInLocation) {
                             return true;
                         }
                     }
 
-                    // STRATEGY 4: All auction parts found in query (reverse check)
-                    if (auctionParts.length > 0 && queryParts.length > 0) {
+                    // STRATEGY 4: All auction parts found in query (reverse check, exact word match)
+                    if (auctionParts.length > 0 && significantQueryParts.length > 0) {
                         const allAuctionPartsInQuery = auctionParts.every(ap =>
-                            queryParts.some(qp => qp === ap || qp.includes(ap) || ap.includes(qp))
+                            ap.length >= 2 && significantQueryParts.some(qp => qp === ap)
                         );
                         if (allAuctionPartsInQuery) {
                             return true;
@@ -450,8 +451,8 @@ class DriverService {
                         }
                     }
 
-                    // STRATEGY 6: Direct contains match on auction name
-                    if (auctionName && auctionName.includes(searchQuery)) {
+                    // STRATEGY 6: Direct contains match on auction name (min 3 chars)
+                    if (auctionName && searchQuery.length >= 3 && auctionName.includes(searchQuery)) {
                         return true;
                     }
 
@@ -477,14 +478,22 @@ class DriverService {
                         return true;
                     }
 
-                    // Fallback: check in location name
-                    const lastCommaIndex = locationName.lastIndexOf(',');
+                    // Fallback: check in location name using word-boundary matching
+                    const nameUpper = locationName.toUpperCase().trim();
+                    const lastCommaIndex = nameUpper.lastIndexOf(',');
                     if (lastCommaIndex === -1) {
-                        return locationName.toUpperCase().includes(searchState);
+                        // No comma: match if entire name IS the state code,
+                        // or state code appears as a whole word at the end
+                        if (nameUpper === searchState) {
+                            return true;
+                        }
+                        const stateAtEnd = new RegExp(`\\b${searchState}\\b$`);
+                        return stateAtEnd.test(nameUpper);
                     }
 
-                    const afterLastComma = locationName.substring(lastCommaIndex + 1).trim();
-                    return afterLastComma.toUpperCase().includes(searchState);
+                    // With comma: exact match on trimmed after-comma portion
+                    const afterLastComma = nameUpper.substring(lastCommaIndex + 1).trim();
+                    return afterLastComma === searchState;
                 });
             }
 

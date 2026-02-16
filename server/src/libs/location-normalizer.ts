@@ -9,7 +9,7 @@ import { prisma } from './db.js';
 import logger from './logger.js';
 
 // Common US state abbreviations and full names
-const STATE_MAPPINGS: Record<string, string> = {
+export const STATE_MAPPINGS: Record<string, string> = {
     'alabama': 'AL', 'alaska': 'AK', 'arizona': 'AZ', 'arkansas': 'AR',
     'california': 'CA', 'colorado': 'CO', 'connecticut': 'CT', 'delaware': 'DE',
     'florida': 'FL', 'georgia': 'GA', 'hawaii': 'HI', 'idaho': 'ID',
@@ -80,16 +80,27 @@ export class LocationNormalizer {
             return normalizedMatch.name;
         }
 
-        // Step 5: Try fuzzy matching on city name only
+        // Step 5: Try fuzzy matching on city name, WITH state verification when available
         const parts = normalized.split(',').map(p => p.trim());
         if (parts[0]) {
+            const cityPart = parts[0];
+            const statePart = parts[1]?.toUpperCase() || null;
+
+            // Build where clause: match on city/name, and add state constraint when available
+            const whereClause: Record<string, unknown> = {
+                OR: [
+                    { city: { contains: cityPart } },
+                    { name: { contains: cityPart } },
+                ],
+            };
+
+            // If we have a state, require it to match to avoid cross-state mismatches
+            if (statePart && statePart.length === 2) {
+                whereClause['state'] = statePart;
+            }
+
             const fuzzyMatch = await prisma.location.findFirst({
-                where: {
-                    OR: [
-                        { city: { contains: parts[0] } },
-                        { name: { contains: parts[0] } },
-                    ],
-                },
+                where: whereClause,
             });
 
             if (fuzzyMatch) {

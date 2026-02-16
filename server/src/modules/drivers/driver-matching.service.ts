@@ -14,6 +14,7 @@
 import { prisma } from '../../libs/db.js';
 import { sheetSyncService } from './sheet-sync.service.js';
 import logger from '../../libs/logger.js';
+import { STATE_MAPPINGS } from '../../libs/location-normalizer.js';
 
 interface MatchResult {
     matched: boolean;
@@ -259,20 +260,12 @@ class DriverMatchingService {
     } {
         const cleaned = rawLocation.trim();
 
-        // State abbreviation map
-        const stateMap: Record<string, string> = {
-            Florida: 'FL',
-            'New Jersey': 'NJ',
-            'New York': 'NY',
-            Texas: 'TX',
-            California: 'CA',
-            Georgia: 'GA',
-            Illinois: 'IL',
-            Pennsylvania: 'PA',
-            Ohio: 'OH',
-            Michigan: 'MI',
-            // Add more as needed
-        };
+        // Build Title Case -> abbreviation map from the canonical STATE_MAPPINGS (all 50 states)
+        const stateMap: Record<string, string> = {};
+        for (const [fullName, abbrev] of Object.entries(STATE_MAPPINGS)) {
+            const titleCase = fullName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            stateMap[titleCase] = abbrev;
+        }
 
         // Pattern 1: Zip code (5 digits)
         if (/^\d{5}$/.test(cleaned)) {

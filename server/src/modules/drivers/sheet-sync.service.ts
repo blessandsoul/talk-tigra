@@ -8,6 +8,8 @@ import { googleSheetsClient } from '../../libs/google-sheets.js';
 import { prisma } from '../../libs/db.js';
 import { env } from '../../config/env.js';
 import logger from '../../libs/logger.js';
+import { auctionLocationService } from '../../libs/auction-location.js';
+import { STATE_MAPPINGS } from '../../libs/location-normalizer.js';
 
 /**
  * Expected Sheet Columns (adjust based on your actual sheet structure)
@@ -270,6 +272,27 @@ class SheetSyncService {
                 logger.info({ locationName: normalizedLocation }, '[SHEET SYNC] Created new location from sheet');
             }
 
+            // 2b. Enrich location with auction data if not already matched
+            if (location && !location.auctionName) {
+                const auctionMatch = await auctionLocationService.matchAddress(locationName);
+                if (auctionMatch) {
+                    location = await prisma.location.update({
+                        where: { id: location.id },
+                        data: {
+                            auctionName: auctionMatch.auctionName,
+                            auctionType: auctionMatch.auctionType,
+                            state: location.state || auctionMatch.state,
+                            city: location.city || auctionMatch.city,
+                            zipCode: location.zipCode || auctionMatch.zipCode,
+                        },
+                    });
+                    logger.debug(
+                        { locationName: normalizedLocation, auctionName: auctionMatch.auctionName },
+                        '[SHEET SYNC] Enriched location with auction data'
+                    );
+                }
+            }
+
             // 3. Check if this driver-location link already exists
             const existingLink = await prisma.driverLocation.findUnique({
                 where: {
@@ -327,76 +350,81 @@ class SheetSyncService {
 
     /**
      * Normalize location string
-     * 
-     * Examples:
+     *
+     * Handles various formats including full addresses:
      * "Miami, Florida" -> "Miami, FL"
      * "Newark NJ" -> "Newark, NJ"
+     * "1234 Some Road, Hampton, VA 12345" -> "Hampton, VA"
      * "NJ" -> "NJ"
      */
     private normalizeLocation(rawLocation: string): string {
-        const cleaned = rawLocation.trim();
+        let cleaned = rawLocation.trim();
 
-        // State abbreviation map
-        const stateMap: Record<string, string> = {
-            'Florida': 'FL',
-            'New Jersey': 'NJ',
-            'New York': 'NY',
-            'Texas': 'TX',
-            'California': 'CA',
-            'Georgia': 'GA',
-            'Illinois': 'IL',
-            'Pennsylvania': 'PA',
-            'Ohio': 'OH',
-            'Michigan': 'MI',
-            'North Carolina': 'NC',
-            'South Carolina': 'SC',
-            'Virginia': 'VA',
-            'Maryland': 'MD',
-            'Massachusetts': 'MA',
-            'Connecticut': 'CT',
-            'Oregon': 'OR',
-            'Washington': 'WA',
-            'Colorado': 'CO',
-            'Arizona': 'AZ',
-            'Nevada': 'NV',
-            'Tennessee': 'TN',
-            'Kentucky': 'KY',
-            'Indiana': 'IN',
-            'Wisconsin': 'WI',
-            'Minnesota': 'MN',
-            'Missouri': 'MO',
-            'Kansas': 'KS',
-            'Nebraska': 'NE',
-            'Iowa': 'IA',
-            'Alabama': 'AL',
-            'Mississippi': 'MS',
-            'Louisiana': 'LA',
-            'Arkansas': 'AR',
-            'Oklahoma': 'OK',
-            'New Hampshire': 'NH',
-            'Vermont': 'VT',
-            'Maine': 'ME',
-            'Rhode Island': 'RI',
-            'Delaware': 'DE',
-            'West Virginia': 'WV',
-        };
+        // Step 0: Strip zip code from the end (5-digit pattern with optional extension)
+        cleaned = cleaned.replace(/\s*\d{5}(-\d{4})?\s*$/, '').trim();
 
-        // Pattern: "City, State" or "City State"
-        const cityStatePattern = /^([A-Za-z\s]+)[,\s]+([A-Za-z]{2}|[A-Za-z\s]+)$/;
+        // Step 1: If the string contains a comma, parse backwards for state + city
+        // This handles "1234 Some Road, Hampton, VA" by taking last part as state, second-to-last as city
+        if (cleaned.includes(',')) {
+            const parts = cleaned.split(',').map(p => p.trim());
+            if (parts.length >= 2) {
+                const lastPart = parts[parts.length - 1]!.trim();
+                const secondLastPart = parts[parts.length - 2]!.trim();
+
+                // Check if last part is a state (2-letter code or full name)
+                let state = '';
+                if (/^[A-Za-z]{2}$/.test(lastPart)) {
+                    state = lastPart.toUpperCase();
+                } else {
+                    const abbrev = STATE_MAPPINGS[lastPart.toLowerCase()];
+                    if (abbrev) {
+                        state = abbrev;
+                    }
+                }
+
+                if (state) {
+                    // Extract city: strip leading street numbers/address components
+                    const city = secondLastPart.replace(
+                        /^\d+[\s\w]*(?:road|rd|street|st|avenue|ave|blvd|drive|dr|lane|ln|way|hwy|highway|pkwy|parkway)\s*/i,
+                        ''
+                    ).trim() || secondLastPart;
+                    return `${city}, ${state}`;
+                }
+            }
+        }
+
+        // Step 2: No comma -- try "City State" pattern (letters only, state as last word)
+        const cityStatePattern = /^([A-Za-z\s]+)\s+([A-Za-z]{2})$/;
         const match = cleaned.match(cityStatePattern);
-
         if (match) {
             const city = match[1]!.trim();
-            let state = match[2]!.trim();
-
-            // Convert full state name to abbreviation
-            if (state.length > 2) {
-                state = stateMap[state] || state;
-            } else {
-                state = state.toUpperCase();
-            }
-
+            const state = match[2]!.toUpperCase();
             return `${city}, ${state}`;
+        }
+
+        // Step 3: Check for "City FullStateName" (e.g., "Atlanta Georgia")
+        const words = cleaned.split(/\s+/);
+        if (words.length >= 2) {
+            // Try matching last 1-2 words as a full state name
+            for (let len = Math.min(2, words.length - 1); len >= 1; len--) {
+                const possibleState = words.slice(-len).join(' ');
+                const abbrev = STATE_MAPPINGS[possibleState.toLowerCase()];
+                if (abbrev) {
+                    const city = words.slice(0, -len).join(' ');
+                    return `${city}, ${abbrev}`;
+                }
+            }
+        }
+
+        // Step 4: Check if entire string is a full state name
+        const asState = STATE_MAPPINGS[cleaned.toLowerCase()];
+        if (asState) {
+            return asState;
+        }
+
+        // Step 5: Check if it's a 2-letter state code
+        if (/^[A-Za-z]{2}$/.test(cleaned)) {
+            return cleaned.toUpperCase();
         }
 
         // Fallback: Return as-is
