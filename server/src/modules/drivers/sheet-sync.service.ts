@@ -31,8 +31,11 @@ interface SheetRow {
  * Sheet Sync Service Class
  */
 class SheetSyncService {
-    // Sheet configuration
-    private readonly SHEET_RANGE = 'JAN!A:Z';  // Full range to fetch from JAN sheet
+    // Month abbreviations matching Google Sheet tab names
+    private readonly MONTH_ABBREVIATIONS = [
+        'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+        'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
+    ] as const;
 
     // Column indices (0-based) - Based on your actual sheet structure
     // VIN = Column A (index 0)
@@ -42,6 +45,16 @@ class SheetSyncService {
     private readonly DRIVER_PHONE_COLUMN = 6;  // Column G: NUM (Driver Phone)
     private readonly FROM_COLUMN = 7;          // Column H: FROM (Location)
     private readonly STATUS_COLUMN = 8;        // Column I: STATUS (if exists)
+
+    /**
+     * Get the sheet range for the current month
+     * e.g., February -> 'FEB!A:Z', March -> 'MAR!A:Z'
+     */
+    private getCurrentSheetRange(): string {
+        const monthIndex = new Date().getMonth(); // 0-based (0 = January)
+        const monthAbbrev = this.MONTH_ABBREVIATIONS[monthIndex];
+        return `${monthAbbrev}!A:Z`;
+    }
 
     /**
      * Sync all loads from Google Sheet to database
@@ -55,10 +68,10 @@ class SheetSyncService {
         }
 
         try {
-            // Starting sync (no log needed - scheduler already logs)
+            const sheetRange = this.getCurrentSheetRange();
 
-            // Fetch data from JAN sheet
-            const rawData = await googleSheetsClient.getSheetData(sheetId, this.SHEET_RANGE);
+            // Fetch data from current month's sheet
+            const rawData = await googleSheetsClient.getSheetData(sheetId, sheetRange);
 
             if (!rawData || rawData.length === 0) {
                 logger.warn('No data found in sheet');
