@@ -254,33 +254,40 @@ export class QuoSyncService {
                 return;
             }
 
-            // Import n8n service and unknown driver service
-            const { n8nService } = await import('../../modules/n8n/n8n.service.js');
             const { unknownDriverService } = await import('../../modules/drivers/unknown-driver.service.js');
 
-            // Format messages for AI
-            const conversationText = n8nService.formatConversationForAI(conversationData.messages);
+            // Step 1: Try regex first (instant, free, no external dependency)
+            const rawText = conversationData.messages.map((m: { text?: string }) => m.text || '').join(' ');
+            const regexLoadIds = extractLoadIdsFromText(rawText);
 
-            // DEBUG: Log what we're sending
+            if (regexLoadIds.length > 0) {
+                await unknownDriverService.saveUnknownDriver(phone, regexLoadIds);
+
+                logger.info(
+                    { phone, loadIds: regexLoadIds },
+                    '[REGEX] SUCCESS: Found load IDs -> Saved unknown driver'
+                );
+                return; // Regex found load IDs, skip AI
+            }
+
+            // Step 2: Regex found nothing -> try AI as fallback
             logger.info(
                 {
                     phone,
                     messageCount: conversationData.messages.length,
-                    textLength: conversationText.length,
                     firstMessage: conversationData.messages[0]?.text?.substring(0, 50) || 'NO TEXT',
                 },
-                '[N8N] Sending conversation to n8n for parsing...'
+                '[REGEX] No load IDs found, trying AI fallback...'
             );
 
-            // Improvement #2: Use queue for rate-limited n8n requests
+            const { n8nService } = await import('../../modules/n8n/n8n.service.js');
+            const conversationText = n8nService.formatConversationForAI(conversationData.messages);
+
             const n8nResponse = await n8nQueue.add(() =>
                 n8nService.parseConversation(conversationText, phone)
             );
 
-            // Save unknown driver if we got load IDs from AI
-            const aiFoundLoadIds = n8nResponse && n8nResponse.loadIds && n8nResponse.loadIds.length > 0;
-
-            if (aiFoundLoadIds) {
+            if (n8nResponse && n8nResponse.loadIds && n8nResponse.loadIds.length > 0) {
                 await unknownDriverService.saveUnknownDriver(
                     phone,
                     n8nResponse.loadIds,
@@ -288,29 +295,11 @@ export class QuoSyncService {
                 );
 
                 logger.info(
-                    { phone, loadIds: n8nResponse.loadIds, location: n8nResponse.location },
-                    '[N8N] SUCCESS: Found load IDs -> Saved unknown driver'
+                    { phone, loadIds: n8nResponse.loadIds },
+                    '[AI FALLBACK] SUCCESS: Found load IDs -> Saved unknown driver'
                 );
             } else {
-                // AI failed or found nothing -> use regex fallback
-                logger.info({ phone }, '[N8N] No load IDs from AI, trying regex fallback...');
-
-                const rawText = conversationData.messages.map((m: { text?: string }) => m.text || '').join(' ');
-                const regexLoadIds = extractLoadIdsFromText(rawText);
-
-                if (regexLoadIds.length > 0) {
-                    await unknownDriverService.saveUnknownDriver(
-                        phone,
-                        regexLoadIds
-                    );
-
-                    logger.info(
-                        { phone, loadIds: regexLoadIds },
-                        '[REGEX FALLBACK] SUCCESS: Found load IDs via regex -> Saved unknown driver'
-                    );
-                } else {
-                    logger.info({ phone }, '[REGEX FALLBACK] No load IDs found in conversation');
-                }
+                logger.info({ phone }, '[AI FALLBACK] No load IDs found in conversation either');
             }
         } catch (error: any) {
             // Don't fail the entire sync if n8n parsing fails
