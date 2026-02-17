@@ -1,29 +1,29 @@
 /**
- * Deliveries Repository
+ * Pickups Repository
  *
- * Database queries for the deliveries module
+ * Database queries for the pickups module
  */
 
 import { prisma } from '../../libs/db.js';
-import type { DeliveryRow } from './deliveries.types.js';
+import type { PickupRow } from './pickups.types.js';
 
-class DeliveryRepo {
+class PickupRepo {
     /**
-     * Get all delivery records with driver opt-out status
+     * Get all pickup records with driver opt-out status
      *
      * Cross-references driverPhone against the drivers table to check
      * if the driver has opted out (notes = "x" on the Driver record).
      */
     async findAllWithOptOutStatus() {
-        const deliveries = await prisma.delivery.findMany({
+        const pickups = await prisma.pickup.findMany({
             orderBy: { vin: 'asc' },
         });
 
         // Collect unique phone numbers that have a value
         const phoneNumbers = [
             ...new Set(
-                deliveries
-                    .map((d) => d.driverPhone)
+                pickups
+                    .map((p) => p.driverPhone)
                     .filter((p): p is string => !!p)
             ),
         ];
@@ -44,48 +44,48 @@ class DeliveryRepo {
             optedOutDrivers.map((d) => d.phoneNumber)
         );
 
-        return deliveries.map((d) => ({
-            ...d,
-            isOptedOut: d.driverPhone ? optedOutPhones.has(d.driverPhone) : false,
+        return pickups.map((p) => ({
+            ...p,
+            isOptedOut: p.driverPhone ? optedOutPhones.has(p.driverPhone) : false,
         }));
     }
 
     /**
-     * Get all delivery records (raw, without opt-out check)
+     * Get all pickup records (raw, without opt-out check)
      */
     async findAll() {
-        return prisma.delivery.findMany({
+        return prisma.pickup.findMany({
             orderBy: { vin: 'asc' },
         });
     }
 
     /**
-     * Find a delivery by ID
+     * Find a pickup by ID
      */
     async findById(id: string) {
-        return prisma.delivery.findUnique({
+        return prisma.pickup.findUnique({
             where: { id },
         });
     }
 
     /**
-     * Upsert a delivery record by VIN
+     * Upsert a pickup record by VIN
      *
      * IMPORTANT: The update clause intentionally omits `notes`
      * so that user-edited notes survive regular 10-min syncs.
      */
-    async upsertDelivery(data: DeliveryRow) {
-        return prisma.delivery.upsert({
+    async upsertPickup(data: PickupRow) {
+        return prisma.pickup.upsert({
             where: { vin: data.vin },
             create: {
                 vin: data.vin,
-                deliveryDay: data.deliveryDay,
+                pickupDay: data.pickupDay,
                 driverPhone: data.driverPhone,
                 sheetRowNumber: data.rowNumber,
                 syncedAt: new Date(),
             },
             update: {
-                deliveryDay: data.deliveryDay,
+                pickupDay: data.pickupDay,
                 driverPhone: data.driverPhone,
                 sheetRowNumber: data.rowNumber,
                 syncedAt: new Date(),
@@ -95,21 +95,21 @@ class DeliveryRepo {
     }
 
     /**
-     * Delete all delivery records (used for 2PM daily reset)
+     * Delete all pickup records (used for 2PM daily reset)
      */
     async deleteAll() {
-        return prisma.delivery.deleteMany({});
+        return prisma.pickup.deleteMany({});
     }
 
     /**
-     * Update notes for a specific delivery
+     * Update notes for a specific pickup
      */
     async updateNotes(id: string, notes: string | null) {
-        return prisma.delivery.update({
+        return prisma.pickup.update({
             where: { id },
             data: { notes },
         });
     }
 }
 
-export const deliveryRepo = new DeliveryRepo();
+export const pickupRepo = new PickupRepo();

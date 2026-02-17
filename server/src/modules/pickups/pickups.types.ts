@@ -1,13 +1,13 @@
 /**
- * Delivery Types
+ * Pickup Types
  *
- * Type definitions for the deliveries module
+ * Type definitions for the pickups module
  */
 
-export interface DeliveryRow {
+export interface PickupRow {
     rowNumber: number;
     vin: string;
-    deliveryDay: number;
+    pickupDay: number;
     driverPhone: string | null;
 }
 

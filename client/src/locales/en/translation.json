@@ -6,7 +6,7 @@
     "company": "Companies",
     "guide": "Guides",
     "driver": "Drivers",
-    "deliveries": "Deliveries",
+    "pickups": "Pickups",
     "login": "Login",
     "register": "Register",
     "logout": "Logout"
@@ -76,16 +76,16 @@
     "attempts": "Attempts",
     "sent_at": "Sent At"
   },
-  "deliveries": {
-    "title": "Daily Deliveries",
+  "pickups": {
+    "title": "Daily Pickups",
     "vin": "VIN",
-    "del_day": "DEL Day",
+    "pickup_day": "Pickup Day",
     "driver_phone": "Driver Phone",
     "notes_saved": "Notes saved successfully",
-    "fetch_error": "Failed to fetch deliveries",
+    "fetch_error": "Failed to fetch pickups",
     "sync": "Sync",
     "vehicles_today": "vehicles today",
-    "no_deliveries": "No deliveries for today",
+    "no_pickups": "No pickups for today",
     "click_to_add_note": "Click to add note..."
   },
   "bulk_message": {

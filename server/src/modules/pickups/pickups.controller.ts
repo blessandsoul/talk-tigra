@@ -1,36 +1,36 @@
 /**
- * Deliveries Controller
+ * Pickups Controller
  *
- * HTTP request handlers for delivery operations
+ * HTTP request handlers for pickup operations
  */
 
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import { deliveryService } from './deliveries.service.js';
+import { pickupService } from './pickups.service.js';
 import { successResponse } from '../../utils/response.js';
-import { updateNotesSchema } from './deliveries.schemas.js';
+import { updateNotesSchema } from './pickups.schemas.js';
 import { BadRequestError } from '../../utils/errors.js';
 
-class DeliveryController {
+class PickupController {
     /**
-     * GET /api/v1/deliveries
+     * GET /api/v1/pickups
      *
-     * Get all today's deliveries
+     * Get all today's pickups
      */
-    async getDeliveries(
+    async getPickups(
         _request: FastifyRequest,
         reply: FastifyReply
     ) {
-        const deliveries = await deliveryService.getAllDeliveries();
+        const pickups = await pickupService.getAllPickups();
 
         return reply.send(
-            successResponse('Deliveries retrieved successfully', deliveries)
+            successResponse('Pickups retrieved successfully', pickups)
         );
     }
 
     /**
-     * PATCH /api/v1/deliveries/:id/notes
+     * PATCH /api/v1/pickups/:id/notes
      *
-     * Update notes for a specific delivery
+     * Update notes for a specific pickup
      */
     async updateNotes(
         request: FastifyRequest<{
@@ -44,31 +44,31 @@ class DeliveryController {
             throw new BadRequestError('Invalid notes data');
         }
 
-        const delivery = await deliveryService.updateDeliveryNotes(
+        const pickup = await pickupService.updatePickupNotes(
             request.params.id,
             parsed.data.notes
         );
 
         return reply.send(
-            successResponse('Notes updated successfully', delivery)
+            successResponse('Notes updated successfully', pickup)
         );
     }
 
     /**
-     * POST /api/v1/deliveries/sync
+     * POST /api/v1/pickups/sync
      *
-     * Manually trigger delivery sync from Google Sheet
+     * Manually trigger pickup sync from Google Sheet
      */
     async manualSync(
         _request: FastifyRequest,
         reply: FastifyReply
     ) {
-        const result = await deliveryService.syncDeliveries();
+        const result = await pickupService.syncPickups();
 
         return reply.send(
-            successResponse('Delivery sync completed', result)
+            successResponse('Pickup sync completed', result)
         );
     }
 }
 
-export const deliveryController = new DeliveryController();
+export const pickupController = new PickupController();

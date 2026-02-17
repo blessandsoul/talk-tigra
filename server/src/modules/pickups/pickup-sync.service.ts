@@ -1,5 +1,5 @@
 /**
- * Delivery Sync Service
+ * Pickup Sync Service
  *
  * Reads Google Sheet data, filters for today's pickups (column C = today's day),
  * excludes rows with CNC in column E, and upserts matching rows to the database.
@@ -8,10 +8,10 @@
 import { googleSheetsClient } from '../../libs/google-sheets.js';
 import { env } from '../../config/env.js';
 import logger from '../../libs/logger.js';
-import { deliveryRepo } from './deliveries.repo.js';
-import type { DeliveryRow, SyncResult } from './deliveries.types.js';
+import { pickupRepo } from './pickups.repo.js';
+import type { PickupRow, SyncResult } from './pickups.types.js';
 
-class DeliverySyncService {
+class PickupSyncService {
     // Month abbreviations matching Google Sheet tab names
     private readonly MONTH_ABBREVIATIONS = [
         'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
@@ -20,7 +20,7 @@ class DeliverySyncService {
 
     // Column indices (0-based)
     private readonly VIN_COLUMN = 0;             // Column A: VIN
-    private readonly DEL_COLUMN = 2;             // Column C: Pickup day
+    private readonly PICKUP_COLUMN = 2;          // Column C: Pickup day
     private readonly CNC_CHECK_COLUMN = 4;       // Column E: CNC flag
     private readonly DRIVER_PHONE_COLUMN = 6;    // Column G: Driver Phone Number
 
@@ -35,13 +35,13 @@ class DeliverySyncService {
     }
 
     /**
-     * Sync today's deliveries from Google Sheet to database
+     * Sync today's pickups from Google Sheet to database
      */
-    async syncDeliveriesToday(): Promise<SyncResult> {
+    async syncPickupsToday(): Promise<SyncResult> {
         const sheetId = env.GOOGLE_SHEET_ID;
 
         if (!sheetId) {
-            logger.warn('[DELIVERY SYNC] GOOGLE_SHEET_ID not configured, skipping');
+            logger.warn('[PICKUP SYNC] GOOGLE_SHEET_ID not configured, skipping');
             return { synced: 0, skipped: 0, errors: 0 };
         }
 
@@ -50,7 +50,7 @@ class DeliverySyncService {
             const rawData = await googleSheetsClient.getSheetData(sheetId, sheetRange);
 
             if (!rawData || rawData.length === 0) {
-                logger.warn('[DELIVERY SYNC] No data found in sheet');
+                logger.warn('[PICKUP SYNC] No data found in sheet');
                 return { synced: 0, skipped: 0, errors: 0 };
             }
 
@@ -82,48 +82,48 @@ class DeliverySyncService {
                     }
 
                     // Check pickup day matches today
-                    if (parsed.deliveryDay !== todayDay) {
+                    if (parsed.pickupDay !== todayDay) {
                         skipped++;
                         continue;
                     }
 
-                    await deliveryRepo.upsertDelivery(parsed);
+                    await pickupRepo.upsertPickup(parsed);
                     synced++;
                 } catch (error: unknown) {
                     const message = error instanceof Error ? error.message : String(error);
-                    logger.error({ error: message, rowIndex: i }, '[DELIVERY SYNC] Failed to sync row');
+                    logger.error({ error: message, rowIndex: i }, '[PICKUP SYNC] Failed to sync row');
                     errors++;
                 }
             }
 
-            logger.info({ synced, skipped, errors, todayDay }, '[DELIVERY SYNC] Sync completed');
+            logger.info({ synced, skipped, errors, todayDay }, '[PICKUP SYNC] Sync completed');
             return { synced, skipped, errors };
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : String(error);
-            logger.error({ error: message }, '[DELIVERY SYNC] Failed to sync deliveries');
+            logger.error({ error: message }, '[PICKUP SYNC] Failed to sync pickups');
             throw error;
         }
     }
 
     /**
-     * Parse a raw sheet row into a DeliveryRow
+     * Parse a raw sheet row into a PickupRow
      */
-    private parseRow(row: unknown[], rowNumber: number): DeliveryRow | null {
+    private parseRow(row: unknown[], rowNumber: number): PickupRow | null {
         const vin = this.cleanString(row[this.VIN_COLUMN]);
         if (!vin || vin.length < 6) {
             return null;
         }
 
-        const delValue = this.cleanString(row[this.DEL_COLUMN]);
-        const deliveryDay = parseInt(delValue || '', 10);
-        if (isNaN(deliveryDay) || deliveryDay < 1 || deliveryDay > 31) {
+        const pickupValue = this.cleanString(row[this.PICKUP_COLUMN]);
+        const pickupDay = parseInt(pickupValue || '', 10);
+        if (isNaN(pickupDay) || pickupDay < 1 || pickupDay > 31) {
             return null;
         }
 
         return {
             rowNumber,
             vin,
-            deliveryDay,
+            pickupDay,
             driverPhone: this.normalizePhone(row[this.DRIVER_PHONE_COLUMN]),
         };
     }
@@ -155,4 +155,4 @@ class DeliverySyncService {
     }
 }
 
-export const deliverySyncService = new DeliverySyncService();
+export const pickupSyncService = new PickupSyncService();

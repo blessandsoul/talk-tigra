@@ -1,7 +1,7 @@
 /**
- * Deliveries Schemas
+ * Pickups Schemas
  *
- * Zod validation schemas for delivery endpoints
+ * Zod validation schemas for pickup endpoints
  */
 
 import { z } from 'zod';

@@ -297,13 +297,13 @@ model QueuedMessage {
 }
 
 // ==============================================
-// DAILY DELIVERIES (synced from Google Sheet)
+// DAILY PICKUPS (synced from Google Sheet)
 // ==============================================
 
-model Delivery {
+model Pickup {
   id             String   @id @default(uuid())
   vin            String   @unique
-  deliveryDay    Int      @map("delivery_day")
+  pickupDay      Int      @map("pickup_day")
   driverPhone    String?  @map("driver_phone")
   notes          String?  @db.Text
   sheetRowNumber Int?     @map("sheet_row_number")
@@ -312,7 +312,7 @@ model Delivery {
   updatedAt      DateTime @updatedAt @map("updated_at")
 
   // Indexes
-  @@index([deliveryDay])
+  @@index([pickupDay])
   @@index([syncedAt])
-  @@map("deliveries")
+  @@map("pickups")
 }

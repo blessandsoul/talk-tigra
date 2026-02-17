@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from '../config';
 import { BulkMessageModal } from './BulkMessageModal';
 
-interface Delivery {
+interface Pickup {
     id: string;
     vin: string;
-    deliveryDay: number;
+    pickupDay: number;
     driverPhone: string | null;
     notes: string | null;
     isOptedOut: boolean;
@@ -21,12 +21,12 @@ interface Delivery {
 interface ApiResponse {
     success: boolean;
     message: string;
-    data: Delivery[];
+    data: Pickup[];
 }
 
-export const DeliveriesTable = () => {
+export const PickupsTable = () => {
     const { t } = useTranslation();
-    const [data, setData] = useState<Delivery[]>([]);
+    const [data, setData] = useState<Pickup[]>([]);
     const [loading, setLoading] = useState(false);
     const [syncing, setSyncing] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -43,7 +43,7 @@ export const DeliveriesTable = () => {
     const rowSelection = {
         selectedRowKeys,
         onChange: onSelectChange,
-        getCheckboxProps: (record: Delivery) => ({
+        getCheckboxProps: (record: Pickup) => ({
             disabled: !record.driverPhone || record.isOptedOut,
         }),
     };
@@ -51,9 +51,9 @@ export const DeliveriesTable = () => {
     const getSendableNumbers = (): string[] => {
         return (selectedRowKeys as string[])
             .map((id) => {
-                const delivery = data.find((d) => d.id === id);
-                if (!delivery || !delivery.driverPhone || delivery.isOptedOut) return null;
-                return delivery.driverPhone;
+                const pickup = data.find((d) => d.id === id);
+                if (!pickup || !pickup.driverPhone || pickup.isOptedOut) return null;
+                return pickup.driverPhone;
             })
             .filter((phone): phone is string => !!phone);
     };
@@ -63,19 +63,19 @@ export const DeliveriesTable = () => {
         setSelectedRowKeys([]);
     };
 
-    const fetchDeliveries = useCallback(async () => {
+    const fetchPickups = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/deliveries`);
+            const response = await fetch(`${API_BASE_URL}/pickups`);
             const result: ApiResponse = await response.json();
 
             if (result.success) {
                 setData(result.data);
             } else {
-                message.error(t('deliveries.fetch_error'));
+                message.error(t('pickups.fetch_error'));
             }
         } catch (error) {
-            console.error('Error fetching deliveries:', error);
+            console.error('Error fetching pickups:', error);
             message.error(t('common.error'));
         } finally {
             setLoading(false);
@@ -83,24 +83,24 @@ export const DeliveriesTable = () => {
     }, [t]);
 
     useEffect(() => {
-        fetchDeliveries();
+        fetchPickups();
 
         // Auto-refresh every 10 minutes
-        const interval = setInterval(fetchDeliveries, 10 * 60 * 1000);
+        const interval = setInterval(fetchPickups, 10 * 60 * 1000);
         return () => clearInterval(interval);
-    }, [fetchDeliveries]);
+    }, [fetchPickups]);
 
     const handleManualSync = async () => {
         setSyncing(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/deliveries/sync`, {
+            const response = await fetch(`${API_BASE_URL}/pickups/sync`, {
                 method: 'POST',
             });
             const result = await response.json();
 
             if (result.success) {
-                message.success(`Synced ${result.data.synced} deliveries`);
-                fetchDeliveries();
+                message.success(`Synced ${result.data.synced} pickups`);
+                fetchPickups();
             } else {
                 message.error(t('common.error'));
             }
@@ -113,14 +113,14 @@ export const DeliveriesTable = () => {
 
     const handleNotesChange = async (id: string, newNotes: string) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/deliveries/${id}/notes`, {
+            const response = await fetch(`${API_BASE_URL}/pickups/${id}/notes`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ notes: newNotes || null }),
             });
 
             if (response.ok) {
-                message.success(t('deliveries.notes_saved'));
+                message.success(t('pickups.notes_saved'));
                 // Update local data without full refetch
                 setData((prev) =>
                     prev.map((d) =>
@@ -136,21 +136,21 @@ export const DeliveriesTable = () => {
         setEditingId(null);
     };
 
-    const columns: TableProps<Delivery>['columns'] = [
+    const columns: TableProps<Pickup>['columns'] = [
         {
-            title: t('deliveries.vin'),
+            title: t('pickups.vin'),
             dataIndex: 'vin',
             key: 'vin',
             width: 200,
             render: (text: string) => (
                 <span style={{ fontFamily: 'monospace', fontWeight: 500 }}>{text}</span>
             ),
-            sorter: (a: Delivery, b: Delivery) => a.vin.localeCompare(b.vin),
+            sorter: (a: Pickup, b: Pickup) => a.vin.localeCompare(b.vin),
         },
         {
-            title: t('deliveries.del_day'),
-            dataIndex: 'deliveryDay',
-            key: 'deliveryDay',
+            title: t('pickups.pickup_day'),
+            dataIndex: 'pickupDay',
+            key: 'pickupDay',
             width: 100,
             align: 'center',
             render: (day: number) => (
@@ -158,11 +158,11 @@ export const DeliveriesTable = () => {
             ),
         },
         {
-            title: t('deliveries.driver_phone'),
+            title: t('pickups.driver_phone'),
             dataIndex: 'driverPhone',
             key: 'driverPhone',
             width: 200,
-            render: (text: string | null, record: Delivery) => {
+            render: (text: string | null, record: Pickup) => {
                 if (!text) return <span style={{ color: '#ccc' }}>-</span>;
                 return (
                     <Space size={4}>
@@ -180,7 +180,7 @@ export const DeliveriesTable = () => {
             title: t('common.notes'),
             dataIndex: 'notes',
             key: 'notes',
-            render: (text: string | null, record: Delivery) => {
+            render: (text: string | null, record: Pickup) => {
                 if (editingId === record.id) {
                     return (
                         <Input.TextArea
@@ -227,7 +227,7 @@ export const DeliveriesTable = () => {
                             (e.currentTarget as HTMLDivElement).style.borderColor = 'transparent';
                         }}
                     >
-                        {text || <span style={{ color: '#bfbfbf', fontStyle: 'italic' }}>{t('deliveries.click_to_add_note')}</span>}
+                        {text || <span style={{ color: '#bfbfbf', fontStyle: 'italic' }}>{t('pickups.click_to_add_note')}</span>}
                     </div>
                 );
             },
@@ -252,10 +252,10 @@ export const DeliveriesTable = () => {
             >
                 <div>
                     <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 600 }}>
-                        {t('deliveries.title')}
+                        {t('pickups.title')}
                     </h2>
                     <span style={{ color: '#8c8c8c', fontSize: '13px' }}>
-                        {data.length} {t('deliveries.vehicles_today')}
+                        {data.length} {t('pickups.vehicles_today')}
                     </span>
                 </div>
 
@@ -275,7 +275,7 @@ export const DeliveriesTable = () => {
                         onClick={handleManualSync}
                         loading={syncing}
                     >
-                        {t('deliveries.sync')}
+                        {t('pickups.sync')}
                     </Button>
                 </Space>
             </div>
@@ -291,7 +291,7 @@ export const DeliveriesTable = () => {
                 locale={{
                     emptyText: (
                         <Empty
-                            description={t('deliveries.no_deliveries')}
+                            description={t('pickups.no_pickups')}
                             image={Empty.PRESENTED_IMAGE_SIMPLE}
                         />
                     ),
