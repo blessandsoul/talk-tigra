@@ -67,10 +67,10 @@ export class MessageQueueController {
             );
 
             // Add messages to queue
-            const addedCount = messageQueueService.addToQueue(phoneNumbers, content);
+            const addedCount = await messageQueueService.addToQueue(phoneNumbers, content);
 
             // Get queue stats
-            const stats = messageQueueService.getQueueStats();
+            const stats = await messageQueueService.getQueueStats();
 
             // Return success response
             return reply.status(200).send({
@@ -117,7 +117,7 @@ export class MessageQueueController {
         reply: FastifyReply
     ): Promise<void> {
         try {
-            const stats = messageQueueService.getQueueStats();
+            const stats = await messageQueueService.getQueueStats();
 
             return reply.status(200).send({
                 success: true,
@@ -154,7 +154,7 @@ export class MessageQueueController {
         reply: FastifyReply
     ): Promise<void> {
         try {
-            const clearedCount = messageQueueService.clearCompleted();
+            const clearedCount = await messageQueueService.clearCompleted();
 
             return reply.status(200).send({
                 success: true,

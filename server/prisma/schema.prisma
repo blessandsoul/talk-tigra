@@ -277,6 +277,26 @@ model UnknownDriver {
 }
 
 // ==============================================
+// MESSAGE QUEUE (persisted bulk message queue)
+// ==============================================
+
+model QueuedMessage {
+  id          String    @id @default(uuid())
+  phoneNumber String    @map("phone_number")
+  content     String    @db.Text
+  status      String    @default("pending") // 'pending', 'sent', 'failed'
+  attempts    Int       @default(0)
+  error       String?   @db.Text
+  sentAt      DateTime? @map("sent_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("queued_messages")
+}
+
+// ==============================================
 // DAILY DELIVERIES (synced from Google Sheet)
 // ==============================================
 

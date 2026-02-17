@@ -1,67 +1,51 @@
 /**
  * Message Queue Service
- * 
+ *
  * Manages a queue of messages to be sent at a controlled rate (1 per 20 seconds)
  * to avoid rate limiting and ensure reliable delivery.
+ *
+ * Messages are persisted to the database so history survives server restarts.
  */
 
 import logger from '../libs/logger.js';
 import { quoMessagesService } from '../modules/quo-messages/quo-messages.service.js';
-
-interface QueuedMessage {
-    id: string;
-    phoneNumber: string;
-    content: string;
-    status: 'pending' | 'sent' | 'failed';
-    attempts: number;
-    createdAt: Date;
-    sentAt?: Date;
-    error?: string;
-}
+import { messageQueueRepo } from '../modules/quo-messages/message-queue.repo.js';
 
 /**
  * Message Queue Service Class
- * 
- * Manages a simple in-memory queue for sending messages.
- * For production, consider using Redis or a database for persistence.
+ *
+ * Manages a database-backed queue for sending messages.
  */
 class MessageQueueService {
-    private queue: QueuedMessage[] = [];
     private isProcessing: boolean = false;
 
     /**
      * Add multiple phone numbers to the queue
-     * 
+     *
      * @param phoneNumbers - Array of phone numbers in E.164 format
      * @param content - Message content to send to all numbers
      * @returns Number of messages added to queue
      */
-    addToQueue(phoneNumbers: string[], content: string): number {
-        const timestamp = new Date();
+    async addToQueue(phoneNumbers: string[], content: string): Promise<number> {
+        const messages = phoneNumbers.map((phoneNumber) => ({
+            phoneNumber,
+            content,
+        }));
 
-        phoneNumbers.forEach((phoneNumber) => {
-            const message: QueuedMessage = {
-                id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                phoneNumber,
-                content,
-                status: 'pending',
-                attempts: 0,
-                createdAt: timestamp,
-            };
+        const addedCount = await messageQueueRepo.createMany(messages);
 
-            this.queue.push(message);
-        });
+        const stats = await messageQueueRepo.getStats();
 
         logger.info(
             {
-                added: phoneNumbers.length,
-                totalInQueue: this.queue.length,
-                pendingCount: this.getPendingCount(),
+                added: addedCount,
+                totalInQueue: stats.total,
+                pendingCount: stats.pending,
             },
             '[MESSAGE QUEUE] Messages added to queue'
         );
 
-        return phoneNumbers.length;
+        return addedCount;
     }
 
     /**
@@ -74,7 +58,7 @@ class MessageQueueService {
             return;
         }
 
-        const pendingMessage = this.queue.find((msg) => msg.status === 'pending');
+        const pendingMessage = await messageQueueRepo.findNextPending();
 
         if (!pendingMessage) {
             logger.debug('[MESSAGE QUEUE] No pending messages to process');
@@ -99,43 +83,44 @@ class MessageQueueService {
                 to: [pendingMessage.phoneNumber],
             });
 
-            // Mark as sent
-            pendingMessage.status = 'sent';
-            pendingMessage.sentAt = new Date();
-            pendingMessage.attempts += 1;
+            // Mark as sent in the database
+            await messageQueueRepo.markSent(pendingMessage.id);
+
+            const stats = await messageQueueRepo.getStats();
 
             logger.info(
                 {
                     messageId: pendingMessage.id,
                     phoneNumber: pendingMessage.phoneNumber,
-                    remainingInQueue: this.getPendingCount(),
+                    remainingInQueue: stats.pending,
                 },
                 '[MESSAGE QUEUE] SUCCESS: Message sent'
             );
-        } catch (error: any) {
-            pendingMessage.attempts += 1;
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
 
             // Retry up to 3 times
-            if (pendingMessage.attempts >= 3) {
-                pendingMessage.status = 'failed';
-                pendingMessage.error = error.message;
+            if (pendingMessage.attempts + 1 >= 3) {
+                await messageQueueRepo.markFailed(pendingMessage.id, errorMessage);
 
                 logger.error(
                     {
                         messageId: pendingMessage.id,
                         phoneNumber: pendingMessage.phoneNumber,
-                        attempts: pendingMessage.attempts,
-                        error: error.message,
+                        attempts: pendingMessage.attempts + 1,
+                        error: errorMessage,
                     },
                     '[MESSAGE QUEUE] ERROR: Message failed after max attempts'
                 );
             } else {
+                await messageQueueRepo.incrementAttempts(pendingMessage.id);
+
                 logger.warn(
                     {
                         messageId: pendingMessage.id,
                         phoneNumber: pendingMessage.phoneNumber,
-                        attempts: pendingMessage.attempts,
-                        error: error.message,
+                        attempts: pendingMessage.attempts + 1,
+                        error: errorMessage,
                     },
                     '[MESSAGE QUEUE] WARN: Message failed, will retry'
                 );
@@ -148,60 +133,38 @@ class MessageQueueService {
     /**
      * Get queue statistics
      */
-    getQueueStats() {
-        const pending = this.queue.filter((msg) => msg.status === 'pending').length;
-        const sent = this.queue.filter((msg) => msg.status === 'sent').length;
-        const failed = this.queue.filter((msg) => msg.status === 'failed').length;
-
-        return {
-            total: this.queue.length,
-            pending,
-            sent,
-            failed,
-            messages: this.queue.map((msg) => ({
-                id: msg.id,
-                phoneNumber: msg.phoneNumber,
-                status: msg.status,
-                attempts: msg.attempts,
-                createdAt: msg.createdAt,
-                sentAt: msg.sentAt,
-            })),
-        };
-    }
-
-    /**
-     * Get count of pending messages
-     */
-    private getPendingCount(): number {
-        return this.queue.filter((msg) => msg.status === 'pending').length;
+    async getQueueStats(): Promise<{
+        total: number;
+        pending: number;
+        sent: number;
+        failed: number;
+        messages: Array<{
+            id: string;
+            phoneNumber: string;
+            status: string;
+            attempts: number;
+            createdAt: Date;
+            sentAt: Date | null;
+        }>;
+    }> {
+        return messageQueueRepo.getStats();
     }
 
     /**
      * Clear completed messages from queue (sent or failed)
      * Keeps only pending messages
      */
-    clearCompleted(): number {
-        const beforeCount = this.queue.length;
-        this.queue = this.queue.filter((msg) => msg.status === 'pending');
-        const cleared = beforeCount - this.queue.length;
+    async clearCompleted(): Promise<number> {
+        const cleared = await messageQueueRepo.deleteCompleted();
 
         if (cleared > 0) {
             logger.info(
-                { cleared, remaining: this.queue.length },
+                { cleared },
                 '[MESSAGE QUEUE] Cleared completed messages'
             );
         }
 
         return cleared;
-    }
-
-    /**
-     * Clear all messages from queue
-     */
-    clearAll(): void {
-        const count = this.queue.length;
-        this.queue = [];
-        logger.info({ cleared: count }, '[MESSAGE QUEUE] Cleared all messages');
     }
 }
 

@@ -1,7 +1,7 @@
 /**
  * Delivery Sync Service
  *
- * Reads Google Sheet data, filters for today's deliveries (column D = today's day),
+ * Reads Google Sheet data, filters for today's pickups (column C = today's day),
  * excludes rows with CNC in column E, and upserts matching rows to the database.
  */
 
@@ -20,7 +20,7 @@ class DeliverySyncService {
 
     // Column indices (0-based)
     private readonly VIN_COLUMN = 0;             // Column A: VIN
-    private readonly DEL_COLUMN = 3;             // Column D: DEL (delivery day)
+    private readonly DEL_COLUMN = 2;             // Column C: Pickup day
     private readonly CNC_CHECK_COLUMN = 4;       // Column E: CNC flag
     private readonly DRIVER_PHONE_COLUMN = 6;    // Column G: Driver Phone Number
 
@@ -81,7 +81,7 @@ class DeliverySyncService {
                         continue;
                     }
 
-                    // Check delivery day matches today
+                    // Check pickup day matches today
                     if (parsed.deliveryDay !== todayDay) {
                         skipped++;
                         continue;
