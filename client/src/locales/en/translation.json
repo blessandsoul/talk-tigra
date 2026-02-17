@@ -6,6 +6,7 @@
     "company": "Companies",
     "guide": "Guides",
     "driver": "Drivers",
+    "deliveries": "Deliveries",
     "login": "Login",
     "register": "Register",
     "logout": "Logout"
@@ -74,6 +75,18 @@
     "phone_number": "Phone Number",
     "attempts": "Attempts",
     "sent_at": "Sent At"
+  },
+  "deliveries": {
+    "title": "Daily Deliveries",
+    "vin": "VIN",
+    "del_day": "DEL Day",
+    "driver_phone": "Driver Phone",
+    "notes_saved": "Notes saved successfully",
+    "fetch_error": "Failed to fetch deliveries",
+    "sync": "Sync",
+    "vehicles_today": "vehicles today",
+    "no_deliveries": "No deliveries for today",
+    "click_to_add_note": "Click to add note..."
   },
   "bulk_message": {
     "title": "Send Bulk Message",

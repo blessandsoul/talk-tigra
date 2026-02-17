@@ -4,7 +4,15 @@
       "Bash(npm run build:*)",
       "Bash(npx prisma migrate dev:*)",
       "Bash(npx prisma:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(redis-cli:*)",
+      "Bash(powershell.exe -Command \"Get-Process redis* -ErrorAction SilentlyContinue | Format-Table ProcessName, Path -AutoSize\")",
+      "Bash(docker exec:*)",
+      "Bash(cat:*)",
+      "Bash(npx tsx:*)",
+      "Bash(node -e:*)",
+      "Bash(node:*)",
+      "Bash(tasklist)"
     ]
   }
 }

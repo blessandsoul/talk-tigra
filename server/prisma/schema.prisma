@@ -275,3 +275,24 @@ model UnknownDriver {
   @@index([createdAt])
   @@map("unknown_drivers")
 }
+
+// ==============================================
+// DAILY DELIVERIES (synced from Google Sheet)
+// ==============================================
+
+model Delivery {
+  id             String   @id @default(uuid())
+  vin            String   @unique
+  deliveryDay    Int      @map("delivery_day")
+  driverPhone    String?  @map("driver_phone")
+  notes          String?  @db.Text
+  sheetRowNumber Int?     @map("sheet_row_number")
+  syncedAt       DateTime @default(now()) @map("synced_at")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  // Indexes
+  @@index([deliveryDay])
+  @@index([syncedAt])
+  @@map("deliveries")
+}

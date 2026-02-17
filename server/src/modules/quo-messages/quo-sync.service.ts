@@ -9,6 +9,7 @@ import { prisma } from '../../libs/db.js';
 import logger from '../../libs/logger.js';
 import { n8nQueue } from '../../libs/async-queue.js';
 import { extractLoadIdsFromText } from '../../libs/load-id-extractor.js';
+import { hasStopCommand, isStopMessage } from '../../libs/stop-command-extractor.js';
 import type { GetConversationsResponse, GetMessagesResponse } from '../../types/quo-api.types.js';
 
 export class QuoSyncService {
@@ -24,6 +25,10 @@ export class QuoSyncService {
         const startTime = Date.now();
 
         try {
+            // Check for /STOP opt-outs FIRST (independent of conversation list)
+            // This catches /STOP from ANY conversation, including archived/snoozed ones
+            await this.checkForStopCommands(phoneNumberId);
+
             logger.info(
                 { phoneNumberId, maxResults: 100 },
                 '[QUO SYNC] Starting conversation sync...'
@@ -92,8 +97,141 @@ export class QuoSyncService {
     }
 
     /**
+     * Check for /STOP opt-out commands using two strategies:
+     *
+     * 1. DB scan: Check all stored messages for /STOP (free, instant)
+     * 2. Targeted API scan: For conversations NOT in the top 100 (stale),
+     *    fetch recent messages directly from OpenPhone API.
+     *    Limited to 20 conversations per cycle to avoid excessive API calls.
+     *
+     * This ensures /STOP is caught even from archived/snoozed conversations.
+     */
+    private async checkForStopCommands(phoneNumberId: string): Promise<void> {
+        const { driverRepository } = await import('../../modules/drivers/driver.repo.js');
+        let optOutCount = 0;
+
+        // --- Strategy 1: Scan messages already stored in our DB ---
+        try {
+            const stopMessages = await prisma.message.findMany({
+                where: {
+                    direction: 'incoming',
+                    text: { in: ['/STOP', '/stop', '/Stop', '/STOP ', '/stop ', ' /STOP', ' /stop'] },
+                },
+                select: { from: true },
+                distinct: ['from'],
+            });
+
+            for (const msg of stopMessages) {
+                const phone = msg.from;
+                if (!phone) continue;
+
+                const result = await this.markDriverOptedOut(phone, driverRepository, 'DB scan');
+                if (result) optOutCount++;
+            }
+        } catch (error: any) {
+            logger.warn({ error: error.message }, '[STOP COMMAND] DB scan for /STOP failed');
+        }
+
+        // --- Strategy 2: Check stale conversations via targeted API calls ---
+        try {
+            // Get conversations that haven't been synced recently (not in top 100)
+            // These are conversations we know about but can't reach via the normal sync
+            const staleConversations = await prisma.conversation.findMany({
+                where: {
+                    syncedAt: {
+                        lt: new Date(Date.now() - 30 * 60 * 1000), // Not synced in last 30 min
+                    },
+                },
+                select: { id: true, participants: true },
+                take: 20, // Limit API calls per cycle
+                orderBy: { syncedAt: 'asc' }, // Check oldest-synced first
+            });
+
+            for (const convo of staleConversations) {
+                try {
+                    const participants: string[] = JSON.parse(convo.participants);
+                    const driverPhone = participants[0];
+                    if (!driverPhone) continue;
+
+                    // Skip if driver is already opted out
+                    const existingDriver = await driverRepository.findByPhoneNumber(driverPhone);
+                    if (existingDriver?.notes?.trim().toLowerCase() === 'x') continue;
+
+                    // Fetch recent messages from OpenPhone API for this participant
+                    const messagesResponse = await quoApiClient.get<GetMessagesResponse>(
+                        '/messages',
+                        {
+                            params: {
+                                phoneNumberId,
+                                participants: driverPhone,
+                                maxResults: 10,
+                            },
+                        }
+                    );
+
+                    const messages = messagesResponse.data.data;
+                    const hasStop = messages.some(
+                        (m) => m.direction === 'incoming' && isStopMessage(m.text || '')
+                    );
+
+                    if (hasStop) {
+                        const result = await this.markDriverOptedOut(driverPhone, driverRepository, 'API scan');
+                        if (result) optOutCount++;
+                    }
+                } catch (error: any) {
+                    // Skip individual conversation errors, continue with others
+                    logger.debug(
+                        { conversationId: convo.id, error: error.message },
+                        '[STOP COMMAND] Failed to check stale conversation'
+                    );
+                }
+            }
+        } catch (error: any) {
+            logger.warn({ error: error.message }, '[STOP COMMAND] Stale conversation scan failed');
+        }
+
+        if (optOutCount > 0) {
+            logger.info(
+                { optOutCount },
+                `[STOP COMMAND] Global scan complete - ${optOutCount} new opt-outs processed`
+            );
+        }
+    }
+
+    /**
+     * Mark a driver as opted out (set notes to "x")
+     * Returns true if the driver was newly marked, false if already opted out.
+     */
+    private async markDriverOptedOut(
+        phone: string,
+        driverRepository: any,
+        source: string
+    ): Promise<boolean> {
+        const existingDriver = await driverRepository.findByPhoneNumber(phone);
+
+        if (existingDriver) {
+            if (existingDriver.notes?.trim().toLowerCase() !== 'x') {
+                await driverRepository.update(existingDriver.id, { notes: 'x' });
+                logger.info(
+                    { phone, driverId: existingDriver.id, source },
+                    '[STOP COMMAND] Driver opted out - set notes to "x"'
+                );
+                return true;
+            }
+            return false;
+        } else {
+            await driverRepository.create({ phoneNumber: phone, notes: 'x' });
+            logger.info(
+                { phone, source },
+                '[STOP COMMAND] Created new driver with opt-out notes "x"'
+            );
+            return true;
+        }
+    }
+
+    /**
      * Sync a single conversation and its messages
-     * 
+     *
      * Improvement #1: Skip parsing if conversation hasn't changed since last parse
      */
     private async syncConversation(quoConversation: any, phoneNumberId: string): Promise<{ parsed: boolean; skipped: boolean }> {
@@ -216,6 +354,33 @@ export class QuoSyncService {
                 });
             }
 
+            // Check for /STOP opt-out in incoming messages (runs every sync, not just when needsParsing)
+            const driverPhone = participants[0];
+            const hasStop = messages.some(
+                (msg) => msg.direction === 'incoming' && isStopMessage(msg.text || '')
+            );
+
+            if (hasStop && driverPhone) {
+                const { driverRepository } = await import('../../modules/drivers/driver.repo.js');
+                const existingDriver = await driverRepository.findByPhoneNumber(driverPhone);
+
+                if (existingDriver) {
+                    if (existingDriver.notes?.trim().toLowerCase() !== 'x') {
+                        await driverRepository.update(existingDriver.id, { notes: 'x' });
+                        logger.info(
+                            { phone: driverPhone, driverId: existingDriver.id, conversationId },
+                            '[STOP COMMAND] Driver opted out during message sync - set notes to "x"'
+                        );
+                    }
+                } else {
+                    await driverRepository.create({ phoneNumber: driverPhone, notes: 'x' });
+                    logger.info(
+                        { phone: driverPhone, conversationId },
+                        '[STOP COMMAND] Created new driver with opt-out notes "x" during message sync'
+                    );
+                }
+            }
+
             logger.debug(
                 { conversationId, messageCount: messages.length },
                 'Synced messages for conversation'
@@ -255,6 +420,33 @@ export class QuoSyncService {
             }
 
             const { unknownDriverService } = await import('../../modules/drivers/unknown-driver.service.js');
+
+            // Step 0: Check for /STOP opt-out command before any load ID parsing
+            if (hasStopCommand(conversationData.messages)) {
+                const { driverRepository } = await import('../../modules/drivers/driver.repo.js');
+                const existingDriver = await driverRepository.findByPhoneNumber(phone);
+
+                if (existingDriver) {
+                    // Only update if notes is not already "x"
+                    if (existingDriver.notes?.trim().toLowerCase() !== 'x') {
+                        await driverRepository.update(existingDriver.id, { notes: 'x' });
+                        logger.info(
+                            { phone, driverId: existingDriver.id },
+                            '[STOP COMMAND] Driver opted out - set notes to "x"'
+                        );
+                    }
+                } else {
+                    // Driver doesn't exist yet - create with "x" notes so they're excluded from the start
+                    await driverRepository.create({ phoneNumber: phone, notes: 'x' });
+                    logger.info(
+                        { phone },
+                        '[STOP COMMAND] Created new driver with opt-out notes "x"'
+                    );
+                }
+
+                // Skip load ID parsing entirely for this conversation
+                return;
+            }
 
             // Step 1: Try regex first (instant, free, no external dependency)
             const rawText = conversationData.messages.map((m: { text?: string }) => m.text || '').join(' ');

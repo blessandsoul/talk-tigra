@@ -103,9 +103,13 @@ class QuoMessagesService {
             // Import env to get QUO_NUMBER
             const { env } = await import('../../config/env.js');
 
+            // Append opt-out footer to every outbound message
+            const OPT_OUT_FOOTER = '\n\nTo stop receiving dispatch suggestions from Auto Market Ukraine, please reply with /STOP';
+            const contentWithFooter = params.content + OPT_OUT_FOOTER;
+
             // Build request body
             const requestBody: Record<string, any> = {
-                content: params.content,
+                content: contentWithFooter,
                 from: env.QUO_NUMBER, // Use QUO_NUMBER from environment
                 to: params.to,
             };

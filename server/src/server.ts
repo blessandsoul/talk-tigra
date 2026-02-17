@@ -17,6 +17,7 @@ import { fileQueue } from './libs/queue.js';
 import { startQuoSyncScheduler } from './libs/quo-sync-scheduler.js';
 import { startDriverSyncScheduler } from './libs/driver-sync-scheduler.js';
 import { initCronJobs } from './config/cron.js';
+import { startDeliverySyncScheduler } from './libs/delivery-sync-scheduler.js';
 
 /**
  * Start the Fastify server
@@ -56,6 +57,9 @@ async function startServer() {
 
         // Start Driver sync scheduler (sheet sync + driver matching)
         startDriverSyncScheduler();
+
+        // Start Delivery sync scheduler (10-min sync + 2PM daily reset)
+        startDeliverySyncScheduler();
 
         // Initialize cron jobs (unknown driver matching)
         initCronJobs();

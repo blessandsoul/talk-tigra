@@ -214,6 +214,14 @@ export const KnownDriversTable = () => {
         setSelectedRowKeys([]);
     };
 
+    // Filter out drivers whose notes field is "x" (opt-out) from message sending
+    const getSendableNumbers = (): string[] => {
+        return (selectedRowKeys as string[]).filter((phoneNumber) => {
+            const driver = data.find((d) => d.number === phoneNumber);
+            return !(driver?.notes?.trim().toLowerCase() === 'x');
+        });
+    };
+
     const handleCreateDriverSuccess = () => {
         setIsCreateModalOpen(false);
         fetchDrivers();
@@ -339,13 +347,13 @@ export const KnownDriversTable = () => {
                 </div>
 
                 <Space size="middle">
-                    {selectedRowKeys.length > 0 && (
+                    {selectedRowKeys.length > 0 && getSendableNumbers().length > 0 && (
                         <Button
                             size="large"
                             icon={<SendOutlined />}
                             onClick={() => setIsModalOpen(true)}
                         >
-                            {t('drivers.message_selected')} ({selectedRowKeys.length})
+                            {t('drivers.message_selected')} ({getSendableNumbers().length})
                         </Button>
                     )}
                     <Button
@@ -390,7 +398,7 @@ export const KnownDriversTable = () => {
             <BulkMessageModal
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
-                selectedNumbers={selectedRowKeys as string[]}
+                selectedNumbers={getSendableNumbers()}
                 onSuccess={handleBulkMessageSuccess}
             />
 

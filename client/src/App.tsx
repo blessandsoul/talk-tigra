@@ -4,6 +4,7 @@ import { Layout, theme, Menu } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { KnownDriversTable } from './components/KnownDriversTable';
 import { MessageQueueDashboard } from './components/MessageQueueDashboard';
+import { DeliveriesTable } from './components/DeliveriesTable';
 import { LanguageSwitcher } from './components/common/LanguageSwitcher';
 
 
@@ -26,10 +27,13 @@ function AppLayout() {
       label: <Link to="/known-drivers">{t('nav.driver')}</Link>,
     },
     {
+      key: '/deliveries',
+      label: <Link to="/deliveries">{t('nav.deliveries')}</Link>,
+    },
+    {
       key: '/queue-dashboard',
       label: <Link to="/queue-dashboard">{t('nav.dashboard')}</Link>,
     },
-
   ];
 
   return (
@@ -57,6 +61,7 @@ function AppLayout() {
           <Routes>
             <Route path="/" element={<Navigate to="/known-drivers" replace />} />
             <Route path="/known-drivers" element={<KnownDriversTable />} />
+            <Route path="/deliveries" element={<DeliveriesTable />} />
             <Route path="/queue-dashboard" element={<MessageQueueDashboard />} />
 
             {/* Redirect old route to new one */}

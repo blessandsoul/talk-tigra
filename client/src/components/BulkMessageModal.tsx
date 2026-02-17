@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal, Form, Input, Button, message, Alert } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from '../config';
@@ -10,13 +10,20 @@ interface BulkMessageModalProps {
     onCancel: () => void;
     selectedNumbers: string[];
     onSuccess: () => void;
+    defaultContent?: string;
 }
 
-export const BulkMessageModal = ({ open, onCancel, selectedNumbers, onSuccess }: BulkMessageModalProps) => {
+export const BulkMessageModal = ({ open, onCancel, selectedNumbers, onSuccess, defaultContent }: BulkMessageModalProps) => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (open && defaultContent) {
+            form.setFieldsValue({ content: defaultContent });
+        }
+    }, [open, defaultContent, form]);
 
     const handleOk = async () => {
         try {
