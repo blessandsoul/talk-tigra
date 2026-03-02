@@ -69,9 +69,6 @@ const envSchema = z.object({
     // Google Sheets Configuration
     GOOGLE_SHEETS_CREDENTIALS: z.string().optional(), // Base64 encoded credentials JSON
     GOOGLE_SHEET_ID: z.string().optional(), // The Google Sheet ID to sync loads from
-
-    // n8n Webhook Configuration
-    N8N_WEBHOOK_URL: z.string().url().min(1, 'N8N_WEBHOOK_URL is required'),
 });
 
 /**

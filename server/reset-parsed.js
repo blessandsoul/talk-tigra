@@ -1,7 +1,7 @@
 /**
  * Reset lastParsedAt for testing
  * 
- * Run this script to reset all conversations so they get re-parsed by n8n
+ * Run this script to reset all conversations so they get re-parsed by regex
  */
 
 import { prisma } from './src/libs/db.js';

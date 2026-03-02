@@ -7,7 +7,6 @@
 import { quoApiClient } from '../../libs/quo-api.js';
 import { prisma } from '../../libs/db.js';
 import logger from '../../libs/logger.js';
-import { n8nQueue } from '../../libs/async-queue.js';
 import { extractLoadIdsFromText } from '../../libs/load-id-extractor.js';
 import { hasStopCommand, isStopMessage } from '../../libs/stop-command-extractor.js';
 import type { GetConversationsResponse, GetMessagesResponse } from '../../types/quo-api.types.js';
@@ -278,9 +277,9 @@ export class QuoSyncService {
             // Always fetch messages to keep DB in sync
             await this.syncMessagesForConversation(quoConversation.id, phoneNumberId, quoConversation.participants);
 
-            // Only parse with n8n if conversation has NEW activity
+            // Only parse if conversation has NEW activity
             if (needsParsing) {
-                await this.parseConversationWithN8n(quoConversation.id, quoConversation.participants);
+                await this.parseConversation(quoConversation.id, quoConversation.participants);
 
                 // Update lastParsedAt to mark this conversation as processed
                 await prisma.conversation.update({
@@ -397,25 +396,24 @@ export class QuoSyncService {
     }
 
     /**
-     * Parse conversation with n8n to extract load IDs
-     * 
-     * This runs after syncing messages and sends the conversation
-     * to n8n for AI parsing to extract load IDs and location
+     * Parse conversation to extract load IDs
+     *
+     * Checks for /STOP opt-out, then runs regex extraction on all messages.
      */
-    private async parseConversationWithN8n(conversationId: string, participants: string[]): Promise<void> {
+    private async parseConversation(conversationId: string, participants: string[]): Promise<void> {
         try {
             // Get conversation history from database
             const conversationData = await this.getConversationHistory(conversationId);
 
             if (!conversationData || conversationData.messages.length === 0) {
-                logger.warn({ conversationId }, '[N8N] Skipping - no messages found in database');
+                logger.warn({ conversationId }, '[PARSE] Skipping - no messages found in database');
                 return;
             }
 
             // Get phone number
             const phone = participants[0];
             if (!phone) {
-                logger.warn({ conversationId }, '[N8N] Skipping - no phone number');
+                logger.warn({ conversationId }, '[PARSE] Skipping - no phone number');
                 return;
             }
 
@@ -462,45 +460,19 @@ export class QuoSyncService {
                 return; // Regex found load IDs, skip AI
             }
 
-            // Step 2: Regex found nothing -> try AI as fallback
+            // Regex found nothing - no further parsing
             logger.info(
-                {
-                    phone,
-                    messageCount: conversationData.messages.length,
-                    firstMessage: conversationData.messages[0]?.text?.substring(0, 50) || 'NO TEXT',
-                },
-                '[REGEX] No load IDs found, trying AI fallback...'
+                { phone, messageCount: conversationData.messages.length },
+                '[REGEX] No load IDs found in conversation'
             );
-
-            const { n8nService } = await import('../../modules/n8n/n8n.service.js');
-            const conversationText = n8nService.formatConversationForAI(conversationData.messages);
-
-            const n8nResponse = await n8nQueue.add(() =>
-                n8nService.parseConversation(conversationText, phone)
-            );
-
-            if (n8nResponse && n8nResponse.loadIds && n8nResponse.loadIds.length > 0) {
-                await unknownDriverService.saveUnknownDriver(
-                    phone,
-                    n8nResponse.loadIds,
-                    n8nResponse.location
-                );
-
-                logger.info(
-                    { phone, loadIds: n8nResponse.loadIds },
-                    '[AI FALLBACK] SUCCESS: Found load IDs -> Saved unknown driver'
-                );
-            } else {
-                logger.info({ phone }, '[AI FALLBACK] No load IDs found in conversation either');
-            }
         } catch (error: any) {
-            // Don't fail the entire sync if n8n parsing fails
+            // Don't fail the entire sync if parsing fails
             logger.warn(
                 {
                     error: error.message,
                     conversationId,
                 },
-                '[N8N] WARNING: Failed to parse conversation (non-critical)'
+                '[PARSE] WARNING: Failed to parse conversation (non-critical)'
             );
         }
     }

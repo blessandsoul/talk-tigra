@@ -49,11 +49,11 @@ export function startPickupSyncScheduler(): void {
     });
 
     // ============================================================
-    // Job 2: Daily reset at 2PM - delete all + re-sync
+    // Job 2: Daily reset at 2AM - delete all + re-sync
     // ============================================================
-    cron.schedule('0 14 * * *', async () => {
+    cron.schedule('0 2 * * *', async () => {
         try {
-            logger.info('[PICKUP SYNC] Starting daily 2PM reset...');
+            logger.info('[PICKUP SYNC] Starting daily 2AM reset...');
 
             const deleteResult = await pickupRepo.deleteAll();
             logger.info(
@@ -62,12 +62,12 @@ export function startPickupSyncScheduler(): void {
             );
 
             const syncResult = await pickupSyncService.syncPickupsToday();
-            logger.info(syncResult, '[PICKUP SYNC] SUCCESS: 2PM reset+sync completed');
+            logger.info(syncResult, '[PICKUP SYNC] SUCCESS: 2AM reset+sync completed');
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : String(error);
-            logger.error({ error: message }, '[PICKUP SYNC] ERROR: 2PM reset failed');
+            logger.error({ error: message }, '[PICKUP SYNC] ERROR: 2AM reset failed');
         }
     });
 
-    logger.info('[PICKUP SYNC] Pickup sync scheduler started (10-min sync + 2PM daily reset)');
+    logger.info('[PICKUP SYNC] Pickup sync scheduler started (10-min sync + 2AM daily reset)');
 }

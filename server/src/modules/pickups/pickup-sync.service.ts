@@ -25,11 +25,25 @@ class PickupSyncService {
     private readonly DRIVER_PHONE_COLUMN = 6;    // Column G: Driver Phone Number
 
     /**
-     * Get the sheet range for the current month
+     * Returns the "logical today" date, where the day resets at 2 AM.
+     * Between midnight and 2 AM, the logical day is still the previous calendar day.
+     */
+    private getLogicalDate(): Date {
+        const now = new Date();
+        if (now.getHours() < 2) {
+            const yesterday = new Date(now);
+            yesterday.setDate(yesterday.getDate() - 1);
+            return yesterday;
+        }
+        return now;
+    }
+
+    /**
+     * Get the sheet range for the current logical month
      * e.g., February -> 'FEB!A:Z'
      */
     private getCurrentSheetRange(): string {
-        const monthIndex = new Date().getMonth();
+        const monthIndex = this.getLogicalDate().getMonth();
         const monthAbbrev = this.MONTH_ABBREVIATIONS[monthIndex];
         return `${monthAbbrev}!A:Z`;
     }
@@ -56,7 +70,7 @@ class PickupSyncService {
 
             // Skip header row
             const dataRows = rawData.slice(1);
-            const todayDay = new Date().getDate();
+            const todayDay = this.getLogicalDate().getDate();
 
             let synced = 0;
             let skipped = 0;
@@ -96,7 +110,7 @@ class PickupSyncService {
                 }
             }
 
-            logger.info({ synced, skipped, errors, todayDay }, '[PICKUP SYNC] Sync completed');
+            logger.info({ synced, skipped, errors, logicalDay: todayDay }, '[PICKUP SYNC] Sync completed');
             return { synced, skipped, errors };
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : String(error);

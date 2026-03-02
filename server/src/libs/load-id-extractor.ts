@@ -1,8 +1,7 @@
 /**
  * Load ID Regex Extractor
  *
- * Backup service for extracting load IDs (last 6 of VIN) from conversation text
- * when the AI service (n8n) is down or fails to find any.
+ * Extracts load IDs (last 6 of VIN) from conversation text using regex patterns.
  *
  * Load ID format: 6 alphanumeric characters with at least 1 digit
  * Examples: "ABC123", "123456", "A1B2C3"

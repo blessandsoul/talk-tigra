@@ -2,7 +2,7 @@
  * Unknown Driver Matching Service
  *
  * Handles the logic for:
- * 1. Saving unknown drivers from n8n parsing
+ * 1. Saving unknown drivers from regex parsing
  * 2. Matching them against the loads table
  * 3. Creating driver_location records when matches are found
  */
@@ -13,11 +13,11 @@ import { locationNormalizer } from '../../libs/location-normalizer.js';
 
 export class UnknownDriverService {
     /**
-     * Save an unknown driver from n8n parsing
+     * Save an unknown driver from regex parsing
      *
      * @param phoneNumber - Driver's phone number
      * @param loadIds - Array of load IDs mentioned in conversation
-     * @param rawLocation - Location extracted by AI (optional)
+     * @param rawLocation - Location string (optional)
      */
     async saveUnknownDriver(phoneNumber: string, loadIds: string[], rawLocation?: string | null) {
         try {
@@ -254,7 +254,7 @@ export class UnknownDriverService {
                     data: {
                         lastSeenAt: new Date(),
                         matchCount: existing.matchCount + 1,
-                        source: 'n8n_match',
+                        source: 'regex_match',
                     },
                 });
                 logger.info({ driverId: driver.id, locationId: location.id }, 'Updated driver location');
@@ -265,7 +265,7 @@ export class UnknownDriverService {
                     data: {
                         driverId: driver.id,
                         locationId: location.id,
-                        source: 'n8n_match',
+                        source: 'regex_match',
                         matchCount: 1,
                     },
                 });

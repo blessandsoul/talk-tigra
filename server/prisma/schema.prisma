@@ -110,7 +110,7 @@ model Conversation {
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime  @updatedAt @map("updated_at")
   syncedAt        DateTime  @default(now()) @map("synced_at") // Last sync from Quo API
-  lastParsedAt    DateTime? @map("last_parsed_at") // Last n8n parsing timestamp
+  lastParsedAt    DateTime? @map("last_parsed_at") // Last regex parsing timestamp
 
   // Relations
   messages Message[]
