@@ -336,19 +336,21 @@ class DriverController {
                 state?: string;
                 recentDays?: number;
                 phoneNumber?: string;
+                loadId?: string;
                 page?: number;
                 limit?: number;
             };
         }>,
         reply: FastifyReply
     ) {
-        const { location, state, recentDays, phoneNumber, page = 1, limit = 20 } = request.query;
+        const { location, state, recentDays, phoneNumber, loadId, page = 1, limit = 20 } = request.query;
 
         const result = await driverService.getDriverLocationsReadablePaginated({
             location,
             state,
             recentDays,
             phoneNumber,
+            loadId,
             page: Number(page),
             limit: Number(limit),
         });

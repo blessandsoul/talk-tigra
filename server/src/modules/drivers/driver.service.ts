@@ -318,6 +318,7 @@ class DriverService {
         state?: string;
         recentDays?: number;
         phoneNumber?: string;
+        loadId?: string;
     }) {
         // Build query filters
         const queryFilters: any = {};
@@ -339,7 +340,15 @@ class DriverService {
         // If a driver matches criteria in ONE location, we want to return ALL their locations
         let matchingPhoneNumbers = new Set<string>();
 
-        if (filters.location || filters.state) {
+        if (filters.loadId) {
+            // Filter by load ID - search drivers whose lastLoadId contains the search term
+            const searchLoadId = filters.loadId.toUpperCase().trim();
+            const loadIdMatches = allDriverLocations.filter(dl => {
+                const driverLoadId = ((dl.driver as any).lastLoadId as string | null);
+                return driverLoadId && driverLoadId.toUpperCase().includes(searchLoadId);
+            });
+            matchingPhoneNumbers = new Set(loadIdMatches.map(dl => dl.driver.phoneNumber));
+        } else if (filters.location || filters.state) {
             let matchCandidates = allDriverLocations;
 
             if (filters.location) {
@@ -538,7 +547,7 @@ class DriverService {
                     driverNumber: dl.driver.driverNumber,
                     companyName: dl.driver.companyName,
                     notes: dl.driver.notes,
-                    lastLoadId: dl.driver.lastLoadId,
+                    lastLoadId: (dl.driver as any).lastLoadId ?? null,
                     locations: [],
                     lastSeenAt: dl.lastSeenAt,
                     createdAt: dl.createdAt,
@@ -578,6 +587,7 @@ class DriverService {
         state?: string;
         recentDays?: number;
         phoneNumber?: string;
+        loadId?: string;
         page: number;
         limit: number;
     }) {
@@ -587,10 +597,11 @@ class DriverService {
             state: filters.state,
             recentDays: filters.recentDays,
             phoneNumber: filters.phoneNumber,
+            loadId: filters.loadId,
         });
 
-        // If location or phone filter is applied, show ALL results (no pagination)
-        if (filters.location || filters.phoneNumber) {
+        // If location, phone, or loadId filter is applied, show ALL results (no pagination)
+        if (filters.location || filters.phoneNumber || filters.loadId) {
             const { paginatedResponse } = await import('../../utils/response.js');
             return paginatedResponse(
                 'Drivers retrieved successfully',

@@ -114,10 +114,14 @@ export const KnownDriversTable = () => {
             url.searchParams.set('limit', limit.toString());
 
             if (searchText) {
-                // Smart search: if input looks like a phone number (digits/plus), search by phone
-                // otherwise search by location
-                const isPhoneSearch = /^[\d+()-]{3,}$/.test(searchText);
-                if (isPhoneSearch) {
+                // Smart search: detect input type
+                // Load ID: 5-6 alphanumeric chars (e.g., "295237", "AB1234") — check first
+                const isLoadIdSearch = /^[A-Za-z0-9]{5,6}$/.test(searchText.trim()) && /\d/.test(searchText);
+                // Phone: 7+ digits (with optional +/-/() formatting)
+                const isPhoneSearch = /^[\d+()-]{7,}$/.test(searchText);
+                if (isLoadIdSearch) {
+                    url.searchParams.set('loadId', searchText.trim());
+                } else if (isPhoneSearch) {
                     url.searchParams.set('phoneNumber', searchText);
                 } else {
                     url.searchParams.set('location', searchText);
