@@ -206,9 +206,16 @@ export class UnknownDriverService {
                     data: {
                         phoneNumber,
                         notes: `Auto-created from load ID ${matchedLoadId}`,
+                        lastLoadId: matchedLoadId,
                     },
                 });
                 logger.info({ phoneNumber }, 'Created new driver');
+            } else {
+                // Update lastLoadId on existing driver
+                driver = await prisma.driver.update({
+                    where: { id: driver.id },
+                    data: { lastLoadId: matchedLoadId },
+                });
             }
 
             // 2. Find or create the location (using normalized name)

@@ -515,6 +515,7 @@ class DriverService {
             driverNumber: string | null;
             companyName: string | null;
             notes: string | null;
+            lastLoadId: string | null;
             locations: Array<{
                 name: string;
                 auctionName: string | null;
@@ -537,6 +538,7 @@ class DriverService {
                     driverNumber: dl.driver.driverNumber,
                     companyName: dl.driver.companyName,
                     notes: dl.driver.notes,
+                    lastLoadId: dl.driver.lastLoadId,
                     locations: [],
                     lastSeenAt: dl.lastSeenAt,
                     createdAt: dl.createdAt,

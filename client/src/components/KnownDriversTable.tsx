@@ -24,6 +24,7 @@ interface Driver {
     driverNumber: string | null;
     companyName: string | null;
     notes: string | null;
+    lastLoadId: string | null;
     locations: DriverLocation[];
     lastSeenAt: string;
     createdAt: string;
@@ -272,10 +273,19 @@ export const KnownDriversTable = () => {
             ),
         },
         {
+            title: 'Load ID',
+            dataIndex: 'lastLoadId',
+            key: 'lastLoadId',
+            width: 100,
+            render: (text: string | null) => text
+                ? <span style={{ fontFamily: 'monospace', fontWeight: 500 }}>{text}</span>
+                : <span style={{ color: '#ccc' }}>-</span>,
+        },
+        {
             title: t('common.notes'),
             dataIndex: 'notes',
             key: 'notes',
-            width: '30%',
+            width: '25%',
             ellipsis: true,
             render: (text) => text || <span style={{ color: '#ccc' }}>-</span>,
         },

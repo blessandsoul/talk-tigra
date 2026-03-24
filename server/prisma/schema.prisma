@@ -160,6 +160,7 @@ model Driver {
   name        String?  // Driver name if known
   companyName String?  @map("company_name") // Trucking company name if known
   notes       String?  @db.Text // Any notes about this driver
+  lastLoadId  String?  @map("last_load_id") // Most recent load ID (last 6 of VIN) the driver texted about
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 

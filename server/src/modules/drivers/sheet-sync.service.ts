@@ -259,9 +259,16 @@ class SheetSyncService {
                 driver = await prisma.driver.create({
                     data: {
                         phoneNumber,
+                        lastLoadId: loadId,
                     },
                 });
                 logger.info({ phoneNumber, loadId }, '[SHEET SYNC] Created new driver from sheet');
+            } else {
+                // Update lastLoadId on existing driver
+                driver = await prisma.driver.update({
+                    where: { id: driver.id },
+                    data: { lastLoadId: loadId },
+                });
             }
 
             // 2. Find or create Location

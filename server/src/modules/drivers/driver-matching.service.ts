@@ -149,8 +149,8 @@ class DriverMatchingService {
             // Normalize location
             const normalizedLocation = this.normalizeLocation(rawLocation);
 
-            // Create or get Driver
-            const driver = await this.upsertDriver(phoneNumber);
+            // Create or get Driver (save load ID they texted about)
+            const driver = await this.upsertDriver(phoneNumber, loadId);
 
             // Create or get Location
             const location = await this.upsertLocation(normalizedLocation);
@@ -316,16 +316,18 @@ class DriverMatchingService {
     /**
      * Create or get Driver record
      */
-    private async upsertDriver(phoneNumber: string) {
+    private async upsertDriver(phoneNumber: string, loadId?: string) {
         return prisma.driver.upsert({
             where: { phoneNumber },
             create: {
                 phoneNumber,
                 companyName: '', // Initialize as empty string for manual entry later
                 notes: '', // Initialize as empty string for manual entry later
+                lastLoadId: loadId || null,
             },
             update: {
                 updatedAt: new Date(),
+                ...(loadId ? { lastLoadId: loadId } : {}),
             },
         });
     }
