@@ -103,7 +103,7 @@ class LoadInquiryRepo {
                 MAX(li.last_seen_at) as latestInquiry
             FROM load_inquiries li
             GROUP BY li.load_id
-            ORDER BY driverCount DESC, totalMentions DESC
+            ORDER BY latestInquiry DESC
             LIMIT ${limit} OFFSET ${offset}
         `;
 

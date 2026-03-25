@@ -134,7 +134,6 @@ export const LoadInquiriesPage = () => {
             key: 'driverCount',
             width: 110,
             sorter: (a: LoadInquiryStatsItem, b: LoadInquiryStatsItem) => a.driverCount - b.driverCount,
-            defaultSortOrder: 'descend',
             render: (count: number) => (
                 <Tag color={count >= 3 ? 'red' : count >= 2 ? 'orange' : 'default'}>
                     {count} {count === 1 ? 'driver' : 'drivers'}
@@ -153,6 +152,8 @@ export const LoadInquiriesPage = () => {
             dataIndex: 'latestInquiry',
             key: 'latestInquiry',
             width: 120,
+            sorter: (a: LoadInquiryStatsItem, b: LoadInquiryStatsItem) => new Date(a.latestInquiry).getTime() - new Date(b.latestInquiry).getTime(),
+            defaultSortOrder: 'descend',
             render: (date: string) => formatDate(date),
         },
     ];

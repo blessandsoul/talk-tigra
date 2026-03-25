@@ -64,9 +64,21 @@ export const LoadInquiryDetailPage = () => {
     }, [fetchDetail]);
 
     const handleCopyPhone = (phone: string) => {
-        navigator.clipboard.writeText(phone).then(() => {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(phone).then(() => {
+                message.success(`Copied ${phone}`);
+            });
+        } else {
+            const textarea = document.createElement('textarea');
+            textarea.value = phone;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
             message.success(`Copied ${phone}`);
-        });
+        }
     };
 
     const formatDate = (date: string): string => {
