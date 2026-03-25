@@ -1,14 +1,16 @@
 /**
  * Driver Sync Scheduler
  *
- * Coordinates two critical jobs:
- * 1. Sheet Sync: Syncs load data from Google Sheets
+ * Coordinates three critical jobs:
+ * 1. Sheet Sync: Syncs load data from CentralDispatch Google Sheet
  * 2. Driver Matching: Correlates messages with loads to identify driver locations
+ * 3. Allcars Sync: Syncs VINs from allcars sheet for load inquiry tracking
  */
 
 import cron from 'node-cron';
 import { sheetSyncService } from '../modules/drivers/sheet-sync.service.js';
 import { driverMatchingService } from '../modules/drivers/driver-matching.service.js';
+import { allcarsSyncService } from '../modules/load-inquiries/allcars-sync.service.js';
 import logger from './logger.js';
 import { env } from '../config/env.js';
 
@@ -82,6 +84,36 @@ export function startDriverSyncScheduler(): void {
         }
     });
 
+    // ============================================================
+    // Job 3: Allcars Sheet Sync (runs every 10 minutes, offset by 3)
+    // ============================================================
+
+    if (env.GOOGLE_ALLCARS_SHEET_ID) {
+        // Run allcars sync after 1 minute on startup
+        setTimeout(() => {
+            allcarsSyncService.syncFromAllcars().catch((error) => {
+                const message = error instanceof Error ? error.message : String(error);
+                logger.error({ error: message }, '[ALLCARS SYNC] ERROR: Initial sync failed');
+            });
+        }, 60 * 1000); // 1 minute delay
+
+        // Schedule allcars sync every 10 minutes, offset by 3
+        cron.schedule('3,13,23,33,43,53 * * * *', async () => {
+            try {
+                const result = await allcarsSyncService.syncFromAllcars();
+                logger.info(
+                    { synced: result.synced, enriched: result.enriched, errors: result.errors },
+                    '[ALLCARS SYNC] SUCCESS: Completed'
+                );
+            } catch (error: unknown) {
+                const message = error instanceof Error ? error.message : String(error);
+                logger.error({ error: message }, '[ALLCARS SYNC] ERROR: Scheduled sync failed');
+            }
+        });
+
+        logger.info('[ALLCARS SYNC] Allcars sync scheduler started');
+    }
+
     logger.info('[SHEET SYNC] Driver sync scheduler started');
 }
 
@@ -93,17 +125,25 @@ export function startDriverSyncScheduler(): void {
 export async function runDriverSyncManually(): Promise<{
     sheetSync: { synced: number; errors: number; driversCreated: number };
     driverMatching: { processed: number; matched: number; failed: number };
+    allcarsSync: { synced: number; enriched: number; errors: number } | null;
 }> {
     logger.info('Running manual driver sync');
 
-    // Step 1: Sync sheet
+    // Step 1: Sync CentralDispatch sheet
     const sheetResult = await sheetSyncService.syncLoadsFromSheet();
     logger.info({ sheetResult }, 'Manual sheet sync completed');
 
-    // Step 2: Wait 5 seconds for DB to settle
+    // Step 2: Sync allcars sheet (if configured)
+    let allcarsResult: { synced: number; enriched: number; errors: number } | null = null;
+    if (env.GOOGLE_ALLCARS_SHEET_ID) {
+        allcarsResult = await allcarsSyncService.syncFromAllcars();
+        logger.info({ allcarsResult }, 'Manual allcars sync completed');
+    }
+
+    // Step 3: Wait 5 seconds for DB to settle
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    // Step 3: Run driver matching
+    // Step 4: Run driver matching
     const matchingResult =
         await driverMatchingService.batchProcessRecentConversations(7);
     logger.info({ matchingResult }, 'Manual driver matching completed');
@@ -111,6 +151,7 @@ export async function runDriverSyncManually(): Promise<{
     return {
         sheetSync: sheetResult,
         driverMatching: matchingResult,
+        allcarsSync: allcarsResult,
     };
 }
 

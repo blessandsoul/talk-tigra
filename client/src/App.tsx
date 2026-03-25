@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { KnownDriversTable } from './components/KnownDriversTable';
 import { MessageQueueDashboard } from './components/MessageQueueDashboard';
 import { PickupsTable } from './components/PickupsTable';
+import { LoadInquiriesPage } from './components/LoadInquiriesPage';
+import { LoadInquiryDetailPage } from './components/LoadInquiryDetailPage';
 import { LanguageSwitcher } from './components/common/LanguageSwitcher';
 
 
@@ -29,6 +31,10 @@ function AppLayout() {
     {
       key: '/pickups',
       label: <Link to="/pickups">{t('nav.pickups')}</Link>,
+    },
+    {
+      key: '/load-inquiries',
+      label: <Link to="/load-inquiries">Load IDS</Link>,
     },
     {
       key: '/queue-dashboard',
@@ -62,6 +68,8 @@ function AppLayout() {
             <Route path="/" element={<Navigate to="/known-drivers" replace />} />
             <Route path="/known-drivers" element={<KnownDriversTable />} />
             <Route path="/pickups" element={<PickupsTable />} />
+            <Route path="/load-inquiries" element={<LoadInquiriesPage />} />
+            <Route path="/load-inquiries/:loadId" element={<LoadInquiryDetailPage />} />
             <Route path="/queue-dashboard" element={<MessageQueueDashboard />} />
 
             {/* Redirect old route to new one */}

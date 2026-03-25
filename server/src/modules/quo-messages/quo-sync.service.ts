@@ -9,6 +9,7 @@ import { prisma } from '../../libs/db.js';
 import logger from '../../libs/logger.js';
 import { extractLoadIdsFromText } from '../../libs/load-id-extractor.js';
 import { hasStopCommand, isStopMessage } from '../../libs/stop-command-extractor.js';
+import { loadInquiryService } from '../load-inquiries/load-inquiries.service.js';
 import type { GetConversationsResponse, GetMessagesResponse } from '../../types/quo-api.types.js';
 
 export class QuoSyncService {
@@ -452,6 +453,9 @@ export class QuoSyncService {
 
             if (regexLoadIds.length > 0) {
                 await unknownDriverService.saveUnknownDriver(phone, regexLoadIds);
+
+                // Track load inquiries for analytics
+                await loadInquiryService.recordInquiries(phone, regexLoadIds);
 
                 logger.info(
                     { phone, loadIds: regexLoadIds },

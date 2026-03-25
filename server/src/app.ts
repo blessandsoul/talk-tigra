@@ -36,6 +36,7 @@ import { quoMessagesRoutes } from './modules/quo-messages/quo-messages.routes.js
 import { driverRoutes } from './modules/drivers/driver.routes.js';
 import { unknownDriverRoutes } from './modules/drivers/unknown-driver.routes.js';
 import { pickupRoutes } from './modules/pickups/pickups.routes.js';
+import { loadInquiryRoutes } from './modules/load-inquiries/load-inquiries.routes.js';
 import {
     requireRole,
     requireAdmin,
@@ -78,6 +79,7 @@ const buildApp = async () => {
     await app.register(driverRoutes, { prefix: env.API_PREFIX });
     await app.register(unknownDriverRoutes, { prefix: `${env.API_PREFIX}/unknown-drivers` });
     await app.register(pickupRoutes, { prefix: env.API_PREFIX });
+    await app.register(loadInquiryRoutes, { prefix: env.API_PREFIX });
 
     // 6. Serve static files from public directory (after routes to avoid conflicts)
     await app.register(fastifyStatic, {

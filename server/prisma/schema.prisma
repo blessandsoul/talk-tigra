@@ -278,6 +278,30 @@ model UnknownDriver {
 }
 
 // ==============================================
+// LOAD INQUIRIES (tracks which drivers texted about which loads)
+// ==============================================
+
+model LoadInquiry {
+  id           String   @id @default(uuid())
+  loadId       String   @map("load_id")          // Last 6 of VIN
+  vin          String?                             // Full VIN resolved from allcars sheet
+  vehicleInfo  String?  @map("vehicle_info")      // Year Make Model from allcars
+  receivedIn   String?  @map("received_in")       // Destination from allcars column E
+  phoneNumber  String   @map("phone_number")      // Driver who texted about this load
+  firstSeenAt  DateTime @default(now()) @map("first_seen_at")
+  lastSeenAt   DateTime @default(now()) @map("last_seen_at")
+  mentionCount Int      @default(1) @map("mention_count")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@unique([loadId, phoneNumber])
+  @@index([loadId])
+  @@index([phoneNumber])
+  @@index([mentionCount])
+  @@map("load_inquiries")
+}
+
+// ==============================================
 // MESSAGE QUEUE (persisted bulk message queue)
 // ==============================================
 

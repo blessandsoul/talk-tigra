@@ -69,6 +69,7 @@ const envSchema = z.object({
     // Google Sheets Configuration
     GOOGLE_SHEETS_CREDENTIALS: z.string().optional(), // Base64 encoded credentials JSON
     GOOGLE_SHEET_ID: z.string().optional(), // The Google Sheet ID to sync loads from
+    GOOGLE_ALLCARS_SHEET_ID: z.string().optional(), // The allcars Google Sheet ID for VIN/load inquiry tracking
 });
 
 /**

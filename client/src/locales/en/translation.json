@@ -7,6 +7,7 @@
     "guide": "Guides",
     "driver": "Drivers",
     "pickups": "Pickups",
+    "inquiries": "Load Inquiries",
     "login": "Login",
     "register": "Register",
     "logout": "Logout"
@@ -87,6 +88,25 @@
     "vehicles_today": "vehicles today",
     "no_pickups": "No pickups for today",
     "click_to_add_note": "Click to add note..."
+  },
+  "inquiries": {
+    "title": "Load Inquiries",
+    "load_id": "Load ID",
+    "vehicle": "Vehicle",
+    "received_in": "Received In",
+    "drivers": "Drivers",
+    "mentions": "Mentions",
+    "latest": "Latest",
+    "first_seen": "First Seen",
+    "last_seen": "Last Seen",
+    "total_loads": "Total Loads",
+    "drivers_interested": "Drivers Interested",
+    "total_mentions_label": "Total Mentions",
+    "search_placeholder": "Search by Load ID or Phone...",
+    "back_to_stats": "Back to Stats",
+    "no_inquiries": "No inquiries for this load",
+    "no_data": "No load inquiry data yet",
+    "fetch_error": "Failed to fetch load inquiries"
   },
   "bulk_message": {
     "title": "Send Bulk Message",
